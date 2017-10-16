@@ -6,14 +6,19 @@
 ## DESCRIPTION: formatting a fasta format into phylip format for using with PAML
 
 import string, os, sys
-
+"""
 if len(sys.argv) == 1:
     print "put arguments!!"
     print "USAGE: $T4S02_phylip2fasta.py INPUT OUTPUT"
-
+"""
 
 ## INPUT
-f1 = sys.argv[1]
+if os.path.isfile(sys.argv[1]) :
+    f1 = sys.argv[1]
+else:
+    print "No existing phylip file ; exiting ..."
+    exit()
+
 F1 = open("%s" %f1, 'r')
 
 ## OUTPUT

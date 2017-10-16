@@ -34,9 +34,9 @@
         #end if
         &&
         ln -s '$input.element_identifier'".fasta.phy" out.phy &&
-        ln -s '$input.element_identifier'".fasta.nxs" out.nxs &&
+        ln -s '$input.element_identifier'".fasta.nxs" out.nxs
         #if $fasta_out.value == True
-            python $__tool_directory__/scripts/S01_phylip2fasta.py out.phy out.fasta
+            && python $__tool_directory__/scripts/S01_phylip2fasta.py out.phy out.fasta
         #end if
 
     ]]></command>
