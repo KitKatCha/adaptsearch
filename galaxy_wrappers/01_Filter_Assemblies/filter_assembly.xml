@@ -9,8 +9,8 @@
 	</macros>
 
 	<requirements>
-		<!-- <expand macro="python_required" /> -->
-		<requirement type="package" version="3.5">python</requirement>
+		<expand macro="python_required" />
+		<!-- <requirement type="package" version="3.5">python</requirement> -->
 		<requirement type="package" version="0.0.14">fastx_toolkit</requirement>
 		<requirement type="package" version="10.2011">cap3</requirement>
 	</requirements>
@@ -74,6 +74,7 @@
                 <element name="PfPfiji_trinity" value="trinity_out/PfPfiji_trinity.fasta" />
             </output_collection>
 		</test>
+		
 		<test>
             <param name="inputs" ftype="fasta" value="velvet/Pg_transcriptome_90109.fasta,velvet/Ap_transcriptome_35099.fasta,velvet/Ac_transcriptome_25591.fasta" />
 			<param name="assembler" value="velvet" />
@@ -87,7 +88,7 @@
                 <element name="PgPg_transcriptome_90109" value="velvet_out/PgPg_transcriptome_90109.fasta" />
             </output_collection>
 		</test>
-
+        
 	</tests>
 
 	<help>
