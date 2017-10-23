@@ -47,8 +47,8 @@
 			<option value="velvet">Velvet Oases</option>
 			<option value="trinity">Trinity</option>
 		</param>
-		<param name="percent_identity" type="integer" value="100" label="Maximum sequence length" help="Cap3 parameter -p  N  specify overlap percent identity cutoff N &gt; 65 " />
-		<param name="overlap_length" type="integer" value="60" label="Maximum sequence length" help="Cap3 parameter -o  N  specify overlap length cutoff &gt; 15 " />
+		<param name="percent_identity" type="integer" value="100" label="Overlap percent identity cutoff" help="Cap3 parameter (-p N); minimum percent identity of an overlap. The specified value should be more than 65%." />
+		<param name="overlap_length" type="integer" value="60" label="Overlap length cutoff" help="Cap3 parameter (-o N); minimum length of an overlap (in base pairs). The specified value should be more than 15 base pairs." />
 		<param name="length_seq_max" type="integer" value="100" label="Minimum sequence length" help="Keep sequences which length is higher than the minimum sequence length  " />
 	</inputs>
 
