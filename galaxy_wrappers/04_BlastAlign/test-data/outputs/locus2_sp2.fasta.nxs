@@ -1,0 +1,10 @@
+#NEXUS
+[Aligned to seq Am21/11000160 by BlastAlign. We have excluded sequences with more than 95% gaps]
+BEGIN DATA;
+dimensions ntax=2 nchar=160;
+format gap=- datatype=DNA;
+matrix
+Ac6_1/1_1.000_160	cagcctaccactgagaagagatacttcaacatgtcttactggggtagaagtggtggtcgtacagcgggtggtaatgcaggacgtggtcgtggcggcggcagcggcagtggcagtagtcaaagtggtggtggcagctttctacaggaacgtatcaaagaga
+Am2_1/1_1.000_160	cagcctaccactgagaagagatacttcaacatgtcttactggggtagaagtggtggtcgtacagcgggtggtaatgcaggacgtggtcgtggcggcggcagcggcagtggcagtagtcaaagtggtggtggcagctttctacaggaacgtatcaaagaga
+;
+end;

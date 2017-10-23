@@ -18,9 +18,9 @@
     </stdio>
 
     <command><![CDATA[
-        ln -s '$input' '$input.element_identifier' &&
+        ln -s '$input' '$input.element_identifier'".fasta" &&
 
-        BlastAlign -i '$input.element_identifier'
+        BlastAlign -i '$input.element_identifier'".fasta"
         -m $advanced_option.m
         #if $advanced_option.r != ""
             -r $advanced_option.r
@@ -32,19 +32,12 @@
         #if $advanced_option.s != 0
             -s $advanced_option.s
         #end if
-
+        &&
+        ln -s '$input.element_identifier'".fasta.phy" out.phy &&
+        ln -s '$input.element_identifier'".fasta.nxs" out.nxs
         #if $fasta_out.value == True
-            && python $__tool_directory__/scripts/S01_phylip2fasta.py '$input.element_identifier'".phy" '$input.element_identifier'".fasta"
-            && bash $__tool_directory__/scripts/S02_renaming.sh '$input.element_identifier'".phy" '$input.element_identifier'".nxs" '$input.element_identifier'".fasta"
-            && cp '$input.element_identifier'".fasta" out.fasta
-        #else if $fasta_out.value == False
-            && bash $__tool_directory__/scripts/S02_renaming.sh '$input.element_identifier'".phy" '$input.element_identifier'".nxs"
-            && cp '$input.element_identifier' out.fasta
+            && python $__tool_directory__/scripts/S01_phylip2fasta.py out.phy out.fasta
         #end if
-
-        && cp '$input.element_identifier'".phy" out.phy
-        && cp '$input.element_identifier'".nxs" out.nxs
-        
 
     ]]></command>
     <inputs>
@@ -71,45 +64,32 @@
 
     <tests>
         <test>
+            <param name="input" ftype="fasta" value="inputs/locus1_sp2.fasta" />
+            <section name="advanced_option">
+                <param name="m" value="95" />
+                <param name="r" value="" />
+                <param name="x" value="" />
+                <param name="n" value="False" />
+                <param name="s" value="0" />
+            </section>
+            <param name="fasta_out" value="True" />
+            <output name="phy" value="outputs/locus1_sp2.phy" />
+            <output name="nxs" value="outputs/locus1_sp2.nxs" />
+            <output name="fasta" value="outputs/locus1_sp2.fasta" />
+        </test>
+        <test>
             <param name="input" ftype="fasta" value="inputs/locus1_sp3.fasta" />
             <section name="advanced_option">
                 <param name="m" value="95" />
                 <param name="r" value="" />
                 <param name="x" value="" />
-                <param name="n" value="True" />
+                <param name="n" value="False" />
                 <param name="s" value="0" />
             </section>
             <param name="fasta_out" value="True" />
-            <output name="phy" value="outputs/locus1_sp3.fasta.phy" />
-            <output name="nxs" value="outputs/locus1_sp3.fasta.nxs" />
+            <output name="phy" value="outputs/locus1_sp3.phy" />
+            <output name="nxs" value="outputs/locus1_sp3.nxs" />
             <output name="fasta" value="outputs/locus1_sp3.fasta" />
-        </test>        
-        <test>
-            <param name="input" ftype="fasta" value="inputs/locus2_sp3.fasta" />
-            <section name="advanced_option">
-                <param name="m" value="95" />
-                <param name="r" value="" />
-                <param name="x" value="" />
-                <param name="n" value="True" />
-                <param name="s" value="0" />
-            </section>
-            <param name="fasta_out" value="True" />
-            <output name="phy" value="outputs/locus2_sp2.fasta.phy" />
-            <output name="nxs" value="outputs/locus2_sp2.fasta.nxs" />
-            <output name="fasta" value="outputs/locus2_sp2.fasta" />
-        </test>
-        <test>
-            <param name="input" ftype="fasta" value="inputs/locus3_sp4.fasta" />
-            <section name="advanced_option">
-                <param name="m" value="95" />
-                <param name="r" value="" />
-                <param name="x" value="" />
-                <param name="n" value="True" />
-                <param name="s" value="0" />
-            </section>
-            <param name="fasta_out" value="False" />
-            <output name="phy" value="outputs/locus3_sp2.fasta.phy" />
-            <output name="nxs" value="outputs/locus3_sp2.fasta.nxs" />            
         </test>
 
         <!--locus10_sp2.fasta    locus1_sp3.fasta  locus2_sp2.fasta  locus3_sp2.fasta  locus4_sp2.fasta  locus5_sp2.fasta  locus6_sp2.fasta  locus7_sp2.fasta  locus8_sp2.fasta  locus9_sp2.fasta-->

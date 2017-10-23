@@ -9,7 +9,7 @@ import string, os, sys
 """
 if len(sys.argv) == 1:
     print "put arguments!!"
-    print "USAGE: S01_phylip2fasta.py INPUT OUTPUT"
+    print "USAGE: $T4S02_phylip2fasta.py INPUT OUTPUT"
 """
 
 ## INPUT

@@ -1,0 +1,1 @@
+/home/umr7144/abice/vmataigne/Documents/Fork_AdaptSearch/adaptsearch/scripts/04_BlastAlign/S02_renaming.sh
