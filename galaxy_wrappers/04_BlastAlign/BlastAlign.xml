@@ -32,19 +32,14 @@
         #if $advanced_option.s != 0
             -s $advanced_option.s
         #end if
+        
+        && bash $__tool_directory__/scripts/rename_phy.sh '$input.element_identifier'".phy" out.phy
+        && bash $__tool_directory__/scripts/rename_nxs.sh '$input.element_identifier'".nxs" out.nxs
 
         #if $fasta_out.value == True
             && python $__tool_directory__/scripts/S01_phylip2fasta.py '$input.element_identifier'".phy" '$input.element_identifier'".fasta"
-            && bash $__tool_directory__/scripts/S02_renaming.sh '$input.element_identifier'".phy" '$input.element_identifier'".nxs" '$input.element_identifier'".fasta"
-            && cp '$input.element_identifier'".fasta" out.fasta
-        #else if $fasta_out.value == False
-            && bash $__tool_directory__/scripts/S02_renaming.sh '$input.element_identifier'".phy" '$input.element_identifier'".nxs"
-            && cp '$input.element_identifier' out.fasta
+            && bash $__tool_directory__/scripts/rename_fasta.sh '$input.element_identifier'".fasta" out.fasta
         #end if
-
-        && cp '$input.element_identifier'".phy" out.phy
-        && cp '$input.element_identifier'".nxs" out.nxs
-        
 
     ]]></command>
     <inputs>
