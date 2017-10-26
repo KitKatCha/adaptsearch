@@ -35,17 +35,15 @@
 
         && mkdir outputs
         
-        #import subprocess
-        #set $name = $subprocess.check_output(["echo", $input.element_identifier'.phy', "|", "cut", "-d", "_", "-f", "1"] )
-        #set $number = $subprocess.check_output(["grep", "/", $input.element_identifier'.phy', "|", "wc", "-l"])
+        && name=$(echo '\$input.element_identifier'".phy" | cut -d _ -f 1)
+        && number=$(grep '/' '\$input.element_identifier'".phy" | wc -l)
 
-        #set $new_file = $name + "_sp" + $number + ".phy"
-        #subprocess.check_call(["mv", $input.element_identifier'.phy', $new_file])
-        #set $new_file2 = $name + "_sp" + $number + ".nxs"
-        #subprocess.check_call(["mv", $input.element_identifier'.phy', $new_file2])
-
-        #subprocess.check_call(["cp", '$new_file', "outputs/"])
-        #subprocess.check_call(["cp", '$new_file2', "outputs/"])
+        && new_file=$name"_sp"$number".phy"
+        && mv '\$input.element_identifier'".phy" '$new_file'
+        && new_file2=$name"_sp"$number".nxs"
+        && mv '\$input.element_identifier'".nxs" '$new_file2'
+        && cp '$new_file' outputs/
+        && cp '$new_file2' outputs/
 
         #if $fasta_out.value == True
             && python $__tool_directory__/scripts/S01_phylip2fasta.py /outputs/'$new_file' outputs/$name"_sp"$number".fasta"
