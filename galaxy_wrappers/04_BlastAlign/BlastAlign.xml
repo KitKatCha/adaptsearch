@@ -32,13 +32,23 @@
         #if $advanced_option.s != 0
             -s $advanced_option.s
         #end if
+
+        && mkdir outputs
         
-        && bash $__tool_directory__/scripts/rename_phy.sh '$input.element_identifier'".phy" out.phy
-        && bash $__tool_directory__/scripts/rename_nxs.sh '$input.element_identifier'".nxs" out.nxs
+        #import subprocess
+        #set $name = $subprocess.check_output(["echo", $input.element_identifier'.phy', "|", "cut", "-d", "_", "-f", "1"] )
+        #set $number = $subprocess.check_output(["grep", "/", $input.element_identifier'.phy', "|", "wc", "-l"])
+
+        #set $new_file = $name + "_sp" + $number + ".phy"
+        #subprocess.check_call(["mv", $input.element_identifier'.phy', $new_file])
+        #set $new_file2 = $name + "_sp" + $number + ".nxs"
+        #subprocess.check_call(["mv", $input.element_identifier'.phy', $new_file2])
+
+        #subprocess.check_call(["cp", '$new_file', "outputs/"])
+        #subprocess.check_call(["cp", '$new_file2', "outputs/"])
 
         #if $fasta_out.value == True
-            && python $__tool_directory__/scripts/S01_phylip2fasta.py '$input.element_identifier'".phy" '$input.element_identifier'".fasta"
-            && bash $__tool_directory__/scripts/rename_fasta.sh '$input.element_identifier'".fasta" out.fasta
+            && python $__tool_directory__/scripts/S01_phylip2fasta.py /outputs/'$new_file' outputs/$name"_sp"$number".fasta"
         #end if
 
     ]]></command>
@@ -57,9 +67,21 @@
     </inputs>
 
     <outputs>
-        <data format="phylip" name="phy" from_work_dir="out.phy" label="Alignment of ${input.name} in phylip" />
-        <data format="nexus" name="nxs" from_work_dir="out.nxs" label="Alignment of ${input.name} in nexus" />
-        <data format="fasta" name="fasta" from_work_dir="out.fasta" label="Alignment of ${input.name} in fasta">
+        <!--
+        <data format="phylip" name="phy" from_work_dir="outputs/out.phy" label="Alignment of ${input.name} in phylip" />
+        <data format="nexus" name="nxs" from_work_dir="outputs/out.nxs" label="Alignment of ${input.name} in nexus" />
+        <data format="fasta" name="fasta" from_work_dir="outputs/out.fasta" label="Alignment of ${input.name} in fasta">
+            <filter>fasta_out == True</filter>
+        </data>
+        -->
+        <data format="phylip" name="phy">
+            <discover_datasets pattern=".\.phy" directory="outputs"/>
+        </data>
+        <data format="nexus" name="nxs">
+            <discover_datasets pattern=".\.nxs" directory="outputs"/>
+        </data>
+        <data format="fasta" name="fasta">
+            <discover_datasets pattern=".\.fasta" directory="outputs"/>
             <filter>fasta_out == True</filter>
         </data>
     </outputs>
@@ -105,9 +127,7 @@
             <param name="fasta_out" value="False" />
             <output name="phy" value="outputs/locus3_sp2.fasta.phy" />
             <output name="nxs" value="outputs/locus3_sp2.fasta.nxs" />            
-        </test>
-
-        <!--locus10_sp2.fasta    locus1_sp3.fasta  locus2_sp2.fasta  locus3_sp2.fasta  locus4_sp2.fasta  locus5_sp2.fasta  locus6_sp2.fasta  locus7_sp2.fasta  locus8_sp2.fasta  locus9_sp2.fasta-->
+        </test>        
     </tests>
 
     <help>
