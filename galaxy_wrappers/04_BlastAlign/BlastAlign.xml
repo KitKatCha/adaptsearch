@@ -35,7 +35,7 @@
 
         && mkdir outputs
         
-        && name=$(echo '\$input.element_identifier'".phy" | cut -d _ -f 1)
+        && name=\${input.element_identifier%%_*}
         && number=$(grep '/' '\$input.element_identifier'".phy" | wc -l)
 
         && new_file=$name"_sp"$number".phy"
