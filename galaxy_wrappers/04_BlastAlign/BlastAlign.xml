@@ -75,13 +75,13 @@
         </data>
         -->
         <data format="phylip" name="phy">
-            <discover_datasets pattern="locus+[0-9]_sp+[0-9]\.phy" directory="outputs" visible="true"/>
+            <discover_datasets pattern="locus[0-9]+_sp[0-9]+\.phy" directory="outputs" visible="true"/>
         </data>
         <data format="nexus" name="nxs">
-            <discover_datasets pattern="locus+[0-9]_sp+[0-9]\.nxs" directory="outputs" visible="true"/>
+            <discover_datasets pattern="locus[0-9]+_sp[0-9]+\.nxs" directory="outputs" visible="true"/>
         </data>
         <data format="fasta" name="fasta">
-            <discover_datasets pattern="locus+[0-9]_sp+[0-9]\.fasta" directory="outputs" visible="true"/>
+            <discover_datasets pattern="locus[0-9]+_sp[0-9]+\.fasta" directory="outputs" visible="true"/>
             <filter>fasta_out == True</filter>
         </data>
     </outputs>
