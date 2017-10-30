@@ -35,18 +35,20 @@
 
         && mkdir outputs
         
-        && name=\${input.element_identifier%%_*}
-        && number=$(grep '/' '\$input.element_identifier'".phy" | wc -l)
+        && name=\$(echo '$input.element_identifier'".phy" | cut -d _ -f 1)
+        && number=\$(grep '/' '$input.element_identifier'".phy" | wc -l)        
 
-        && new_file=$name"_sp"$number".phy"
-        && mv '\$input.element_identifier'".phy" '$new_file'
-        && new_file2=$name"_sp"$number".nxs"
-        && mv '\$input.element_identifier'".nxs" '$new_file2'
-        && cp '$new_file' outputs/
-        && cp '$new_file2' outputs/
+        && new_file=\$name"_sp"\$number".phy"
+        && new_file2=\$name"_sp"\$number".nxs"
 
+        && mv '$input.element_identifier'".phy" \$new_file 
+        && mv '$input.element_identifier'".nxs" \$new_file2
+
+        && cp \$new_file outputs/
+        && cp \$new_file2 outputs/
+        
         #if $fasta_out.value == True
-            && python $__tool_directory__/scripts/S01_phylip2fasta.py /outputs/'$new_file' outputs/$name"_sp"$number".fasta"
+            && python $__tool_directory__/scripts/S01_phylip2fasta.py \$new_file outputs/\$name"_sp"\$number".fasta"
         #end if
 
     ]]></command>
@@ -73,18 +75,18 @@
         </data>
         -->
         <data format="phylip" name="phy">
-            <discover_datasets pattern=".\.phy" directory="outputs"/>
+            <discover_datasets pattern="locus+[0-9]_sp+[0-9]\.phy" directory="outputs" visible="true"/>
         </data>
         <data format="nexus" name="nxs">
-            <discover_datasets pattern=".\.nxs" directory="outputs"/>
+            <discover_datasets pattern="locus+[0-9]_sp+[0-9]\.nxs" directory="outputs" visible="true"/>
         </data>
         <data format="fasta" name="fasta">
-            <discover_datasets pattern=".\.fasta" directory="outputs"/>
+            <discover_datasets pattern="locus+[0-9]_sp+[0-9]\.fasta" directory="outputs" visible="true"/>
             <filter>fasta_out == True</filter>
         </data>
     </outputs>
 
-    <tests>
+    <tests>        
         <test>
             <param name="input" ftype="fasta" value="inputs/locus1_sp3.fasta" />
             <section name="advanced_option">
@@ -98,7 +100,7 @@
             <output name="phy" value="outputs/locus1_sp3.fasta.phy" />
             <output name="nxs" value="outputs/locus1_sp3.fasta.nxs" />
             <output name="fasta" value="outputs/locus1_sp3.fasta" />
-        </test>        
+        </test>              
         <test>
             <param name="input" ftype="fasta" value="inputs/locus2_sp3.fasta" />
             <section name="advanced_option">
@@ -112,7 +114,7 @@
             <output name="phy" value="outputs/locus2_sp2.fasta.phy" />
             <output name="nxs" value="outputs/locus2_sp2.fasta.nxs" />
             <output name="fasta" value="outputs/locus2_sp2.fasta" />
-        </test>
+        </test>             
         <test>
             <param name="input" ftype="fasta" value="inputs/locus3_sp4.fasta" />
             <section name="advanced_option">
@@ -125,7 +127,7 @@
             <param name="fasta_out" value="False" />
             <output name="phy" value="outputs/locus3_sp2.fasta.phy" />
             <output name="nxs" value="outputs/locus3_sp2.fasta.nxs" />            
-        </test>        
+        </test>              
     </tests>
 
     <help>
