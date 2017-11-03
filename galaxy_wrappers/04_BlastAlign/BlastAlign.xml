@@ -67,23 +67,34 @@
     </inputs>
 
     <outputs>
-        <!--
+        <!-- xml avant correction du bug
         <data format="phylip" name="phy" from_work_dir="outputs/out.phy" label="Alignment of ${input.name} in phylip" />
         <data format="nexus" name="nxs" from_work_dir="outputs/out.nxs" label="Alignment of ${input.name} in nexus" />
         <data format="fasta" name="fasta" from_work_dir="outputs/out.fasta" label="Alignment of ${input.name} in fasta">
             <filter>fasta_out == True</filter>
         </data>
         -->
-        <data format="phylip" name="phy">
+        
+        <!-- Essai 1 -->
+        <data format="phylip" name="phy" label="Alignement of ${input.name} in phylip">
             <discover_datasets pattern="locus[0-9]+_sp[0-9]+\.phy" directory="outputs" visible="true" format="phylip" assign_primary_output="true"/>
         </data>
-        <data format="nexus" name="nxs">
+        <data format="nexus" name="nxs" label="Alignment of ${input.name} in nexus">
             <discover_datasets pattern="locus[0-9]+_sp[0-9]+\.nxs" directory="outputs" visible="true" format="nexus" assign_primary_output="true"/>
         </data>
-        <data format="fasta" name="fasta">
+        <data format="fasta" name="fasta" label="Alignment of ${input.name} in fasta">
             <discover_datasets pattern="locus[0-9]+_sp[0-9]+\.fasta" directory="outputs" visible="true" format="fasta" assign_primary_output="true"/>
             <filter>fasta_out == True</filter>
+        </data>        
+
+        <!-- Essai 2 -->
+        <!--
+        <data format="phylip" name="phy" from_work_dir="outputs/${new_file}" label="Alignment of ${input.name} in phylip" />
+        <data format="nexus" name="nxs" from_work_dir="outputs/${new_file2}" label="Alignment of ${input.name} in nexus" />
+        <data format="fasta" name="fasta" from_work_dir="outputs/\${name}_sp\${number}.fasta" label="Alignment of ${input.name} in fasta">
+            <filter>fasta_out == True</filter>
         </data>
+        -->
     </outputs>
 
     <tests>        
