@@ -55,9 +55,10 @@
     </inputs>
 
     <outputs>
-        <data format="phylip" name="phy" from_work_dir="out.phy" label="Alignment of ${input.name} in phylip" hidden="True"/>
-        <data format="nexus" name="nxs" from_work_dir="out.nxs" label="Alignment of ${input.name} in nexus" hidden="True"/>
-        <data format="fasta" name="fasta" from_work_dir="out.fasta" label="Alignment of ${input.name} in fasta" hidden="True">
+        <!-- visible="true" ? -->
+        <data format="phylip" name="phy" from_work_dir="out.phy" label="Alignment of ${input.name} in phylip" />
+        <data format="nexus" name="nxs" from_work_dir="out.nxs" label="Alignment of ${input.name} in nexus" />
+        <data format="fasta" name="fasta" from_work_dir="out.fasta" label="Alignment of ${input.name} in fasta" />
             <filter>fasta_out == True</filter>
         </data>
     </outputs>
@@ -104,22 +105,6 @@
             <output name="phy" value="outputs/locus3_sp2.phy" />
             <output name="nxs" value="outputs/locus3_sp2.nxs" />
         </test>
-        <test>
-            <param name="input" ftype="fasta" value="inputs/locus8_sp2.fasta" />
-            <section name="advanced_option">
-                <param name="m" value="95" />
-                <param name="r" value="" />
-                <param name="x" value="" />
-                <param name="n" value="False" />
-                <param name="s" value="0" />
-            </section>
-            <param name="fasta_out" value="True" />
-            <output name="phy" value="outputs/locus8_sp2.phy" />
-            <output name="nxs" value="outputs/locus8_sp2.nxs" />
-            <output name="fasta" value="outputs/locus8_sp2.fasta" />
-        </test>
-
-        <!--locus10_sp2.fasta    locus1_sp3.fasta  locus2_sp2.fasta  locus3_sp2.fasta  locus4_sp2.fasta  locus5_sp2.fasta  locus6_sp2.fasta  locus7_sp2.fasta  locus8_sp2.fasta  locus9_sp2.fasta-->
     </tests>
 
     <help>

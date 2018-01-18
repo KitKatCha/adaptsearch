@@ -13,12 +13,14 @@ if len(sys.argv) == 1:
 """
 
 ## INPUT
+"""
 if os.path.isfile(sys.argv[1]) :
     f1 = sys.argv[1]
 else:
     print "No existing phylip file ; exiting ..."
     exit()
-
+"""
+f1 = sys.argv[1]
 F1 = open("%s" %f1, 'r')
 
 ## OUTPUT
@@ -50,10 +52,7 @@ def format(File_IN):
 ###################
 
 F1.readline() ## jump the first line
-
 fichier_txt, c = format(F1)   ### DEF1 ###
-
 F2.write(fichier_txt)
-
 F1.close()
 F2.close()
