@@ -19,16 +19,14 @@ Creating Orthogroups ...
 11 seqs      0      0      1
 13 seqs      0      0      1 
 
-Writing orthogroups with paralogs files ...
-
 Filtering paralogous sequences and writing final orthogroups files ...
     (Dropping Orthogroups with less than 3 species)
 
     Summary after paralogous filtering : 
 
         3 sps  4 sps
-3 seqs    192      0
-4 seqs      0     78
+3 seqs    163      0
+4 seqs      0     33
 
-270 orthogroups have been infered from 6 pairwise comparisons by RBH
+196 orthogroups have been infered from 6 pairwise comparisons by RBH
 
