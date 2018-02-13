@@ -17,7 +17,7 @@ Future improvements:
             it would be a better memory usage
 """
 
-import os, argparse
+import os, argparse, itertools
 import numpy as np
 import pandas as pd
 
@@ -64,13 +64,10 @@ def getListPairwiseAll(listPairwiseFiles):
         Returns a list of sets (2 items per set) """
     def getPairwiseCouple(pairwiseFile):        
         list_pairwises_2sp = []
-        with open(pairwiseFile, "r") as file:
-            while (1):  # Ugly !
-                name, sequence, name2, sequence2 = file.readline(), file.readline(), file.readline(), file.readline()
-                if not name: break # Use assert ?
-                # One locus every two lines (one pairwise couple = 4 lines) : header + sequence
-                locus1 = Locus(name, sequence)
-                locus2 = Locus(name2, sequence2)
+        with open(pairwiseFile, "r") as file :
+            for line1,line2,line3,line4 in itertools.izip_longest(*[file]*4):
+                name1,sequence1,name2,sequence2 = line1.strip("\r\n "),line2.strip("\r\n "),line3.strip("\r\n "),line4.strip("\r\n ")
+                locus1, locus2 = Locus(name1, sequence1), Locus(name2, sequence2)
                 group = set([])
                 group.add(locus1)
                 group.add(locus2)
@@ -117,14 +114,14 @@ def makeOrthogroups(list_pairwises_allsp, minspec, nb_rbh, verbose):
         result = open(name, "w")
         with result:
             for locus in orthogroup:
-                if locus.getHeader()[-1] == "\n":
-                    result.write("%s" % locus.getHeader())  # write geneID
-                else :
-                    result.write("%s\n" % locus.Header())  # write geneID
-                if locus.getSequence()[-1] == "\n":
-                    result.write("%s" % locus.getSequence())  # write sequence
-                else :
-                    result.write("%s\n" % locus.getSequence())  # write sequence
+                #if locus.getHeader()[-1] == "\n":
+                result.write("%s" % locus.getHeader())  # write geneID
+                #else :
+                    #result.write("%s\n" % locus.getHeader())  # write geneID
+                #if locus.getSequence()[-1] == "\n":
+                    #result.write("%s" % locus.getSequence())  # write sequence
+                #else :
+                result.write("%s\n" % locus.getSequence())  # write sequence
         os.system("mv {} outputs/".format(name))
 
     """ Parse an orthogroup list to keep only one paralog sequence per species & per group
