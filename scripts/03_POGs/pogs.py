@@ -115,7 +115,7 @@ def makeOrthogroups(list_pairwises_allsp, minspec, nb_rbh, verbose):
         with result:
             for locus in orthogroup:
                 #if locus.getHeader()[-1] == "\n":
-                result.write("%s" % locus.getHeader())  # write geneID
+                result.write("%s\n" % locus.getHeader())  # write geneID
                 #else :
                     #result.write("%s\n" % locus.getHeader())  # write geneID
                 #if locus.getSequence()[-1] == "\n":

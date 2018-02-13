@@ -1,4 +1,4 @@
-<tool name="POGs" id="POGs" version="2.1">
+<tool name="POGs" id="POGs" version="2.2">
 
 	<description>
 		Find orthologous groups
@@ -114,6 +114,10 @@ This tool, produces the following files :
 
 Changelog
 ---------
+
+**Version 2.2 - 13/02/2018**
+
+  - More stringent results (groups with paralogs are removed instead of filtered)
 
 **Version 2.1 - 04/01/2018**
 
