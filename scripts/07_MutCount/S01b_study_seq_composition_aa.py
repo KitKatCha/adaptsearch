@@ -381,7 +381,10 @@ os.makedirs(outpath)
 
 infiles = str.split(sys.argv[1], ",")
 for file in infiles:
-    os.system("cp %s %s" %(file, Path_IN_loci_NUC))
+    if os.stat(file).st_size == 0:
+        pass
+    else:
+        os.system("cp %s %s" %(file, Path_IN_loci_NUC))
 
 ## 1 ## List taxa
 LT=[]
@@ -513,94 +516,97 @@ fileOUT_TotalHydratation.write("\n")
 bash_aa_properties = aa_properties(fileIN_properties)
 
 for locus in Lloci_AA:
-    print locus
-    path_locus = "%s/%s" %(Path_IN_loci_AA, locus)
-    bash = dico(path_locus,LT)
+    if not os.path.isfile("%s/%s" %(Path_IN_loci_AA, locus)) :
+        pass
+    else :
+        print locus
+        path_locus = "%s/%s" %(Path_IN_loci_AA, locus)
+        bash = dico(path_locus,LT)
 
-    #print bash
-    
-    fileOUT_PROT_ALL.write("%s," %locus)
-    fileOUT_IVYWREL.write("%s," %locus)
-    fileOUT_ERK_DNQTSH.write("%s," %locus)
-    fileOUT_EK_QH.write("%s," %locus)
-    fileOUT_FYMINK_GARP.write("%s," %locus)
-    fileOUT_AVLIMFYW.write("%s," %locus)
-    fileOUT_STNQ.write("%s," %locus)
-    fileOUT_RHKDE.write("%s," %locus)
-    fileOUT_PAYRE.write("%s," %locus)
-    fileOUT_TotalResidueWeight.write("%s," %locus)
-    fileOUT_TotalResidueVolume.write("%s," %locus)
-    fileOUT_TotalPartialSpecificVolume.write("%s," %locus)
-    fileOUT_TotalHydratation.write("%s," %locus)
-    
-    for taxa in LT[0:-1]:
-        if taxa in bash.keys():
-            seq = bash[taxa]
+        #print bash
+        
+        fileOUT_PROT_ALL.write("%s," %locus)
+        fileOUT_IVYWREL.write("%s," %locus)
+        fileOUT_ERK_DNQTSH.write("%s," %locus)
+        fileOUT_EK_QH.write("%s," %locus)
+        fileOUT_FYMINK_GARP.write("%s," %locus)
+        fileOUT_AVLIMFYW.write("%s," %locus)
+        fileOUT_STNQ.write("%s," %locus)
+        fileOUT_RHKDE.write("%s," %locus)
+        fileOUT_PAYRE.write("%s," %locus)
+        fileOUT_TotalResidueWeight.write("%s," %locus)
+        fileOUT_TotalResidueVolume.write("%s," %locus)
+        fileOUT_TotalPartialSpecificVolume.write("%s," %locus)
+        fileOUT_TotalHydratation.write("%s," %locus)
+        
+        for taxa in LT[0:-1]:
+            if taxa in bash.keys():
+                seq = bash[taxa]
+                prop_K,prop_R,prop_A,prop_F,prop_I,prop_L,prop_M,prop_V,prop_W,prop_N,prop_Q,prop_S,prop_T,prop_H,prop_Y,prop_C,prop_D,prop_E,prop_P,prop_G = aa_composition1(seq)   ### DEF3 ###
+                count_IVYWREL,prop_IVYWREL,count_ERK,prop_ERK,count_DNQTSH,prop_DNQTSH,ratio_ERK_vs_DNQTSH,count_EK,prop_EK,count_QH,prop_QH,ratio_EK_vs_QH,count_FYMINK,prop_FYMINK,count_GARP,prop_GARP,count_AVLIMFYW,prop_AVLIMFYW,count_AVLIM,prop_AVLIM,count_FYW,prop_FYW,count_STNQ,prop_STNQ, count_MVGDS,prop_MVGDS, count_PAYRE,prop_PAYRE, count_AC,prop_AC, ratio_PAYRE_vs_MVGDS, ratio_AC_vs_MVGDS,count_RHKDE,prop_RHKDE,count_RHK,prop_RHK,count_DE,prop_DE = aa_composition2(seq)   ### DEF4 ###
+                Total_Residue_Weight,Total_Residue_Volume,Total_Partial_Specific_Volume,Total_Hydration = sequence_properties_from_aa_properties(seq, bash_aa_properties)   ### DEF6 ###
+            
+                fileOUT_PROT_ALL.write("%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f," %(prop_K,prop_R,prop_A,prop_F,prop_I,prop_L,prop_M,prop_V,prop_W,prop_N,prop_Q,prop_S,prop_T,prop_H,prop_Y,prop_C,prop_D,prop_E,prop_P,prop_G))
+                fileOUT_IVYWREL.write("%.5f,%.5f," %(count_IVYWREL, prop_IVYWREL))
+                fileOUT_ERK_DNQTSH.write("%.5f,%.5f,%.5f,%.5f,%.5f," %(count_ERK,prop_ERK,count_DNQTSH,prop_DNQTSH,ratio_ERK_vs_DNQTSH))
+                fileOUT_EK_QH.write("%.5f,%.5f,%.5f,%.5f,%.5f," %(count_EK,prop_EK,count_QH,prop_QH,ratio_EK_vs_QH))
+                fileOUT_FYMINK_GARP.write("%.5f,%.5f,%.5f,%.5f," %(count_FYMINK,prop_FYMINK,count_GARP,prop_GARP))
+                fileOUT_AVLIMFYW.write("%.5f,%.5f,%.5f,%.5f,%.5f,%.5f," %(count_AVLIMFYW,prop_AVLIMFYW,count_AVLIM,prop_AVLIM,count_FYW,prop_FYW))
+                fileOUT_STNQ.write("%.5f,%.5f," %(count_STNQ,prop_STNQ))
+                fileOUT_RHKDE.write("%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,"%(count_RHKDE,prop_RHKDE,count_RHK,prop_RHK,count_DE,prop_DE))
+                fileOUT_PAYRE.write("%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f," %(count_PAYRE,prop_PAYRE,count_AC,prop_AC,count_MVGDS,prop_MVGDS,ratio_PAYRE_vs_MVGDS,ratio_AC_vs_MVGDS))
+                fileOUT_TotalResidueWeight.write("%.5f," %Total_Residue_Weight)
+                fileOUT_TotalResidueVolume.write("%.5f," %Total_Residue_Volume)
+                fileOUT_TotalPartialSpecificVolume.write("%.5f," %(Total_Partial_Specific_Volume))
+                fileOUT_TotalHydratation.write("%.5f," % Total_Hydration)
+            else:
+                fileOUT_PROT_ALL.write("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s," %("NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA"))
+                fileOUT_IVYWREL.write("%s,%s," %("NA", "NA"))
+                fileOUT_ERK_DNQTSH.write("%s,%s,%s,%s,%s," %("NA","NA","NA","NA","NA"))
+                fileOUT_EK_QH.write("%s,%s,%s,%s,%s," %("NA","NA","NA","NA","NA"))
+                fileOUT_FYMINK_GARP.write("%s,%s,%s,%s," %("NA","NA","NA","NA"))
+                fileOUT_AVLIMFYW.write("%s,%s,%s,%s,%s,%s," %("NA","NA","NA","NA","NA","NA"))
+                fileOUT_STNQ.write("%s,%s," %("NA","NA"))
+                fileOUT_RHKDE.write("%s,%s,%s,%s,%s,%s,"%("NA","NA","NA","NA","NA","NA"))
+                fileOUT_PAYRE.write("%s,%s,%s,%s,%s,%s,%s,%s," %("NA","NA","NA","NA","NA","NA","NA","NA"))
+                fileOUT_TotalResidueWeight.write("%s," %"NA")
+                fileOUT_TotalResidueVolume.write("%s," %"NA")
+                fileOUT_TotalPartialSpecificVolume.write("%s," %"NA")
+                fileOUT_TotalHydratation.write("%s," %"NA")
+
+        if LT[-1] in bash.keys():
+            seq = bash[LT[-1]]            
             prop_K,prop_R,prop_A,prop_F,prop_I,prop_L,prop_M,prop_V,prop_W,prop_N,prop_Q,prop_S,prop_T,prop_H,prop_Y,prop_C,prop_D,prop_E,prop_P,prop_G = aa_composition1(seq)   ### DEF3 ###
             count_IVYWREL,prop_IVYWREL,count_ERK,prop_ERK,count_DNQTSH,prop_DNQTSH,ratio_ERK_vs_DNQTSH,count_EK,prop_EK,count_QH,prop_QH,ratio_EK_vs_QH,count_FYMINK,prop_FYMINK,count_GARP,prop_GARP,count_AVLIMFYW,prop_AVLIMFYW,count_AVLIM,prop_AVLIM,count_FYW,prop_FYW,count_STNQ,prop_STNQ, count_MVGDS,prop_MVGDS, count_PAYRE,prop_PAYRE, count_AC,prop_AC, ratio_PAYRE_vs_MVGDS, ratio_AC_vs_MVGDS,count_RHKDE,prop_RHKDE,count_RHK,prop_RHK,count_DE,prop_DE = aa_composition2(seq)   ### DEF4 ###
             Total_Residue_Weight,Total_Residue_Volume,Total_Partial_Specific_Volume,Total_Hydration = sequence_properties_from_aa_properties(seq, bash_aa_properties)   ### DEF6 ###
         
-            fileOUT_PROT_ALL.write("%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f," %(prop_K,prop_R,prop_A,prop_F,prop_I,prop_L,prop_M,prop_V,prop_W,prop_N,prop_Q,prop_S,prop_T,prop_H,prop_Y,prop_C,prop_D,prop_E,prop_P,prop_G))
-            fileOUT_IVYWREL.write("%.5f,%.5f," %(count_IVYWREL, prop_IVYWREL))
-            fileOUT_ERK_DNQTSH.write("%.5f,%.5f,%.5f,%.5f,%.5f," %(count_ERK,prop_ERK,count_DNQTSH,prop_DNQTSH,ratio_ERK_vs_DNQTSH))
-            fileOUT_EK_QH.write("%.5f,%.5f,%.5f,%.5f,%.5f," %(count_EK,prop_EK,count_QH,prop_QH,ratio_EK_vs_QH))
-            fileOUT_FYMINK_GARP.write("%.5f,%.5f,%.5f,%.5f," %(count_FYMINK,prop_FYMINK,count_GARP,prop_GARP))
-            fileOUT_AVLIMFYW.write("%.5f,%.5f,%.5f,%.5f,%.5f,%.5f," %(count_AVLIMFYW,prop_AVLIMFYW,count_AVLIM,prop_AVLIM,count_FYW,prop_FYW))
-            fileOUT_STNQ.write("%.5f,%.5f," %(count_STNQ,prop_STNQ))
-            fileOUT_RHKDE.write("%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,"%(count_RHKDE,prop_RHKDE,count_RHK,prop_RHK,count_DE,prop_DE))
-            fileOUT_PAYRE.write("%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f," %(count_PAYRE,prop_PAYRE,count_AC,prop_AC,count_MVGDS,prop_MVGDS,ratio_PAYRE_vs_MVGDS,ratio_AC_vs_MVGDS))
-            fileOUT_TotalResidueWeight.write("%.5f," %Total_Residue_Weight)
-            fileOUT_TotalResidueVolume.write("%.5f," %Total_Residue_Volume)
-            fileOUT_TotalPartialSpecificVolume.write("%.5f," %(Total_Partial_Specific_Volume))
-            fileOUT_TotalHydratation.write("%.5f," % Total_Hydration)
+            fileOUT_PROT_ALL.write("%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f" %(prop_K,prop_R,prop_A,prop_F,prop_I,prop_L,prop_M,prop_V,prop_W,prop_N,prop_Q,prop_S,prop_T,prop_H,prop_Y,prop_C,prop_D,prop_E,prop_P,prop_G))
+            fileOUT_IVYWREL.write("%.5f,%.5f" %(count_IVYWREL, prop_IVYWREL))
+            fileOUT_ERK_DNQTSH.write("%.5f,%.5f,%.5f,%.5f,%.5f" %(count_ERK,prop_ERK,count_DNQTSH,prop_DNQTSH,ratio_ERK_vs_DNQTSH))
+            fileOUT_EK_QH.write("%.5f,%.5f,%.5f,%.5f,%.5f" %(count_EK,prop_EK,count_QH,prop_QH,ratio_EK_vs_QH))
+            fileOUT_FYMINK_GARP.write("%.5f,%.5f,%.5f,%.5f" %(count_FYMINK,prop_FYMINK,count_GARP,prop_GARP))
+            fileOUT_AVLIMFYW.write("%.5f,%.5f,%.5f,%.5f,%.5f,%.5f" %(count_AVLIMFYW,prop_AVLIMFYW,count_AVLIM,prop_AVLIM,count_FYW,prop_FYW))
+            fileOUT_STNQ.write("%.5f,%.5f" %(count_STNQ,prop_STNQ))
+            fileOUT_RHKDE.write("%.5f,%.5f,%.5f,%.5f,%.5f,%.5f"%(count_RHKDE,prop_RHKDE,count_RHK,prop_RHK,count_DE,prop_DE))
+            fileOUT_PAYRE.write("%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f" %(count_PAYRE,prop_PAYRE,count_AC,prop_AC,count_MVGDS,prop_MVGDS,ratio_PAYRE_vs_MVGDS,ratio_AC_vs_MVGDS))
+            fileOUT_TotalResidueWeight.write("%.5f" %Total_Residue_Weight)
+            fileOUT_TotalResidueVolume.write("%.5f" %Total_Residue_Volume)
+            fileOUT_TotalPartialSpecificVolume.write("%.5f" %(Total_Partial_Specific_Volume))
+            fileOUT_TotalHydratation.write("%.5f" % Total_Hydration)
         else:
-            fileOUT_PROT_ALL.write("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s," %("NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA"))
-            fileOUT_IVYWREL.write("%s,%s," %("NA", "NA"))
-            fileOUT_ERK_DNQTSH.write("%s,%s,%s,%s,%s," %("NA","NA","NA","NA","NA"))
-            fileOUT_EK_QH.write("%s,%s,%s,%s,%s," %("NA","NA","NA","NA","NA"))
-            fileOUT_FYMINK_GARP.write("%s,%s,%s,%s," %("NA","NA","NA","NA"))
-            fileOUT_AVLIMFYW.write("%s,%s,%s,%s,%s,%s," %("NA","NA","NA","NA","NA","NA"))
-            fileOUT_STNQ.write("%s,%s," %("NA","NA"))
-            fileOUT_RHKDE.write("%s,%s,%s,%s,%s,%s,"%("NA","NA","NA","NA","NA","NA"))
-            fileOUT_PAYRE.write("%s,%s,%s,%s,%s,%s,%s,%s," %("NA","NA","NA","NA","NA","NA","NA","NA"))
-            fileOUT_TotalResidueWeight.write("%s," %"NA")
-            fileOUT_TotalResidueVolume.write("%s," %"NA")
-            fileOUT_TotalPartialSpecificVolume.write("%s," %"NA")
-            fileOUT_TotalHydratation.write("%s," %"NA")
-
-    if LT[-1] in bash.keys():
-        seq = bash[LT[-1]]            
-        prop_K,prop_R,prop_A,prop_F,prop_I,prop_L,prop_M,prop_V,prop_W,prop_N,prop_Q,prop_S,prop_T,prop_H,prop_Y,prop_C,prop_D,prop_E,prop_P,prop_G = aa_composition1(seq)   ### DEF3 ###
-        count_IVYWREL,prop_IVYWREL,count_ERK,prop_ERK,count_DNQTSH,prop_DNQTSH,ratio_ERK_vs_DNQTSH,count_EK,prop_EK,count_QH,prop_QH,ratio_EK_vs_QH,count_FYMINK,prop_FYMINK,count_GARP,prop_GARP,count_AVLIMFYW,prop_AVLIMFYW,count_AVLIM,prop_AVLIM,count_FYW,prop_FYW,count_STNQ,prop_STNQ, count_MVGDS,prop_MVGDS, count_PAYRE,prop_PAYRE, count_AC,prop_AC, ratio_PAYRE_vs_MVGDS, ratio_AC_vs_MVGDS,count_RHKDE,prop_RHKDE,count_RHK,prop_RHK,count_DE,prop_DE = aa_composition2(seq)   ### DEF4 ###
-        Total_Residue_Weight,Total_Residue_Volume,Total_Partial_Specific_Volume,Total_Hydration = sequence_properties_from_aa_properties(seq, bash_aa_properties)   ### DEF6 ###
-    
-        fileOUT_PROT_ALL.write("%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f" %(prop_K,prop_R,prop_A,prop_F,prop_I,prop_L,prop_M,prop_V,prop_W,prop_N,prop_Q,prop_S,prop_T,prop_H,prop_Y,prop_C,prop_D,prop_E,prop_P,prop_G))
-        fileOUT_IVYWREL.write("%.5f,%.5f" %(count_IVYWREL, prop_IVYWREL))
-        fileOUT_ERK_DNQTSH.write("%.5f,%.5f,%.5f,%.5f,%.5f" %(count_ERK,prop_ERK,count_DNQTSH,prop_DNQTSH,ratio_ERK_vs_DNQTSH))
-        fileOUT_EK_QH.write("%.5f,%.5f,%.5f,%.5f,%.5f" %(count_EK,prop_EK,count_QH,prop_QH,ratio_EK_vs_QH))
-        fileOUT_FYMINK_GARP.write("%.5f,%.5f,%.5f,%.5f" %(count_FYMINK,prop_FYMINK,count_GARP,prop_GARP))
-        fileOUT_AVLIMFYW.write("%.5f,%.5f,%.5f,%.5f,%.5f,%.5f" %(count_AVLIMFYW,prop_AVLIMFYW,count_AVLIM,prop_AVLIM,count_FYW,prop_FYW))
-        fileOUT_STNQ.write("%.5f,%.5f" %(count_STNQ,prop_STNQ))
-        fileOUT_RHKDE.write("%.5f,%.5f,%.5f,%.5f,%.5f,%.5f"%(count_RHKDE,prop_RHKDE,count_RHK,prop_RHK,count_DE,prop_DE))
-        fileOUT_PAYRE.write("%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f" %(count_PAYRE,prop_PAYRE,count_AC,prop_AC,count_MVGDS,prop_MVGDS,ratio_PAYRE_vs_MVGDS,ratio_AC_vs_MVGDS))
-        fileOUT_TotalResidueWeight.write("%.5f" %Total_Residue_Weight)
-        fileOUT_TotalResidueVolume.write("%.5f" %Total_Residue_Volume)
-        fileOUT_TotalPartialSpecificVolume.write("%.5f" %(Total_Partial_Specific_Volume))
-        fileOUT_TotalHydratation.write("%.5f" % Total_Hydration)
-    else:
-        fileOUT_PROT_ALL.write("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" %("NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA"))
-        fileOUT_IVYWREL.write("%s,%s" %("NA", "NA"))
-        fileOUT_ERK_DNQTSH.write("%s,%s,%s,%s,%s" %("NA","NA","NA","NA","NA"))
-        fileOUT_EK_QH.write("%s,%s,%s,%s,%s" %("NA","NA","NA","NA","NA"))
-        fileOUT_FYMINK_GARP.write("%s,%s,%s,%s" %("NA","NA","NA","NA"))
-        fileOUT_AVLIMFYW.write("%s,%s,%s,%s,%s,%s" %("NA","NA","NA","NA","NA","NA"))
-        fileOUT_STNQ.write("%s,%s" %("NA","NA"))
-        fileOUT_RHKDE.write("%s,%s,%s,%s,%s,%s"%("NA","NA","NA","NA","NA","NA"))
-        fileOUT_PAYRE.write("%s,%s,%s,%s,%s,%s,%s,%s" %("NA","NA","NA","NA","NA","NA","NA","NA"))
-        fileOUT_TotalResidueWeight.write("%s" %"NA")
-        fileOUT_TotalResidueVolume.write("%s" %"NA")
-        fileOUT_TotalPartialSpecificVolume.write("%s" %"NA")
-        fileOUT_TotalHydratation.write("%s" %"NA")
+            fileOUT_PROT_ALL.write("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" %("NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA"))
+            fileOUT_IVYWREL.write("%s,%s" %("NA", "NA"))
+            fileOUT_ERK_DNQTSH.write("%s,%s,%s,%s,%s" %("NA","NA","NA","NA","NA"))
+            fileOUT_EK_QH.write("%s,%s,%s,%s,%s" %("NA","NA","NA","NA","NA"))
+            fileOUT_FYMINK_GARP.write("%s,%s,%s,%s" %("NA","NA","NA","NA"))
+            fileOUT_AVLIMFYW.write("%s,%s,%s,%s,%s,%s" %("NA","NA","NA","NA","NA","NA"))
+            fileOUT_STNQ.write("%s,%s" %("NA","NA"))
+            fileOUT_RHKDE.write("%s,%s,%s,%s,%s,%s"%("NA","NA","NA","NA","NA","NA"))
+            fileOUT_PAYRE.write("%s,%s,%s,%s,%s,%s,%s,%s" %("NA","NA","NA","NA","NA","NA","NA","NA"))
+            fileOUT_TotalResidueWeight.write("%s" %"NA")
+            fileOUT_TotalResidueVolume.write("%s" %"NA")
+            fileOUT_TotalPartialSpecificVolume.write("%s" %"NA")
+            fileOUT_TotalHydratation.write("%s" %"NA")
     
     ## END LINE
     fileOUT_PROT_ALL.write("\n")

@@ -179,7 +179,7 @@
             <conditional name="method" >
                 <param name="method_run" value="separated" />
                 <param name="format_run" value="nucleic" />
-                <param name="sep_file" ftype="fasta" value="sep_nuc/locus1_sp6_sp6.fasta,sep_nuc/locus1_sp8_sp8.fasta,sep_nuc/locus2_sp6_sp6.fasta" />
+                <param name="sep_file" ftype="fasta" value="sep_nuc/locus1_sp6_sp6.fasta,sep_nuc/locus1_sp8_sp8.fasta,sep_nuc/locus2_sp6_sp6.fasta,sep_nuc/locus8_sp2_sp2.fasta" />
                 <param name="concat_phy" ftype="fasta" value="phylogeny_concat.fasta" />
             </conditional>
             <output name="nuc_comp">
@@ -208,7 +208,7 @@
             <conditional name="method" >
                 <param name="method_run" value="separated" />
                 <param name="format_run" value="proteic" />
-                <param name="sep_file" ftype="fasta" value="sep_aa/locus1_sp6_sp6.fasta,sep_aa/locus1_sp8_sp8.fasta,sep_aa/locus2_sp6_sp6.fasta" />
+                <param name="sep_file" ftype="fasta" value="sep_aa/locus1_sp6_sp6.fasta,sep_aa/locus1_sp8_sp8.fasta,sep_aa/locus8_sp2_sp2.fasta,sep_aa/locus2_sp6_sp6.fasta" />
                 <param name="concat_phy" ftype="fasta" value="phylogeny_concat.fasta" />
             </conditional>            
             <output name="ivywrel">
