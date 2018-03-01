@@ -40,48 +40,51 @@ def concatenate(L_IN, SPECIES_ID_LIST):
     pos=1
     list_genes_position=[]
     ## 4.2 ## Concatenate
-    for file in L_IN:
-        nb_locus=nb_locus+1
+    for file in L_IN:            
+        if os.stat(file).st_size == 0:            
+            pass
+        else :
+            nb_locus=nb_locus+1
 
-        ## a ## Open alignments        
-        dico_seq = dico(file)   ### DEF 0 ###        
-        ## b ## Get alignment length + genes positions for RAxML
-        key0 = dico_seq.keys()[0]
-        ln = len(dico_seq[key0])
-        ln_concat = ln_concat + ln
+            ## a ## Open alignments        
+            dico_seq = dico(file)   ### DEF 0 ###        
+            ## b ## Get alignment length + genes positions for RAxML
+            key0 = dico_seq.keys()[0]
+            ln = len(dico_seq[key0])
+            ln_concat = ln_concat + ln
 
-        pos_start = pos
-        pos_end = pos+ln-1
-        pos=pos_end+1
-        position="%d-%d" %(pos_start, pos_end)
-        RAxML_name = file[:-6]
-        sublist = [RAxML_name, position]
-        list_genes_position.append(sublist)
+            pos_start = pos
+            pos_end = pos+ln-1
+            pos=pos_end+1
+            position="%d-%d" %(pos_start, pos_end)
+            RAxML_name = file[:-6]
+            sublist = [RAxML_name, position]
+            list_genes_position.append(sublist)
 
-        ## c ## Generate "empty" sequence with alignment length * "-"
-        empty_seq = "-" * ln
+            ## c ## Generate "empty" sequence with alignment length * "-"
+            empty_seq = "-" * ln
 
-        ## d ## Concatenate
-        ## d.1 ## Detect missing species in this alignment
-        list_ID=[]
-        list_absent_ID=[]
-        bash_fastaName={}
-        for fasta_name in dico_seq:
-            ID = fasta_name[1:3]
-            list_ID.append(ID)
-            seq = dico_seq[fasta_name]
-            bash_fastaName[ID]=fasta_name
-        for sp_ID in SPECIES_ID_LIST:
-            if sp_ID not in list_ID:
-                list_absent_ID.append(sp_ID)
-
-        for ID in SPECIES_ID_LIST:
-            if ID in list_absent_ID:
-                bash_concat[ID] = bash_concat[ID] + empty_seq
-            else:
-                fasta_name = bash_fastaName[ID]
+            ## d ## Concatenate
+            ## d.1 ## Detect missing species in this alignment
+            list_ID=[]
+            list_absent_ID=[]
+            bash_fastaName={}
+            for fasta_name in dico_seq:
+                ID = fasta_name[1:3]
+                list_ID.append(ID)
                 seq = dico_seq[fasta_name]
-                bash_concat[ID] = bash_concat[ID] + seq
+                bash_fastaName[ID]=fasta_name
+            for sp_ID in SPECIES_ID_LIST:
+                if sp_ID not in list_ID:
+                    list_absent_ID.append(sp_ID)
+
+            for ID in SPECIES_ID_LIST:
+                if ID in list_absent_ID:
+                    bash_concat[ID] = bash_concat[ID] + empty_seq
+                else:
+                    fasta_name = bash_fastaName[ID]
+                    seq = dico_seq[fasta_name]
+                    bash_concat[ID] = bash_concat[ID] + seq
 
     return(bash_concat, ln_concat, nb_locus, list_genes_position)
 ####################################

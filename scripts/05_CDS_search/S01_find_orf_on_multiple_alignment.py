@@ -354,76 +354,82 @@ count_file_without_CDS = 0
 count_file_with_CDS_plus_M = 0
 
 for file in list_file:
-    count_file_processed = count_file_processed + 1
-    fasta_file_path = "./%s" %file    
-    bash_fasta = dico(fasta_file_path)   ### DEF 1 ###    
-    BESTORF_nuc, BESTORF_nuc_CODING, BESTORF_nuc_CDS_with_M, BESTORF_aa, BESTORF_aa_CODING, BESTORF_aa_CDS_with_M  = find_good_ORF_criteria_3(bash_fasta, bash_codeUniversel)   ### DEF 4 - PART 2 - ###
+    # Security : if BlastAlign failed, the file is empty -> pass to prevent a crash (empty file in dataset collection on Galaxy)
+    if os.stat(file).st_size == 0:
+        print "empty file, ignored : {}".format(file)
+        pass
+    else :
+        count_file_processed = count_file_processed + 1
+        fasta_file_path = "./%s" %file    
+        bash_fasta = dico(fasta_file_path)   ### DEF 1 ###    
+        BESTORF_nuc, BESTORF_nuc_CODING, BESTORF_nuc_CDS_with_M, BESTORF_aa, BESTORF_aa_CODING, BESTORF_aa_CDS_with_M  = find_good_ORF_criteria_3(bash_fasta, bash_codeUniversel)   ### DEF 4 - PART 2 - ###
 
-    ## a ## OUTPUT BESTORF_nuc
-    if BESTORF_nuc != {}:
-        count_file_with_CDS = count_file_with_CDS +1
-        OUT1 = open("%s/%s" %(Path_OUT1,file), "w")
-        for fasta_name in BESTORF_nuc.keys():
-            seq = BESTORF_nuc[fasta_name]
-            OUT1.write("%s\n" %fasta_name)
-            OUT1.write("%s\n" %seq)
-        OUT1.close()
-    else:
-        count_file_without_CDS = count_file_without_CDS + 1
+        ## a ## OUTPUT BESTORF_nuc
+        if BESTORF_nuc != {}:
+            count_file_with_CDS = count_file_with_CDS +1
+            OUT1 = open("%s/%s" %(Path_OUT1,file), "w")
+            for fasta_name in BESTORF_nuc.keys():
+                seq = BESTORF_nuc[fasta_name]
+                OUT1.write("%s\n" %fasta_name)
+                OUT1.write("%s\n" %seq)
+            OUT1.close()
+        else:
+            count_file_without_CDS = count_file_without_CDS + 1
 
 
-    ## b ## OUTPUT BESTORF_nuc_CODING  ===> THE MOST INTERESTING!!!
-    if BESTORF_aa != {}:
-        OUT2 = open("%s/%s" %(Path_OUT2,file), "w")
-        for fasta_name in BESTORF_aa.keys():
-            seq = BESTORF_aa[fasta_name]
-            OUT2.write("%s\n" %fasta_name)
-            OUT2.write("%s\n" %seq)
-        OUT2.close()
+        ## b ## OUTPUT BESTORF_nuc_CODING  ===> THE MOST INTERESTING!!!
+        if BESTORF_aa != {}:
+            OUT2 = open("%s/%s" %(Path_OUT2,file), "w")
+            for fasta_name in BESTORF_aa.keys():
+                seq = BESTORF_aa[fasta_name]
+                OUT2.write("%s\n" %fasta_name)
+                OUT2.write("%s\n" %seq)
+            OUT2.close()
 
-    ## c ## OUTPUT BESTORF_aa
-    if BESTORF_nuc_CODING != {}:
-        OUT3 = open("%s/%s" %(Path_OUT3,file), "w")
-        for fasta_name in BESTORF_nuc_CODING.keys():
-            seq = BESTORF_nuc_CODING[fasta_name]
-            OUT3.write("%s\n" %fasta_name)
-            OUT3.write("%s\n" %seq)
-        OUT3.close()
+        ## c ## OUTPUT BESTORF_aa
+        if BESTORF_nuc_CODING != {}:
+            OUT3 = open("%s/%s" %(Path_OUT3,file), "w")
+            for fasta_name in BESTORF_nuc_CODING.keys():
+                seq = BESTORF_nuc_CODING[fasta_name]
+                OUT3.write("%s\n" %fasta_name)
+                OUT3.write("%s\n" %seq)
+            OUT3.close()
 
-    ## d ## OUTPUT BESTORF_aa_CODING
-    if BESTORF_aa_CODING != {}:
-        OUT4 = open("%s/%s" %(Path_OUT4,file), "w")
-        for fasta_name in BESTORF_aa_CODING.keys():
-            seq = BESTORF_aa_CODING[fasta_name]
-            OUT4.write("%s\n" %fasta_name)
-            OUT4.write("%s\n" %seq)
-        OUT4.close()
+        ## d ## OUTPUT BESTORF_aa_CODING
+        if BESTORF_aa_CODING != {}:
+            OUT4 = open("%s/%s" %(Path_OUT4,file), "w")
+            for fasta_name in BESTORF_aa_CODING.keys():
+                seq = BESTORF_aa_CODING[fasta_name]
+                OUT4.write("%s\n" %fasta_name)
+                OUT4.write("%s\n" %seq)
+            OUT4.close()
 
-    ## e ## OUTPUT BESTORF_nuc_CDS_with_M
-    if BESTORF_nuc_CDS_with_M != {}:
-        count_file_with_CDS_plus_M = count_file_with_CDS_plus_M + 1
-        OUT5 = open("%s/%s" %(Path_OUT5,file), "w")
-        for fasta_name in BESTORF_nuc_CDS_with_M.keys():
-            seq = BESTORF_nuc_CDS_with_M[fasta_name]
-            OUT5.write("%s\n" %fasta_name)
-            OUT5.write("%s\n" %seq)
-        OUT5.close()
+        ## e ## OUTPUT BESTORF_nuc_CDS_with_M
+        if BESTORF_nuc_CDS_with_M != {}:
+            count_file_with_CDS_plus_M = count_file_with_CDS_plus_M + 1
+            OUT5 = open("%s/%s" %(Path_OUT5,file), "w")
+            for fasta_name in BESTORF_nuc_CDS_with_M.keys():
+                seq = BESTORF_nuc_CDS_with_M[fasta_name]
+                OUT5.write("%s\n" %fasta_name)
+                OUT5.write("%s\n" %seq)
+            OUT5.close()
 
-    ## f ## OUTPUT BESTORF_aa_CDS_with_M
-    if BESTORF_aa_CDS_with_M != {}:
-        OUT6 = open("%s/%s" %(Path_OUT6,file), "w")
-        for fasta_name in BESTORF_aa_CDS_with_M.keys():
-            seq = BESTORF_aa_CDS_with_M[fasta_name]
-            OUT6.write("%s\n" %fasta_name)
-            OUT6.write("%s\n" %seq)
-        OUT6.close()
+        ## f ## OUTPUT BESTORF_aa_CDS_with_M
+        if BESTORF_aa_CDS_with_M != {}:
+            OUT6 = open("%s/%s" %(Path_OUT6,file), "w")
+            for fasta_name in BESTORF_aa_CDS_with_M.keys():
+                seq = BESTORF_aa_CDS_with_M[fasta_name]
+                OUT6.write("%s\n" %fasta_name)
+                OUT6.write("%s\n" %seq)
+            OUT6.close()
 
-    os.system("rm -rf %s" %file)
+        os.system("rm -rf %s" %file)
 
 ## Print
-print "*************** CDS detection ***************"
+print "\n*************** CDS detection ***************"
 print "\nFiles processed: %d" %count_file_processed
 print "\tFiles with CDS: %d" %count_file_with_CDS
 print "\t\tFiles with CDS plus M (codon start): %d" %count_file_with_CDS_plus_M
 print "\tFiles without CDS: %d \n" %count_file_without_CDS
 print ""
+
