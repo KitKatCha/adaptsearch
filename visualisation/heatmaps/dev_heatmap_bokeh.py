@@ -20,6 +20,12 @@ import logging
 logging.basicConfig()
 
 def makeLineOrderFromTree(tree):
+    """ Read a newick tree and return a list of the species, ordered as they come in the tree
+
+    Args : tree (file) : a newick tree
+    Return (list of str)
+
+    """
 
     t = open(tree, "r")
     arbre = t.readline()
@@ -35,17 +41,26 @@ def makeLineOrderFromTree(tree):
     return arbre
 
 def makeHeatmap(df, what, on_what, colors, range_x, range_y, width, height):
-    # heatmap height
-    # TODO    
-    # title
+    """ Make a bokeh heatmap from a pandas dataframe 
+
+    Args : 
+        - df (pd df) : an already stacked pandas dataframe
+        - what (str) : indicates the column name being plotted : 'countings' or 'frequencies'
+        - on_what (str) : indicates the type of data : 'codons', 'amino-acids', 'amino-acids-types'
+        - colors (list of str) : list with hexadecimals colors
+        - range_x (list of str) : list of 'on_what' for an ordered x_axis
+        - range_y (list of str) : list of the species name for an ordered y_axis. Obtained by makeLineOrderFromTree()
+        - width (int) : the figure height
+        - height (int) : the figure width
+
+    """
     title = "{} of {}".format(what, on_what)
-    #print what
-    #print df.countings.min()
-    
-    # Color range    
+
+    # Color range
+    # df.what did not work (what was not recognized as a variable)
     mapper = LinearColorMapper(palette=colors, low=df.loc[:,[what]].min()[-1], high=df.loc[:,[what]].max()[-1])
     
-    # Heatmap
+    # Heatmap. no tool bar for png
     p = figure(title=title,
            x_range=range_x, y_range=range_y,
            x_axis_location="above", plot_width=width, plot_height=height,
@@ -65,6 +80,7 @@ def makeHeatmap(df, what, on_what, colors, range_x, range_y, width, height):
        fill_color={'field': what, 'transform': mapper},
        line_color=None)
 
+    # legend numbers format
     if what == "countings":
         frmt = "%d"
     elif what == "frequencies":
@@ -77,6 +93,7 @@ def makeHeatmap(df, what, on_what, colors, range_x, range_y, width, height):
                          label_standoff=15, border_line_color=None, location=(0, 0))
     p.add_layout(color_bar, 'right')
 
+    # output
     export_png(p, filename='{}.png'.format(title.replace(" ", "_")))
 
 def main():
@@ -113,7 +130,8 @@ def main():
 
     y = list(df.index)
 
-    # replacing pvalues by rect size
+    # replacing pvalues by corresponding rect size # Find a one-liner to do that
+    # Maybe consider to add another line instead of replacing
     for i in range(2,len(y),3):
         l=df.iloc[i]
         for j in range(0,len(x)):
@@ -157,9 +175,8 @@ def main():
         makeHeatmap(df, "frequencies", on_what, colors, x_range[on_what], y_range, width, height)
 
     # TODO :   
-    #   - culster a posteriori sur similitude
+    #   - cluster a posteriori sur similitude
     #   - hover : valeur comptages/frequence + pvalue -> implique une colonne pvalue en plus de la colonne size
-
     
 if __name__ == "__main__":
     main()

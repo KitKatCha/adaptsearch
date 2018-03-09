@@ -14,6 +14,7 @@ from bokeh.transform import factor_cmap
 
 import pandas as pd
 import argparse
+from math import pi
 import logging
 logging.basicConfig()
 
@@ -69,15 +70,27 @@ def main():
     xaxis = list(df)
     if len(xaxis) == 4:
         end_title = "amino-acids-types"
+        width = 500
     if len(xaxis) == 20:
         end_title = "amino-acids"
+        width = 650
     if len(xaxis) == 61:
         end_title = "codons"
+        width = 900
 
     # 3 - store values
     dic_yaxis_counts = makeValues(df, 0, list_sp)
     dic_yaxis_freqs = makeValues(df, 1, list_sp)
     dic_yaxis_pvalues = makeValues(df, 2, list_sp)
+
+    x_range = {'codons' : ['ttt','ttc','tgg','tat','tac','gat','gac','gaa','gag','cat',
+                            'cac','aaa','aag','cgt','cgc','cga','cgg','aga','agg','tgt',
+                            'tgc','aat','aac','cct','cca','ccg','ccc','caa','cag','tct',
+                            'tcc','tca','tcg','agt','agc','act','acc','aca','acg','gct',
+                            'gcc','gca','gcg','ggt','ggc','gga','ggg','att','atc','ata',
+                            'tta','ttg','ctt','ctc','cta','ctg','atg','gtt','gtc','gta','gtg'],
+                'amino-acids' : ['F','W','Y','D','E','H','K','R','C','N','P','Q','S','T','A','G','I','L','M','V'],
+                'amino-acids-types' : ['aromatics','charged','polar','unpolar']}
     
     # 4 - plots
 
@@ -86,9 +99,11 @@ def main():
 
         for species in list_sp:
             if args.represent in ['countings', 'both']:
-                title = 'Countings on {} ({})'.format(species, end_title)
+                title = 'Countings on {} {}'.format(species, end_title)
 
-                p = figure(x_range=xaxis, plot_height=350, toolbar_location=None, title=title)
+                p = figure(x_range=x_range[end_title], plot_width=width, plot_height=350, toolbar_location=None, title=title)
+                if end_title == 'codons':
+                    p.xaxis.major_label_orientation = pi / 3
 
                 source = ColumnDataSource(data=dict(what=xaxis, counts=dic_yaxis_counts[species]))
                 r1 = p.vbar(x='what', top='counts', width=0.9, source=source, line_color='white', fill_color=Spectral6[0])
@@ -105,7 +120,9 @@ def main():
             if args.represent in ['frequencies', 'both']:
                 title = 'Frequencies on {} ({})'.format(species, end_title)
 
-                p = figure(x_range=xaxis, y_range=(0,1), plot_height=350, toolbar_location=None, title=title)
+                p = figure(x_range=x_range[end_title], y_range=(0,1), plot_width=width, plot_height=350, toolbar_location=None, title=title)
+                if end_title == 'codons':
+                    p.xaxis.major_label_orientation = pi / 3
 
                 source = ColumnDataSource(data=dict(what=xaxis, freqs=dic_yaxis_freqs[species]))
                 r1 = p.vbar(x='what', top='freqs', width=0.9, source=source, line_color='white', fill_color=Spectral6[5])
@@ -119,9 +136,11 @@ def main():
 
     if not args.separated:
         for species in list_sp:
-            title = 'Countings and Frequencies on {} ({})'.format(species, end_title)
+            title = 'Countings and Frequencies on {} {}'.format(species, end_title)
 
-            p = figure(x_range=xaxis, plot_height=350, toolbar_location=None, title=title)
+            p = figure(x_range=x_range[end_title], plot_width=width, plot_height=350, toolbar_location=None, title=title)
+            if end_title == 'codons':
+                p.xaxis.major_label_orientation = pi / 3
 
             p.extra_y_ranges = {'pvalues': Range1d(start=0, end=1)}
             p.add_layout(LinearAxis(y_range_name='pvalues'), 'right')
