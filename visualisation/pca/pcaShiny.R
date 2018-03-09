@@ -28,7 +28,7 @@ ui <- navbarPage(theme=shinytheme("sandstone"), "PCA analysis",
                             mainPanel(
                               downloadButton(outputId="savedPCA", label="Download the plots"),
                               
-                              plotOutput("plot_inds", height = 500, height=500,
+                              plotOutput("plot_inds", width = 500, height = 500,
                                          dblclick = "plot1_dblclick",
                                          brush = brushOpts(
                                            id = "plot1_brush",
@@ -36,14 +36,14 @@ ui <- navbarPage(theme=shinytheme("sandstone"), "PCA analysis",
                                          )
                               ),
                               
-                              plotOutput("plot_vars", height = 500, height=500,
+                              plotOutput("plot_vars", width = 500, height=500,
                                          dblclick = "plot2_dblclick",
                                          brush = brushOpts(
                                            id = "plot2_brush",
                                            resetOnNew = TRUE
                                          )
                               ),
-                              plotOutput("biplot", height = 500, height=500,
+                              plotOutput("biplot", width = 500, height=500,
                                          dblclick = "plot3_dblclick",
                                          brush = brushOpts(
                                            id = "plot3_brush",
@@ -114,8 +114,8 @@ server <- function(input, output, session) {
   data <- reactive({
     if (is.null(input$data)) {return(NULL)}
     dat <-read.table(input$data$datapath, header=TRUE, dec=".", sep=",", row.names=1)
-    if (input$data$name != "gc_counts.csv") {
-      toDelete <- seq(1, nrow(dat), 2)
+    if (input$data$name != "gc_and_others.csv") {
+      toDelete <- seq(1, nrow(dat), 3)
       dat_good <- dat[toDelete,]
     }
   })
