@@ -113,11 +113,12 @@ server <- function (input, output) {
              mode="markers+text", 
              color=input$what_inds[,input$ind_colr],
              colors="OrRd",
-             marker=list(size=11))
+             marker=list(symbol=27, size=11))
 
         p <- layout(p, title = "PCA on individuals", 
-                    xaxis = list(title = input$axisX),
-                    yaxis = list(title = input$axisY))
+            xaxis = list(title = input$axisX),
+            yaxis = list(title = input$axisY))
+        
         p
     })
 
@@ -130,16 +131,43 @@ server <- function (input, output) {
              textposition='top',
              mode="markers+text", 
              color=input$what_vars[,input$var_colr],
-             colors="OrRd",
-             marker=list(size=11))
+             colors="BuGn",
+             marker=list(symbol=4, size=11))
 
         p2 <- layout(p2, title = "PCA on variables", 
-                    xaxis = list(title = input$axisX),
-                    yaxis = list(title = input$axisY))
+            xaxis = list(title = input$axisX),
+            yaxis = list(title = input$axisY))
+
         p2
     })
 
     Output$PCA_biplot <- renderPlotly({
+        biplot <- plot_ly(ind) %>%
+              add_trace(x=ind[,,input$axisX],
+                        y=ind[,input$axisY],
+                        type='scatter',
+                        text=rownames(input$what),
+                        textposition='top',
+                        mode="markers+text", 
+                        color=input$what_inds[,input$ind_colr],
+                        colors="OrRd",
+                        marker=list(symbol=27, size=11)) %>%
+              add_trace(var, 
+                      x=var[,1], 
+                      y=var[,2],
+                      type = 'scatter',
+                      text=colnames(input$what),
+                      textposition='top',
+                      mode="markers+text", 
+                      color=input$what_vars[,input$var_colr],
+                      colors="BuGn",
+                      marker=list(symbol=4, size=11))
+
+        biplot <- layout(biplot, title="PCA - bi-plot",
+            xaxis = list(title=input$axisX),
+            yaxis = list(title=input$axisY))
+
+            biplot
 
     })
 
@@ -155,7 +183,7 @@ server <- function (input, output) {
                     mode='lines') %>%
           layout(yaxis=list(type='log'))
 
-eigen
+        eigen
     })
 
 }

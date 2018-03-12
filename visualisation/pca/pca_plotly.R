@@ -1,5 +1,6 @@
 library(plotly)
 
+setwd("~/Documents/Fork_AdaptSearch/adaptsearch/galaxy_wrappers/07_MutCount/test-data/OUT_concat")
 data <- read.table("codons_freqs.csv", header=TRUE, dec=".", sep=",", row.names=1)
 
 counts <- data[seq(1, nrow(data), 3),]
