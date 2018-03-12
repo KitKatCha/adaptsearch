@@ -93,7 +93,7 @@ ui <- bootsrapPage(
 
 server <- function (input, output) {
 
-    data <- read.table("aa_freqs.csv", header=TRUE, dec=".", sep=",", row.names=1)
+    #data <- read.table("aa_freqs.csv", header=TRUE, dec=".", sep=",", row.names=1)
     counts <- data[seq(1, nrow(data), 3),]
     freqs <- data[seq(2, nrow(data), 3),]
     row.names(freqs) <- substrLeft(row.names(freqs),2)

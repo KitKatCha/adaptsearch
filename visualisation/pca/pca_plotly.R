@@ -1,7 +1,8 @@
 library(plotly)
+library(FactoMineR)
 
 setwd("~/Documents/Fork_AdaptSearch/adaptsearch/galaxy_wrappers/07_MutCount/test-data/OUT_concat")
-data <- read.table("codons_freqs.csv", header=TRUE, dec=".", sep=",", row.names=1)
+data <- read.table("aatypes_freqs.csv", header=TRUE, dec=".", sep=",", row.names=1)
 
 counts <- data[seq(1, nrow(data), 3),]
 freqs <- data[seq(2, nrow(data), 3),]
@@ -18,14 +19,40 @@ row.names(counts) <- substrLeft(row.names(counts),2)
 res.pca = PCA(freqs, scale.unit=TRUE, graph=F, axes=c(1,2))
 ind <- as.data.frame(res.pca$ind$coord)
 cos2 <- as.data.frame(res.pca$ind$cos2)
+var <- as.data.frame(res.pca$var$coord)
+cos2_v <- as.data.frame(res.pca$var$cos2)
+
+biplot <- plot_ly(ind) %>%
+  add_trace(x=ind[,1],
+            y=ind[,2],
+            type='scatter',
+            text=rownames(freqs),
+            textposition='top',
+            mode="markers+text", 
+            color=cos2[,1],
+            colors="OrRd",
+            marker=list(symbol=27, size=11)) %>%
+  add_trace(var, 
+          x=var[,1], 
+          y=var[,2],
+          type = 'scatter',
+          text=colnames(freqs),
+          textposition='top',
+          mode="markers+text", 
+          color=cos2_v[,1],
+          colors="BuGn",
+          marker=list(symbol=4, size=11))
+
+biplot <- layout(biplot, title="PCA - bi-plot")
+
 p <- plot_ly(ind, 
-             x=ind[,2], 
-             y=ind[,3],
+             x=ind[,1], 
+             y=ind[,2],
              type = 'scatter',
              text=rownames(freqs),
              textposition='top',
              mode="markers+text", 
-             color=cos2[,3],
+             color=cos2[,1],
              colors="OrRd",
              marker=list(size=11))
 
@@ -70,9 +97,6 @@ v3 <- plot_ly(x=colnames(res.pca$var$cos2),
 
 v3 <- layout(v3, title = "Variables - cos2")
 
-var <- as.data.frame(res.pca$var$coord)
-cos2_v <- as.data.frame(res.pca$var$cos2)
-
 # Ajouter un mode coloration selon aa types, ou bien un mode ave différents marqueur
 
 p2 <- plot_ly(var, 
@@ -83,7 +107,7 @@ p2 <- plot_ly(var,
              textposition='top',
              mode="markers+text", 
              color=cos2_v[,1],
-             colors="YlOrRd",
+             colors="BuGn",
              marker=list(size=11))
 
 p2 <- layout(p2, title = "PCA on variables", 

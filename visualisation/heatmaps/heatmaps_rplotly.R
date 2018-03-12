@@ -3,7 +3,7 @@ library(ggplot2)
 library(ggdendro)
 
 setwd("~/Documents/Fork_AdaptSearch/adaptsearch/galaxy_wrappers/07_MutCount/test-data/OUT_concat")
-data <- read.table("aa_freqs.csv", header=TRUE, dec=".", sep=",", row.names=1)
+data <- read.table("codons_freqs.csv", header=TRUE, dec=".", sep=",", row.names=1)
 
 counts <- data[seq(1, nrow(data), 3),]
 freqs <- data[seq(2, nrow(data), 3),]
@@ -37,7 +37,7 @@ py <- ggdend(dy$segments) + coord_flip()
 
 px1 <- ggplot(segment(dx)) + geom_segment(aes(x=x, y=y, xend=xend, yend=yend)) 
   #+ geom_text(data=label(dx), aes(label=label, x=x, y=0))
-py2 <- ggplot(segment(dy)) + geom_segment(aes(x=x, y=y, xend=xend, yend=yend)) + coord_flip()
+py2 <- ggplot(segment(dy)) + geom_segment(aes(x=x, y=y, xend=xend, yend=yend)) + coord_flip() + scale_y_reverse(expand=c(0.2, 0))
   #+ geom_text(data=label(dy), aes(label=label, x=x, y=0)) 
 
 # heatmap
@@ -50,7 +50,8 @@ colnames(df) <- xx_names[[2]]
 df$spec <- xx_names[[1]]
 df$spec <- with(df, factor(spec, levels=spec, ordered=TRUE))
 mdf <- reshape2::melt(df, id.vars="spec")
-p <- ggplot(mdf, aes(x = variable, y = spec)) + geom_tile(aes(fill = value))
+p <- ggplot(mdf, aes(x = variable, y = spec)) + geom_tile(aes(fill = value)) +
+  scale_fill_distiller(palette = "Spectral")
 
 # hide axis ticks and grid lines
 eaxis <- list(
@@ -67,3 +68,5 @@ p_empty <- plot_ly(filename="r-docs/dendrogram") %>%
          yaxis = eaxis)
 
 subplot(px1, p_empty, p, py2, nrows = 2, margin = 0.02, heights = c(0.25,0.75), widths=c(0.75,0.25))
+subplot(py2, p, margin=0.03, widths=c(0.25,0.75))
+
