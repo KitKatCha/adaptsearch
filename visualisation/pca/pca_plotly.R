@@ -129,26 +129,3 @@ eigen <- plot_ly(res.pca$eig) %>%
   layout(yaxis=list(type='log'))
 
 eigen
-####################
-
-# cor = TRUE indicates that PCA is performed on 
-# standardized data (mean = 0, variance = 1)
-pcaCars <- princomp(mtcars, cor = TRUE)
-names(pcaCars) # view objects stored in pcaCars
-summary(pcaCars) # proportion of variance explained
-plot(pcaCars, type = "l") # scree plot
-carsHC <- hclust(dist(pcaCars$scores), method = "ward.D2") # cluster cars
-plot(carsHC) # dendrogram
-carsClusters <- cutree(carsHC, k = 3) # cut the dendrogram into 3 clusters
-# add cluster to data frame of scores
-carsDf <- data.frame(pcaCars$scores, "cluster" = factor(carsClusters))
-carsDf <- transform(carsDf, cluster_name = paste("Cluster",carsClusters))
-
-p <- plot_ly(carsDf, x=Comp.1, y=Comp.2, text=rownames(carsDf),
-             mode="markers", color=cluster_name, marker=list(size=11)) 
-
-p <- layout(p, title = "PCA Clusters from Hierarchical Clustering of Cars Data", 
-            xaxis = list(title = "PC 1"),
-            yaxis = list(title = "PC 2"))
-
-p
