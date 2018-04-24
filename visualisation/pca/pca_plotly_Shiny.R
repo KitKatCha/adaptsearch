@@ -101,14 +101,24 @@ server <- function (input, output) {
     data <- reactive({
         if (is.null(input$input_file)) {return(NULL)}
         data <-read.table(input$input_file$datapath, header=TRUE, dec=".", sep=",", row.names=1)
-        # if (input$data$name != "gc_and_others.csv") {
-        #     toDelete <- seq(1, nrow(dat), 3)
-        #     dat_good <- dat[toDelete,]
-        # }
-        if (input$what == "counts") {selected_data <- data[seq(1, nrow(data), 3),]} 
-        else if (input$what == "freqs") {selected_data <- data[seq(2, nrow(data), 3),]}
-        row.names(selected_data) <- substrLeft(row.names(selected_data),2)
+        
+        if (input$input_file$name != "gc_and_others.csv") {
+            if (input$what == "counts") {selected_data <- data[seq(1, nrow(data), 2),]} 
+            else if (input$what == "freqs") {selected_data <- data[seq(2, nrow(data), 2),]}
+            
+            if (grepl('transitions', input$input_file$name)) {
+                row.names(selected_data) <- substrLeft(row.names(selected_data),3)
+            } else {
+                row.names(selected_data) <- substrLeft(row.names(selected_data),1)
+            }
+                
+        } else {
+            selected_data <- data
+        }
+        
         res.pca <- PCA(selected_data, scale.unit=TRUE, graph=F, axes=c(1,2))
+        #print(any(is.na(res.pca$cos2) | is.infinite(res.pca$cos2)))
+        print(res.pca$eig)
         return(res.pca)
     })
     
@@ -211,13 +221,14 @@ server <- function (input, output) {
 
             output$PCA_eigen <- renderPlotly({
                 eig <- data()$eig
+                eig_names <- factor(rownames(eig), levels = rownames(eig))
                 eigen <- plot_ly(eig) %>%
-                    add_trace(x=row.names(eig),
+                    add_trace(x=eig_names,
                               y=eig[,2],
                               type='bar',
                               name="Explained variation") %>%
                     add_trace(eig,
-                              x=row.names(eig),
+                              x=eig_names,
                               y=eig[,3],
                               type='scatter',
                               mode='lines',
