@@ -1,0 +1,95 @@
+<tool name="HeatMapsAdaptSearch" id="hmadaptsearch" version="1.0">
+
+    <description>
+        Builds heatmaps based on MutCount (concatenated mode) results
+    </description>
+
+    <macros>
+        <import>macros.xml</import>
+    </macros>
+
+    <requirements>
+        <expand macro="python_required" />
+        <requirement type="package" version="0.20.0">pandas</requirement>
+        <requirement type="package" version="1.12.0">numpy</requirement>
+        <requirement type="package" version="0.12.6">bokeh</requirement>
+    </requirements>
+
+    <stdio>
+        <exit_code range="1:" level="fatal" />
+    </stdio>
+
+    <command><![CDATA[
+
+        ln -s '$input' '$input.element_identifier'".csv" &&
+        
+        python '$__tool_directory__/scripts/heatmap_bokeh_vGalaxy.py' '$input.element_identifier'".csv" $represent' '$tree'
+
+    ]]></command>
+    <inputs>
+        <param name="input" type="data" format="csv" label="Table" help="tabular files with counts or frequencies of codons, amino-acids, or amino-acids types (outputs of MutCount in 'concatenated' mode)" />
+        <param name="tree" type="data" format="nhx" label="Newick tree computed by ConcatPhyl (RAxML best tree)" help="The tree is used to order the species in the heatmap" />
+        <param name="represent" type="select" label="What to plot" >
+            <option value="frequencies">Frequencies</option>
+            <option value="counts">Counts</option>
+            <option value="all">Both</option>
+        </param>
+    </inputs>
+
+    <outputs>
+        <data format="png" name="heatmap" from_work_dir="output_frequencies.png" label="Frequencies_heatmap_on_${input.name}">
+            <filter>(represent=='frequencies' and represent=='all')</filter>
+        </data>
+        <data format="png" name="heatmap" from_work_dir="output_counts.png" label="Counts_heatmap_on_${input.name}">
+            <filter>(represent=='counts' and represent=='all')</filter>
+        </data>
+    </outputs>
+
+    <help>
+    <![CDATA[
+
+. class:: infomark
+
+**Authors**  
+
+.. class:: infomark Victor Mataigne
+
+**Galaxy integration** 
+
+Contact support.abims@sb-roscoff.fr for any questions or concerns about the Galaxy implementation of this tool.
+
+--------
+
+**Description**
+
+This tool display the results of codons/amino-acids/amino-acids types counts and frequencies computed by The tool MutCount (in concatenated mode)
+
+--------
+
+**Parameters**
+
+- Data File : 
+
+
+--------
+
+**Outputs**
+
+One or two heatmaps (counts / frequencies) with species in lines (ordered as they appear in the phylogenetic tree) and codons/amino-acids/types of amino-acids in columns. Columns are ordered along the types of amino-acids.
+
+
+---------
+
+Changelog
+---------
+
+
+
+    ]]>
+
+    </help>
+
+    <expand macro="citations" />
+
+</tool>
+

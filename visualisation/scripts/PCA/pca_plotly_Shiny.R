@@ -1,6 +1,6 @@
 #load packages
 library(shiny)
-library(shinyWidgets)
+#library(shinyWidgets)
 library(plotly)
 library(FactoMineR)
 
@@ -117,8 +117,9 @@ server <- function (input, output) {
         }
         
         res.pca <- PCA(selected_data, scale.unit=TRUE, graph=F, axes=c(1,2))
-        #print(any(is.na(res.pca$cos2) | is.infinite(res.pca$cos2)))
-        print(res.pca$eig)
+        # indx <- (apply(res.pca$cos2, 2, function(x) any(is.na(x))))
+        # print()
+        #print(res.pca$eig)
         return(res.pca)
     })
     
@@ -153,8 +154,9 @@ server <- function (input, output) {
             output$PCA_var <- renderPlotly({
                 var_coord <- as.data.frame(data()$var$coord)
                 if (input$what_vars == "cor") {colors <- as.data.frame(data()$var$cor)}
-                else if (input$what_inds == "cos2") {colors <- as.data.frame(data()$var$cos2)}
+                else if (input$what_vars == "cos2") {colors <- as.data.frame(data()$var$cos2)}
                 else if (input$what_vars == "contrib") {colors <- as.data.frame(data()$var$contrib)}
+                print(colors)
 
                 p2 <- plot_ly(var_coord,
                               x=var_coord[,input$axisX],
@@ -183,7 +185,7 @@ server <- function (input, output) {
                 
                 var_coord <- as.data.frame(data()$var$coord)
                 if (input$what_vars == "cor") {colors2 <- as.data.frame(data()$var$cor)}
-                else if (input$what_inds == "cos2") {colors2 <- as.data.frame(data()$var$cos2)}
+                else if (input$what_vars == "cos2") {colors2 <- as.data.frame(data()$var$cos2)}
                 else if (input$what_vars == "contrib") {colors2 <- as.data.frame(data()$var$contrib)}
                 
                 biplot <- plot_ly(
@@ -220,7 +222,7 @@ server <- function (input, output) {
             })
 
             output$PCA_eigen <- renderPlotly({
-                eig <- data()$eig
+                eig <- as.data.frame(data()$eig)
                 eig_names <- factor(rownames(eig), levels = rownames(eig))
                 eigen <- plot_ly(eig) %>%
                     add_trace(x=eig_names,
