@@ -81,7 +81,7 @@ def makeHeatmap(df, what, on_what, colors, range_x, range_y, width, height):
        line_color=None)
 
     # legend numbers format
-    if what == "countings":
+    if what == "counts":
         frmt = "%d"
     elif what == "frequencies":
         frmt = "%.3f"
@@ -94,7 +94,7 @@ def makeHeatmap(df, what, on_what, colors, range_x, range_y, width, height):
     p.add_layout(color_bar, 'right')
 
     # output
-    export_png(p, filename='output_{}.png'.format())
+    export_png(p, filename='output_{}.png'.format(what))
 
 def main():
     parser = argparse.ArgumentParser()

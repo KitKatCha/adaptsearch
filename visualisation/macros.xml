@@ -1,0 +1,32 @@
+<macros>
+
+	<xml name="python_required">
+			<requirement type="package" version="2.7">python</requirement>
+	</xml>
+
+    <token name="@HELP_AUTHORS@">
+.. class:: infomark
+
+**Authors**  Victor Mataigne
+
+.. class:: infomark
+
+**Galaxy integration** ABiMS TEAM
+
+ | Contact support.abims@sb-roscoff.fr for any questions or concerns about the Galaxy implementation of this tool.
+
+---------------------------------------------------
+
+    </token>
+
+	<xml name="citations">
+		<citations>
+			<citation type="bibtex">Credits : ABIMS team, Roscoff Marine Station</citation>
+			<citation type="bibtex">Contact support.abims@sb-roscoff.fr for any questions or concerns about the Galaxy implementation of this tool.</citation>
+			<citation type="bibtex">AdaptSearch Version 1 : Scripts by Eric Fontanillas -- Galaxy integration by Julie Baffard</citation>
+			<citation type="bibtex">AdaptSearch Version 2 : improvments by Victor Mataigne, Gildas le Corguillé, Misharl Monsoor</citation>
+			<citation type="bibtex">AdaptSearch visualization tools : Scripts and Galaxy integration by Victor Mataigne and GIldas Le Corguillé</citation>
+		</citations>
+	</xml>
+
+</macros>

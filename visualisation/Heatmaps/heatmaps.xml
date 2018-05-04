@@ -15,15 +15,15 @@
         <requirement type="package" version="0.12.6">bokeh</requirement>
     </requirements>
 
+    <!--
     <stdio>
         <exit_code range="1:" level="fatal" />
     </stdio>
+    -->
 
     <command><![CDATA[
 
-        ln -s '$input' '$input.element_identifier'".csv" &&
-        
-        python '$__tool_directory__/scripts/heatmap_bokeh_vGalaxy.py' '$input.element_identifier'".csv" $represent' '$tree'
+        python '$__tool_directory__/scripts/heatmap_bokeh_vGalaxy.py' '$input' '$represent' '$tree'
 
     ]]></command>
     <inputs>
@@ -37,13 +37,23 @@
     </inputs>
 
     <outputs>
-        <data format="png" name="heatmap" from_work_dir="output_frequencies.png" label="Frequencies_heatmap_on_${input.name}">
+        <data format="png" name="heatmap_freqs" from_work_dir="output_frequencies.png" label="Frequencies_heatmap_on_${input.name}">
             <filter>(represent=='frequencies' and represent=='all')</filter>
         </data>
-        <data format="png" name="heatmap" from_work_dir="output_counts.png" label="Counts_heatmap_on_${input.name}">
+        <data format="png" name="heatmap_counts" from_work_dir="output_counts.png" label="Counts_heatmap_on_${input.name}">
             <filter>(represent=='counts' and represent=='all')</filter>
         </data>
     </outputs>
+
+    <tests>
+        <test>
+            <param name="input" value="aa_freqs.csv"/>
+            <param name="tree" value="tree.nwk"/>
+            <param name="represent" value="all"/>
+            <output name="heatmap_freqs" value="output_frequencies.png"/>
+            <output name="heatmap_counts" value="output_counts.png"/>
+        </test>
+    </tests>
 
     <help>
     <![CDATA[
