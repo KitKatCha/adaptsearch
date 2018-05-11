@@ -45,7 +45,7 @@ def makeHeatmap(df, what, on_what, colors, range_x, range_y, width, height):
 
     Args : 
         - df (pd df) : an already stacked pandas dataframe
-        - what (str) : indicates the column name being plotted : 'countings' or 'frequencies'
+        - what (str) : indicates the column name being plotted : 'counts' or 'frequencies'
         - on_what (str) : indicates the type of data : 'codons', 'amino-acids', 'amino-acids-types'
         - colors (list of str) : list with hexadecimals colors
         - range_x (list of str) : list of 'on_what' for an ordered x_axis
@@ -81,7 +81,7 @@ def makeHeatmap(df, what, on_what, colors, range_x, range_y, width, height):
        line_color=None)
 
     # legend numbers format
-    if what == "countings":
+    if what == "counts":
         frmt = "%d"
     elif what == "frequencies":
         frmt = "%.3f"
@@ -99,7 +99,7 @@ def makeHeatmap(df, what, on_what, colors, range_x, range_y, width, height):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("file", help="Input csv file")
-    parser.add_argument("represent", choices=("countings", "frequencies", "all"), help="choose what to plot")
+    parser.add_argument("represent", choices=("counts", "frequencies", "all"), help="choose what to plot")
     parser.add_argument("tree", help="RAxML tree for lines order")
     args = parser.parse_args()
 
@@ -145,7 +145,7 @@ def main():
     # correct names and stacking
     name_index = {elem:str.split(elem, "_")[0] for elem in y}
     df = df.rename(index=name_index)
-    c = np.array(['countings','frequencies','pvalues'])
+    c = np.array(['counts','frequencies','pvalues'])
     df.index = [df.index, c[np.arange(len(df.index)) % 3]]
     df = df.stack().unstack(1).reset_index()
 
@@ -166,12 +166,12 @@ def main():
     y_range = makeLineOrderFromTree(args.tree)
     height = len(y_range)*50
 
-    if args.represent == "countings":
+    if args.represent == "counts":
         makeHeatmap(df, args.represent, on_what, colors, x_range[on_what], y_range, width, height)
     elif args.represent == "frequencies":
         makeHeatmap(df, args.represent, on_what, colors, x_range[on_what], y_range, width, height)
     elif args.represent == "all":        
-        makeHeatmap(df, "countings", on_what, colors, x_range[on_what], y_range, width, height)
+        makeHeatmap(df, "counts", on_what, colors, x_range[on_what], y_range, width, height)
         makeHeatmap(df, "frequencies", on_what, colors, x_range[on_what], y_range, width, height)
 
     # TODO :   

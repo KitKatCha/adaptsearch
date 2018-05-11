@@ -1,5 +1,5 @@
 library(shiny)
-library(shinyWidgets)
+#library(shinyWidgets)
 library(plotly)
 library(reshape2)
 

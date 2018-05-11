@@ -19,12 +19,12 @@ import logging
 logging.basicConfig()
 
 def makeValues(df, start, list_sp):
-    """ store values of a line in a dictionary containing countings, frequencies and pvalues for each species
+    """ store values of a line in a dictionary containing counts, frequencies and pvalues for each species
     (keys=lines index). Read on every two lines
 
     Args:
         - df : a pandas dataFrame
-        - start (int) : which lines to store (0: countings, 1:frequencies, 3: pvalues)
+        - start (int) : which lines to store (0: counts, 1:frequencies, 3: pvalues)
         - list_sp (list of str) : the species names
 
     Return:
@@ -40,7 +40,7 @@ def makeLegend(what, r):
     """ Build the legend of the barplot
 
     Args:
-        - what (tuple of str): ex ('Countings', 'Frequencies', 'pvalues')
+        - what (tuple of str): ex ('counts', 'Frequencies', 'pvalues')
         - r (tuple of [bokeh objects])
 
     Return:
@@ -55,9 +55,9 @@ def makeLegend(what, r):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("file", help="Input csv file")
-    parser.add_argument("represent", choices=("countings", "frequencies", "both"), help="choose what to plot")
+    parser.add_argument("represent", choices=("counts", "frequencies", "both"), help="choose what to plot")
     # Compatible only with represent = both
-    parser.add_argument("-s", "--separated", action="store_true", help="choose to plot frequencies and countings on the same graph or not")
+    parser.add_argument("-s", "--separated", action="store_true", help="choose to plot frequencies and counts on the same graph or not")
 
     args = parser.parse_args()
 
@@ -95,11 +95,11 @@ def main():
     
     # 4 - plots. One plot per species
 
-    # separated barplots for countings and freqs
+    # separated barplots for counts and freqs
     if args.separated :
         for species in list_sp:
-            if args.represent in ['countings', 'both']:
-                title = 'Countings on {} {}'.format(species, end_title)
+            if args.represent in ['counts', 'both']:
+                title = 'counts on {} {}'.format(species, end_title)
 
                 p = figure(x_range=x_range[end_title], plot_width=width, plot_height=350, toolbar_location=None, title=title)
                 if end_title == 'codons':
@@ -113,7 +113,7 @@ def main():
                 p.add_layout(LinearAxis(y_range_name='pvalues'), 'right')
                 r2 = p.circle(xaxis, dic_yaxis_pvalues[species], y_range_name='pvalues', color='black', line_width=2)
                 
-                legend = makeLegend(('Countings', 'pvalues'), ([r1], [r2]))
+                legend = makeLegend(('counts', 'pvalues'), ([r1], [r2]))
                 p.add_layout(legend, 'below')
 
                 export_png(p, filename='{}.png'.format(title.replace(" ","_")))
@@ -136,10 +136,10 @@ def main():
 
                 export_png(p, filename='{}.png'.format(title.replace(" ","_")))
 
-    # countings and frequencies on the same graph
+    # counts and frequencies on the same graph
     if not args.separated:
         for species in list_sp:
-            title = 'Countings and Frequencies on {} {}'.format(species, end_title)
+            title = 'Counts and Frequencies on {} {}'.format(species, end_title)
 
             p = figure(x_range=x_range[end_title], plot_width=width, plot_height=350, toolbar_location=None, title=title)
             if end_title == 'codons':
@@ -154,7 +154,7 @@ def main():
             r2 = p.vbar(x='what', top='freqs', width=0.9, source=source, y_range_name='pvalues', line_color='white', fill_color=Spectral6[5])
             r3 = p.circle(xaxis, dic_yaxis_pvalues[species], y_range_name='pvalues', color='black', line_width=2)
 
-            legend = makeLegend(('Countings', 'Frequencies', 'pvalues'), ([r1], [r2], [r3]))
+            legend = makeLegend(('counts', 'Frequencies', 'pvalues'), ([r1], [r2], [r3]))
             p.add_layout(legend, 'below')
 
             export_png(p, filename='{}.png'.format(title.replace(" ","_")))
