@@ -1,0 +1,90 @@
+<tool name="GeneSearch" id="genesearch" version="1.0">
+
+    <description>
+        Uses ete3 to run codeml or parse codeml results, compare models and find selection
+    </description>
+
+    <macros>
+        <import>macros.xml</import>
+    </macros>
+
+    <requirements>
+        <expand macro="python_required" />
+        <requirement type="package" version="3.1.1">ete</requirement>
+        <requirement type="package" version="4.9">paml</requirement>
+        <requirement type="package" version="0.20.0">pandas</requirement>
+        <requirement type="package" version="1.12.0">numpy</requirement>
+    </requirements>
+
+    <stdio>
+        <exit_code range="1:" level="fatal" />
+    </stdio>
+
+    <command><![CDATA[
+
+        ln -s '$alignement' '$alignement.element_identifier'".fasta" &&
+        
+        python CompCodeML_ete_oneFile.py '$alignement.element_identifier'".fasta" '$tree' '$models_list'
+
+    ]]></command>
+    <inputs>
+        <param name="alignment" type="data" format="fasta" label="Alignment" help="A fasta file with nucleotides sequences" />
+        <param name="tree" type="data" format="nhx" label="Newick tree" help="The phylogenetic tree" />
+        <param name="models_list" type="text" size="100" label="List of models" help="Specify the models (comma-separated) which will be run on each alignment" />
+    </inputs>
+
+    <outputs>
+        
+    </outputs>
+
+    <tests>      
+        
+    </tests>
+
+    <help>
+    <![CDATA[
+
+. class:: infomark
+
+**Authors**  
+
+.. class:: infomark
+
+**Galaxy integration** 
+
+Contact support.abims@sb-roscoff.fr for any questions or concerns about the Galaxy implementation of this tool.
+
+--------
+
+**Description**
+
+
+
+--------
+
+**Parameters**
+
+*list_of_availaible_models_in_ete*
+
+
+--------
+
+**Outputs**
+
+
+
+---------
+
+Changelog
+---------
+
+
+
+    ]]>
+
+    </help>
+
+    <expand macro="citations" />
+
+</tool>
+
