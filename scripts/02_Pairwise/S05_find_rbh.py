@@ -8,6 +8,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('besthits_file1', help='')
     parser.add_argument('besthits_file2', help='')
+    parser.add_argument('out_name_id', help='')
     args = parser.parse_args()
 
     # Open dict of best hits
@@ -16,7 +17,7 @@ def main():
     best_hit_dict_q = pickle.load(file_best_hit_dict_q)
     best_hit_dict_db = pickle.load(file_best_hit_dict_db)
     file_best_hit_dict_q.close()
-    file_best_hit_dict_db.close()    
+    file_best_hit_dict_db.close()
 
     best_h1 = {}
     with open(args.besthits_file1, 'r') as bh1 :
@@ -31,15 +32,15 @@ def main():
             header = h.strip('>\n')
             sequence = s.strip('\n')
             best_h2[header] = sequence
-    
+
     # Find RBH:
-    reverse_best_hit_dict_db = dict((v,k) for k,v in best_hit_dict_db.iteritems())    
+    reverse_best_hit_dict_db = dict((v,k) for k,v in best_hit_dict_db.iteritems())
 
     rbh = set(best_hit_dict_q.items()).intersection(set(reverse_best_hit_dict_db.items()))
 
     s = args.besthits_file1.split('_')
     suffix = s[4] + '_' + s[5]
-    out_name = 'RBH_{}_dna.fasta'.format(suffix)
+    out_name = 'RBH_{}_dna.fasta'.format(args.out_name_id)
     output = open(out_name, 'w')
 
     for pairwise_couple in rbh :

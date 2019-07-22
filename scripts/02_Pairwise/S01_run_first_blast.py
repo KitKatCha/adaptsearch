@@ -22,6 +22,7 @@ def main():
     in_files = args.files.split(',')
 
     if args.method == 'diamond':
+        os.mkdir('translated_seqs')
         in_files_translated = []
         from Bio.Seq import Seq
         from Bio.Alphabet import IUPAC
@@ -29,17 +30,17 @@ def main():
         # From every sequence, make three sequences (translations in the three reading frames)
         print 'Translating every sequence in all reading frames ...'
         for file in in_files:
-            name = 'translated_%s' %file
+            name = 'translated_seqs/%s' %file
             in_files_translated.append(name)
             translated_file = open(name, 'w')
             with open(file, 'r') as file:
-                for name, seq in itertools.izip_longest(*[file]*2):
+                for gene, seq in itertools.izip_longest(*[file]*2):
                     s = Seq(seq.strip('\n').upper(), IUPAC.ambiguous_dna)
-                    translated_file.write(name.strip('\n')+'_orf_1\n')
+                    translated_file.write(gene.strip('\n')+'_orf_1\n')
                     translated_file.write(s.translate()._data+'\n')
-                    translated_file.write(name.strip('\n')+'_orf_2\n')
+                    translated_file.write(gene.strip('\n')+'_orf_2\n')
                     translated_file.write(s[1:].translate()._data+'\n')
-                    translated_file.write(name.strip('\n')+'_orf_3\n')
+                    translated_file.write(gene.strip('\n')+'_orf_3\n')
                     translated_file.write(s[2:].translate()._data+'\n')
             translated_file.close()
 
@@ -59,26 +60,27 @@ def main():
 
     if args.method == 'diamond':
         for pairwise in list_pairwise:
-            print "Pair of species:"
+            print "\n================\nPair of species:"
             print pairwise
 
-            sp1, sp2 = pairwise[0].split('_')[1], pairwise[1].split('_')[1] #rename 'translated_Xx_transcriptom.fasta'
+            sp1, sp2 = pairwise[0].split('/')[1].split('.')[0], pairwise[1].split('/')[1].split('.')[0]
             sub_directory_name = sp1 + '_' + sp2
-            os.mkdir('./blast_%s' %sub_directory_name)
+
+            os.mkdir('blast_%s' %sub_directory_name)
 
             print 'Running first blast with Diamond ...'
 
-            # Run diamond
-            os.system('diamond makedb --in %s -d %s >> log_diamond.log' %(pairwise[1], sp2))
-            os.system('diamond blastp -q %s -d %s --max-target-seqs 1 -o matches_blast1_%s -e %s --more-sensitive >> log_diamond.log' %(pairwise[0], sp2, sub_directory_name, args.evalue))
+            # # Run diamond
+            os.system('diamond makedb --in %s -d %s --quiet >> log_diamond.log' %(pairwise[1], sp2))
+            os.system('diamond blastp -q %s -d %s --max-target-seqs 1 -o matches_blast1_%s -e %s --more-sensitive --quiet >> log_diamond.log' %(pairwise[0], sp2, sub_directory_name, args.evalue))
 
-            # tabular output :
-            # qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore
-            
-            a = pairwise[1].replace('translated_', '')
-            b = pairwise[0].replace('translated_', '')
+            # # tabular output :
+            # # qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore
 
-            # There is a chance to have no hits returned
+            a = pairwise[1].replace('translated_seqs/', '')
+            b = pairwise[0].replace('translated_seqs/', '')
+
+            # # There is a chance to have no hits returned
             if os.path.getsize('matches_blast1_%s' %sub_directory_name) == 0:
                 print 'No hits found. Processing next species pair ...'
             else :
@@ -88,7 +90,7 @@ def main():
 
                 # 2d blast with only best hits as db
                 print 'Running second blast with Diamond ... '
-
+                print sub_directory_name, pairwise[0]
                 os.system('python -W ignore S03_run_second_blast.py best_hits_db_blast1_%s %s %s %s %s' %(sub_directory_name, pairwise[0], sub_directory_name, args.evalue, args.method))
 
                 # Record only one best_hit per transcript (best of the 6 orfs)
@@ -97,9 +99,9 @@ def main():
                 # Find Reciprocical Best Hits
                 name1 = 'best_hits_q_blast1_{}'.format(sub_directory_name)
                 name2 = 'best_hits_q_blast2_{}'.format(sub_directory_name)
-                os.system('python S05_find_rbh.py %s %s ' %(name1, name2))
+                os.system('python S05_find_rbh.py %s %s %s' %(name1, name2, sub_directory_name))
 
-            os.system('mv log_diamond.log ./blast_%s' %sub_directory_name)        
+            os.system('mv log_diamond.log blast_%s' %sub_directory_name)
             os.system('rm -f *.dmnd')
 
             # Those files exist obly if hits were found during the first blast
@@ -109,17 +111,17 @@ def main():
 
             os.system('mv matches_blast* ./blast_%s' %(sub_directory_name))
 
-        os.mkdir('translated_seqs')
-        os.system('mv translated*.fasta ./translated_seqs')
+        #os.mkdir('translated_seqs')
+        #os.system('mv translated*.fasta ./translated_seqs')
 
     elif args.method == 'tblastx':
         for pairwise in list_pairwise:
-            print "Pair of species:"
+            print "\n================\nPair of species:"
             print pairwise
 
-            sp1, sp2 = pairwise[0].split('_')[0], pairwise[1].split('_')[0]
+            sp1, sp2 = pairwise[0].split('.')[0], pairwise[1].split('.')[0]
             sub_directory_name = sp1 + '_' + sp2
-            os.mkdir('./blast_%s' %sub_directory_name)
+            os.mkdir('blast_%s' %sub_directory_name)
 
             print 'Running first tblastx ...'
 
@@ -129,7 +131,7 @@ def main():
 
             # tabular output :
             # qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore
-            
+
             # There is a chance to have no hits returned
             if os.path.getsize('matches_blast1_%s' %sub_directory_name) == 0:
                  print 'No hits found. Processing next species pair ...'
@@ -149,9 +151,9 @@ def main():
                 # Find Reciprocical Best Hits
                 name1 = 'best_hits_q_blast1_{}'.format(sub_directory_name)
                 name2 = 'best_hits_q_blast2_{}'.format(sub_directory_name)
-                os.system('python S05_find_rbh.py %s %s ' %(name1, name2))
+                os.system('python S05_find_rbh.py %s %s %s ' %(name1, name2, sub_directory_name))
 
-            os.system('mv log_tblastx.log ./blast_%s' %sub_directory_name)        
+            os.system('mv log_tblastx.log ./blast_%s' %sub_directory_name)
             os.system('rm -f *.nhr')
             os.system('rm -f *.nin')
             os.system('rm -f *.nsd')
@@ -161,10 +163,9 @@ def main():
             # Those files exist obly if hits were found during the first blast
             if os.path.getsize('matches_blast1_%s' %sub_directory_name) != 0:
                 os.system('mv *best_hits* ./blast_%s' %sub_directory_name)
-                os.system('mv RBH* outputs_RBH_dna')            
+                os.system('mv RBH* outputs_RBH_dna')
 
             os.system('mv matches_blast* ./blast_%s' %(sub_directory_name))
-            #os.system('mv matches_blast2_%s ./blast_%s' %(sub_directory_name, sub_directory_name))            
 
 if __name__ == "__main__":
     main()

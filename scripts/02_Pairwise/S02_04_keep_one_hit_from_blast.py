@@ -30,21 +30,21 @@ def main():
     print 'Keeping best hits in {}'.format(args.matches)
 
     # read tab file in a list (a line = a list elem)
-    list_hits = [] 
+    list_hits = []
     dic_hits_common = {} # unique matches for query
     dic_hits_common_db = {} # unique matches for db
-    with open(args.matches, 'r') as hits:        
+    with open(args.matches, 'r') as hits:
         for hit in hits.readlines():
             h = hit.strip('\n')
             h2 = h.split('\t')
-            list_hits.append(h2)  
+            list_hits.append(h2)
 
             if args.method == 'diamond':
                 if h2[0][0:-6] not in dic_hits_common.keys():
-                        dic_hits_common[h2[0][0:-6]] = []                        
+                        dic_hits_common[h2[0][0:-6]] = []
                 if h2[1][0:-6] not in dic_hits_common_db.keys():
                         dic_hits_common_db[h2[1][0:-6]] = []
-                        
+
             elif args.method == 'tblastx':
                 if h2[0] not in dic_hits_common.keys():
                     dic_hits_common[h2[0]] = []
@@ -82,7 +82,7 @@ def main():
             dico_best_hits_q[hit[0][0:-6]] = hit[1][0:-6]
         elif args.method == 'tblastx':
             dico_best_hits_q[hit[0]] = hit[1]
-    
+
     n = 'dict_best_hits_from_blast_{}'.format(args.step)
     pickle_dic_besthits_q = open(n, 'w')
     pickle.dump(dico_best_hits_q, pickle_dic_besthits_q)
@@ -134,7 +134,6 @@ def main():
     del initial_seqs_q
     del initial_seqs_db
 
-    print 'Done'
 
 if __name__ == "__main__":
     main()
