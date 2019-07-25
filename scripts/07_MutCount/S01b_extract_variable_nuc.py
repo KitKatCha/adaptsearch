@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #coding: utf-8
 
-import argparse, os
+import argparse, os, re
 from functions import dico, write_output, fill_with_NaN
 
 """ Functions for nucleic format """
@@ -49,7 +49,7 @@ def ratios(nuc_counts):
     # Per 1000 bp
     ratios['PLI_GC_1000'] = ratios['PLI_GC']*1000
     ratios['PLI_AT_1000'] = ratios['PLI_AT']*1000
-  
+
     return ratios
 
 def main():
@@ -70,7 +70,7 @@ def main():
     flsp = ''
     for el in lsp:
         flsp += el+','
-    
+
     path_outputs_1 = '02_tables_per_nucleotide'
     path_outputs_2 = '02_tables_per_nuc_variable'
     os.mkdir(path_outputs_1)
@@ -82,8 +82,8 @@ def main():
     # All counts
     for file in list_inputs:
         # iterate over input files
-        sequences = dico(file, path_inputs)
-        
+        sequences = dico(file, path_inputs, lsp)
+
         # TEMPORARY CORRECTION FOR SEQUENCES CONTAINING ONLY INDELS
         # It appears than CDS_Search can bug sometimes and return an alignement where a species' sequence is made of indels only
         # This causes a crash here (in the ratios function). The correction skip the whole file.

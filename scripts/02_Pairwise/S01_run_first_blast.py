@@ -5,6 +5,10 @@
 import itertools, argparse, os
 
 """
+Usage : ./S01_run_first_blast.py <input,files,comma,separated> <evalue> <[tblastx, diamond]>]
+
+WARNING : input files must be at the path than the script
+
 IMPROVMENTS :
     - Maybe a bit of code factoring
     - See if it possible to avoid build several times the same db
@@ -14,7 +18,7 @@ IMPROVMENTS :
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('files', help='fasta files separated by commas')
+    parser.add_argument('files', help='fasta files separated by commas (MUST be in script directory')
     parser.add_argument('evalue', help='evalue for blast')
     parser.add_argument('method', choices=['tblastx', 'diamond'], help='alignment tool (tblastx or diamond)')
     args = parser.parse_args()
@@ -30,11 +34,12 @@ def main():
         # From every sequence, make three sequences (translations in the three reading frames)
         print 'Translating every sequence in all reading frames ...'
         for file in in_files:
+            #basename_f = file.split('/')[-1]
             name = 'translated_seqs/%s' %file
             in_files_translated.append(name)
             translated_file = open(name, 'w')
-            with open(file, 'r') as file:
-                for gene, seq in itertools.izip_longest(*[file]*2):
+            with open(file, 'r') as f:
+                for gene, seq in itertools.izip_longest(*[f]*2):
                     s = Seq(seq.strip('\n').upper(), IUPAC.ambiguous_dna)
                     translated_file.write(gene.strip('\n')+'_orf_1\n')
                     translated_file.write(s.translate()._data+'\n')

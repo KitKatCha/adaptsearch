@@ -1,1 +1,0 @@
-../../../scripts/01_Filter_Assemblies/S01_script_to_choose.py

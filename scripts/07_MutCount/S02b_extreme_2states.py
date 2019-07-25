@@ -13,7 +13,7 @@ def loop_on_elems(list_of_elems, path_in, path_out, sps_group_1, sps_group_2, co
         """ a
 
         Args :
-            fileu : input file with counts of AAs / AAs types per orthogorup        
+            fileu : input file with counts of AAs / AAs types per orthogorup
             sps_group_1 : species for condition 1 (ex : hot water species)
             sps_group_2 : species for condition 2 (ex : cold water species)
 
@@ -23,6 +23,7 @@ def loop_on_elems(list_of_elems, path_in, path_out, sps_group_1, sps_group_2, co
 
         """
         df = pd.read_csv(fileu, sep=',', index_col=0, header=0)
+        #print df
         # species = list(df) #columns names = species names
 
         # initialize counts
@@ -37,8 +38,9 @@ def loop_on_elems(list_of_elems, path_in, path_out, sps_group_1, sps_group_2, co
         for (index, row) in df.iterrows():
             # min and max counts for each condition
             if not df.loc[index, sps_group_1+sps_group_2].isnull().values.any() :
+
                 #nb_trials += 1
-                
+
                 max_cat1 = max(df.loc[index, sps_group_1]) # species in category 1 (ex : hots)
                 min_cat1 = min(df.loc[index, sps_group_1])
                 max_cat2 = max(df.loc[index, sps_group_2]) # species in category 2 (ex : colds)
@@ -60,7 +62,7 @@ def loop_on_elems(list_of_elems, path_in, path_out, sps_group_1, sps_group_2, co
 
     # Function ------------------------------------------------------
 
-    for variable in list_of_elems:        
+    for variable in list_of_elems:
         print 'Processing : {} ...'.format(variable)
         file_in = "{}/{}.csv".format(path_in, variable)
         file_out = open('{}/{}.csv'.format(path_out,variable), 'w')
@@ -81,7 +83,7 @@ def loop_on_elems(list_of_elems, path_in, path_out, sps_group_1, sps_group_2, co
         df = df.rename({0:'Greater',1:'Lower',2:'Difference',3:'Trial_Number'}) #, axis='index' if pandas 0.15
         df = df.rename(index=str, columns=colnames)
 
-        df.to_csv("{}/{}.csv".format(path_out, variable), sep=",", encoding="utf-8")   
+        df.to_csv("{}/{}.csv".format(path_out, variable), sep=",", encoding="utf-8")
 
 def main():
     parser = argparse.ArgumentParser()
@@ -100,19 +102,19 @@ def main():
           'ratio_GARP_FYMINK','AVLIM','FYW','AVLIMFYW','STNQ','RHK','DE','RHKDE','APGC','AC',
           'VLIM','ratio_AC_VLIM','ratio_APGC_VLIM']
     LS = ['total_residue_weight', 'total_residue_volume', 'total_partial_specific_volume', 'total_hydratation']
-    
+
     # inputs and outputs paths
     if args.format == 'nucleic':
         input_path_elem = '02_tables_per_nucleotide'
-        input_path_var = '02_tables_per_nuc_variable'    
+        input_path_var = '02_tables_per_nuc_variable'
         out_path_elem = '03_tables_counts_signTest_nucleotides'
         out_path_var = '03_tables_counts_signTest_nuc_variables'
     elif args.format == 'proteic':
         input_path_elem = '02_tables_per_aa'
-        input_path_var = '02_tables_per_aa_variable'    
+        input_path_var = '02_tables_per_aa_variable'
         out_path_elem = '03_tables_counts_signTest_aa'
         out_path_var = '03_tables_counts_signTest_aa_variables'
-    
+
     os.mkdir(out_path_elem)
     os.mkdir(out_path_var)
 
@@ -127,9 +129,9 @@ def main():
     #     colnames[specie] = '{}_vs_condition_2'.format(specie)
 
     for specie in sps_group_1:
-        colnames[specie] = '{}_vs_{}'.format(specie, args.sps_group_2.replace(',',''))
+        colnames[specie] = '{}_VS_{}'.format(specie, args.sps_group_2.replace(',','_&_'))
     for specie in sps_group_2:
-        colnames[specie] = '{}_vs_{}'.format(specie, args.sps_group_1.replace(',',''))
+        colnames[specie] = '{}_VS_{}'.format(specie, args.sps_group_1.replace(',','_&_'))
 
     # Building tables
     if args.format == 'nucleic':

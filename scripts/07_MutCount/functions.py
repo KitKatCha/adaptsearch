@@ -1,31 +1,56 @@
 #!/usr/bin/env python
 #coding: utf-8
 
-import itertools, os
+import itertools, os, re
 
-def dico(fasta_file, path_in):
-    """
-    Stores a fasta file in a dictionary : key/value -> header/sequence
+# def dico(fasta_file, path_in):
+#     """
+#     Stores a fasta file in a dictionary : key/value -> header/sequence
 
-    Args:
-        - fasta_file (String) : the name of fasta file
-        - path_in (String) : path to the fasta file
+#     Args:
+#         - fasta_file (String) : the name of fasta file
+#         - path_in (String) : path to the fasta file
 
-    Return:
-        - bash1 (dict) : the dictionary header/sequence        
-    """
-    bash1 = {}    
+#     Return:
+#         - bash1 (dict) : the dictionary header/sequence
+#     """
+#     bash1 = {}
 
-    with open(path_in+'/'+fasta_file, 'r') as F1:
-        for h,s in itertools.izip_longest(*[F1]*2):            
-            fasta_name = h[1:3]
-            sequence = s[:-1]
-            if fasta_name not in bash1.keys():
-                bash1[fasta_name] = sequence
-            else:
-                print fasta_name
-   
-    return bash1 # same length for all (alignment)
+#     with open(path_in+'/'+fasta_file, 'r') as F1:
+#         for h,s in itertools.izip_longest(*[F1]*2):
+#             fasta_name = h[1:3]
+#             sequence = s.rstrip()
+#             if fasta_name not in bash1.keys():
+#                 bash1[fasta_name] = sequence
+#             else:
+#                 print fasta_name
+
+#     return bash1 # same length for all (alignment)
+
+"""
+Parse fasta alignment file (with indels) and replace genes headers with matching
+species name
+
+Args:
+    - file_in (str): fasta file
+    - species_id_list (list) : all the species identifier (basically the origin
+    name of the fasta file, without .extension)
+
+Return:
+    - alignment as a dictionary (species: sequence)
+"""
+def dico(file_in, path, species_id_list):
+    dic = {}
+
+    with open(path+'/'+file_in, "r") as f_in:
+
+        for name, query in itertools.izip_longest(*[f_in]*2):
+            # Match gene header with species ID (maybe better with itertools ?)
+            for s in species_id_list:
+                if re.match('.+'+s, name.rstrip()):
+                    dic[s] = query.rstrip()
+
+    return dic
 
 def write_output(names, sps_list, out_dir, results_dict):
     """ Write results in csv files. There is one file per counted element (one file per amino-acid, one file per indice ...)

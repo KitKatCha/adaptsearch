@@ -6,8 +6,7 @@ Usage : python filter_assemblies.py \
             <input,files,comma,separated> \
             <Minimum sequence length> \
             <percent identity> \
-            <overlap length> \
-            <assembleur>
+            <overlap length>
 
 args[2,3,4] : integers
 args[5] : ('trinity', 'velvet_oases')
@@ -309,13 +308,19 @@ def main():
     overlap_length = int(sys.argv[4])
 
     tmp_names = ['01_', '02_', '03_']
+    species_list = []
 
     for name in str.split(sys.argv[1], ','):
+        print 'Processing : {} ...'.format(name)
 
-        identifier = name.split('.')[0]
+        # identifier is used in gene header
+        # '.fasta, .fa, .faa ...' are removed here and then added when writing the output
+        identifier = name.split('/')[-1].split('.')[0]
+        species_list.append(identifier)
         prefix_names = [tmp+identifier for tmp in tmp_names]
 
         # sequences on single lines
+        print '\tFasta formatter ...'
         os.system('cat "{}" | fasta_formatter -w 0 -o "{}"'.format(name, prefix_names[0]))
 
         # detect the assembly
@@ -323,6 +328,7 @@ def main():
 
         # formatting and filtering isoforms
         if re.search('[0-9]+_g[0-9]+_i[0-9]+', assembleur) != None:
+            print '\tDetected assembly : Trinity'
             # Trinity old headers all have the form : 'c[0-9]+_g[0-9]+_i[0-9]+'
             # For the most recent version (07/2019), a second regex must be applied
             if re.search('[0-9]+_c[0-9]+_g[0-9]+_i[0-9]+', assembleur) != None :
@@ -331,22 +337,33 @@ def main():
                 dict_transcripts = format_headers_trinity(prefix_names[0], 'old')
             dict_transcripts = filter_redundancy_trinity(dict_transcripts)
         elif re.search('>Locus_[0-9]+_Transcript_[0-9]+/[0-9]+_Confidence_', assembleur) != None:
+            print '\tDetected assembly : Velvet Oases'
             dict_transcripts = format_headers_velvet(prefix_names[0])
             dict_transcripts = filter_redundancy_velvet(dict_transcripts)
         else :
-            raise ValueError('Wrong assembleur (no Trinity or Velvet Oases)')
+            raise ValueError('\tWrong assembleur (no Trinity or Velvet Oases)')
 
         # Pierre guillaume code for keeping the longuest ORF
+        print '\tFinding the longest ORF ...'
         find_orf_process(dict_transcripts, prefix_names[1])
         # Apply cap3
+        print '\tApply cap3 ...'
         os.system('cap3 {} -p {} -o {}'.format(prefix_names[1], percent_identity, overlap_length))
         # Il faudrait faire un merge des singlets et contigs! TODO
         os.system('zcat -f < "{}.cap.singlets" | fasta_formatter -w 0 -o "{}"'.format(prefix_names[1], prefix_names[2]))
         # Apply pgbrun script filter script TODO length parameter
-        filter(prefix_names[2], identifier, length_seq_max, 'outputs/'+name)
+        print '\tFiltering sequences lenght and writing output file ...'
+        print '\n----------------------------------------\n'
+        filter(prefix_names[2], identifier, length_seq_max, 'outputs/'+identifier+'.fasta')
 
     os.mkdir('tmp')
     os.system('mv 01* 02* 03* tmp/')
+
+    # file with species ids (i.e. files names) used later in the pipeline
+    with open('species_list.dat', 'w') as f_w:
+        for species in species_list:
+            f_w.write(species)
+            f_w.write('\n')
 
 if __name__ == "__main__":
     main()

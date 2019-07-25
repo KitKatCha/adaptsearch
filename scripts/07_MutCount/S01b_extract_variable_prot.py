@@ -2,11 +2,11 @@
 #coding: utf-8
 #Author : Eric Fontanillas (2010) - Victor Mataigne (2018)
 
-# TODO : 
+# TODO :
     # - Deal with missing data : do not do the sign test if missing species in a group
     # - Find a way to avoid the list_species argument
 
-import argparse, os
+import argparse, os, re
 from functions import dico, write_output, fill_with_NaN
 
 def aa_properties(amino_acids_properties_file):
@@ -78,7 +78,7 @@ def aa_variables_counts_and_props(aa_counts):
     Args:
         aa_counts (dict) : dictionnary computed by the function all_aa_counts()
 
-    Returns: 
+    Returns:
         aa_variables_counts : a dictionary with indices values
         aa_variables_props : a dictionary with indices proportions (ratios excluded)
     """
@@ -90,9 +90,9 @@ def aa_variables_counts_and_props(aa_counts):
     #     EK/QH
 
     # Mutationnal bias hypothesis => AT rich: favor FYMINK // GC rich: favor GARP
-    #      The mutational bias model predict a linear relationship between GARP vs FYMINK 
+    #      The mutational bias model predict a linear relationship between GARP vs FYMINK
     #      ==> so if outliers to that, it means that the excess of GARP or FYMINK are not explained by the mutationnal bias model but by something else (selection ?)
-    
+
 
     # Hydophobicity hypothesis [should INCREASE with thermal adaptation]
     #   AL
@@ -118,9 +118,9 @@ def aa_variables_counts_and_props(aa_counts):
     #   AC/MVGDS
 
     aa_variables_counts = {}
-    aa_variables_props = {}    
+    aa_variables_props = {}
     len_seq = sum(aa_counts.values()) # length of the sequence
-    
+
     # counts of variables
     aa_variables_counts['AC'] = aa_counts['A'] + aa_counts['C']
     aa_variables_counts['APGC'] = aa_counts['A'] + aa_counts['P'] + aa_counts['G'] + aa_counts['C']
@@ -155,12 +155,12 @@ def aa_variables_counts_and_props(aa_counts):
         ratio_EK_QH = float(aa_variables_counts['EK'])/float(aa_variables_counts['QH'])
     else :
         ratio_EK_QH = -1
-    
+
     if aa_variables_counts['FYMINK'] != 0:
         ratio_GARP_FYMINK = float(aa_variables_counts['EK'])/float(aa_variables_counts['FYMINK'])
     else :
         ratio_GARP_FYMINK = -1
-    
+
     if aa_variables_counts['VLIM'] != 0:
         ratio_AC_VLIM = float(aa_variables_counts['AC'])/float(aa_variables_counts['VLIM'])
         ratio_APGC_VLIM =  float(aa_variables_counts['APGC'])/float(aa_variables_counts['VLIM'])
@@ -176,7 +176,7 @@ def aa_variables_counts_and_props(aa_counts):
     if aa_variables_counts['MVGDS'] != 0:
         ratio_AC_MVGDS = float(aa_variables_counts['AC'])/float(aa_variables_counts['MVGDS'])
     else :
-        ratio_AC_MVGDS = -1    
+        ratio_AC_MVGDS = -1
 
     aa_variables_counts['ratio_ERK_DNQTSHA'] = ratio_ERK_DNQTSHA
     aa_variables_counts['ratio_EK_QH'] = ratio_EK_QH
@@ -204,9 +204,9 @@ def sequence_properties_from_aa_properties(aa_counts, aa_properties):
 
     for i in range(1,5):
         seq_props[LS[i-1]] = 0
-        for key in aa_counts.keys():            
+        for key in aa_counts.keys():
             seq_props[LS[i-1]] += aa_counts[key] * float(aa_properties[key][i])
-            
+
     return seq_props
 
 """ Main """
@@ -251,8 +251,8 @@ def main():
     # All counts and props
     for file in list_inputs:
         # iterate over input files
-        sequences = dico(file, path_inputs)
-        
+        sequences = dico(file, path_inputs, lsp)
+
         # TEMPORARY CORRECTION FOR SEQUENCES CONTAINING ONLY INDELS
         # It appears than CDS_Search can bug sometimes and return an alignement where a species' sequence is made of indels only
         # This causes a crash here (in the ratios function). The correction skip the whole file.
@@ -296,10 +296,10 @@ def main():
     write_output(LV, flsp, path_outputs_2, dict_for_files_variables_counts) # one file per aa_variable
     write_output(LS, flsp, path_outputs_2, dict_for_files_seq_properties) #one file per seq properties
 
-    # { file_name1 : { seq1: {'A' : 0, 'C':0, 'E':0, ...}, 
+    # { file_name1 : { seq1: {'A' : 0, 'C':0, 'E':0, ...},
     #                  seq2: {'A' : 0, 'C':0, 'E':0, ...}, ...
     #                },
-    # { file_name2 : { seq1: {'A' : 0, 'C':0, 'E':0, ...}, 
+    # { file_name2 : { seq1: {'A' : 0, 'C':0, 'E':0, ...},
     #                  seq2: {'A' : 0, 'C':0, 'E':0, ...},
     #                },
     # ... }

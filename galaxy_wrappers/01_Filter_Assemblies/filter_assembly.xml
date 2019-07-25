@@ -23,13 +23,7 @@
         #end for
         #set $infiles = $infiles[:-1]
 
-        ln -s '$__tool_directory__/scripts/S02a_remove_redondancy_from_velvet_oases.py' . &&
-        ln -s '$__tool_directory__/scripts/S02b_format_fasta_name_trinity.py' . &&
-        ln -s '$__tool_directory__/scripts/S03_choose_one_variants_per_locus_trinity.py' . &&
-        ln -s '$__tool_directory__/scripts/S04_find_orf.py' . &&
-        ln -s '$__tool_directory__/scripts/S05_filter.py' . &&
-
-        python '$__tool_directory__/scripts/S01_script_to_choose.py'
+        python '$__tool_directory__/scripts/filter_assemblies.py'
 
         '$infiles'
         $length_seq_max
@@ -69,7 +63,7 @@
                 <element name="ApApomp_trinity" value="trinity_out/ApApomp_trinity.fasta" />
                 <element name="PfPfiji_trinity" value="trinity_out/PfPfiji_trinity.fasta" />
             </output_collection>
-        </test>        
+        </test>
         <test>
             <param name="inputs" ftype="fasta" value="trinity/Pfiji_trinity.fasta,trinity/Apomp_trinity.fasta,trinity/Amphi_trinity.fasta,trinity/Acaud_trinity.fasta" />
             <param name="percent_identity" value="100" />
@@ -95,7 +89,7 @@
                 <element name="PgPg_transcriptome_90109" value="velvet_out/PgPg_transcriptome_90109.fasta" />
             </output_collection>
         </test>
-        
+
     </tests>
 
 	<help>
@@ -124,11 +118,11 @@ This tool reformats Velvet Oases or Trinity assemblies for the AdaptSearch galax
 2) The file name should begin with a two letter abbreviation of the species name (for isntance, 'Ap' if the species is Alvinella pompejana).
 
 **For Velvet Oases assemblies input**
-            
+
     The headers must be as follow : *>Locus_i_Transcript_i/j_Confidence_x.xxx_Length_N* where i is the locus number, j the transcript variant among all versions of the transcript, x.xxx the confidence value and N the length.
 
-**For Trinity assemblies inputs**   
-            
+**For Trinity assemblies inputs**
+
     The headers must be as follow : *>cj_gj_ij Len=j path=[j:0-j]* where all the j are integers (locus number, transcript variant, length, position...)
 
 **The tool handles the case if input files come from both assemblers (there is no need for input files to be exclusively from one or another assembler).**
@@ -148,7 +142,7 @@ This tool reformats Velvet Oases or Trinity assemblies for the AdaptSearch galax
 ---------
 
 **Steps**:
-    
+
 The tool:
     1) Modifies the sequence name to add the species abbreviation using the 2 first letters of the name of the transcriptome file : note that each species abbreviation must be unique
     2) Selects one allelic sequence from each transcript (c or locus) using the length of the sequence and its level of confidence

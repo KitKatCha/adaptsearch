@@ -1,1 +1,0 @@
-../../../scripts/01_Filter_Assemblies/S04_find_orf.py

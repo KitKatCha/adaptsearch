@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # coding: utf8
 # September 2017 - Author : Victor Mataigne (Station Biologique de Roscoff - ABiMS)
-# Command line : ./pogsPOO.py <list_of_input_files_separated_by_commas> <minimal number of species per group> [-v) [-p]
 
 """
-What it does:
-    - pogs.py parses output files from the "pairwise" tool of the AdaptSearch suite and proceeds to gather genes in orthogroups (using transitivity).
-    - A minimal number of species per group has to be set.
+Usage : ./pogs.py <list_of_input_files_separated_by_commas> <minimal number of species per group> [-v) [-p]
+
+pogs.py parses output files from the "pairwise" tool of the AdaptSearch suite and proceeds to gather genes in orthogroups (using transitivity).
+A minimal number of species per group has to be set.
 
 BETA VERSION
 """
@@ -16,7 +16,7 @@ import numpy as np
 import pandas as pd
 
 """ Definition of a locus : header + sequence + a tag """
-class Locus:    
+class Locus:
 
     def __init__(self, header, sequence):
         self.header = header
@@ -41,25 +41,25 @@ class Locus:
     def getTag(self):
         return self.tagged
 
-    def prettyPrint(self): 
+    def prettyPrint(self):
         # Used for debugging : print "{ Header : ", self.header[0:-1], "Tag : ", self.tagged, " }"
         print "[ Header : {header} ]".format(header=self.header[0:-1])
 
     def prettyPrint2(self):
         print "[ Header : {header} Sequence : {sequence} ]".format(header=self.header[0:-1], sequence=self.sequence[0:-1])
 
-""" Applies the getPairwiseCouple() function to a list of files and return a big list with ALL pairwises couples 
+""" Applies the getPairwiseCouple() function to a list of files and return a big list with ALL pairwises couples
     Returns a list of sets (2 items per set) """
-def getListPairwiseAll(listPairwiseFiles):    
-    
+def getListPairwiseAll(listPairwiseFiles):
+
     # Sub-Function
 
-    """ Reads an output file from the 'Pairwise' tool (AdaptSearch suite) and returns its content into a list 
+    """ Reads an output file from the 'Pairwise' tool (AdaptSearch suite) and returns its content into a list
         Returns a list of sets (2 items per set) """
-    def getPairwiseCouple(pairwiseFile):        
+    def getPairwiseCouple(pairwiseFile):
         list_pairwises_2sp = []
         with open(pairwiseFile, "r") as file:
-            for name, sequence, name2, sequence2 in itertools.izip_longest(*[file]*4):            
+            for name, sequence, name2, sequence2 in itertools.izip_longest(*[file]*4):
                 # One locus every two lines (one pairwise couple = 4 lines) : header + sequence
                 locus1 = Locus(name, sequence)
                 locus2 = Locus(name2, sequence2)
@@ -140,11 +140,11 @@ def makeOrthogroups(list_pairwises_allsp, minspec, nb_rbh, verbose, paralogs):
                     new_group.append(loci)
                     species[loci.getHeader()[1:3]] = True
 
-            if len(new_group) >= minspec: # Drop too small orthogroups        
+            if len(new_group) >= minspec: # Drop too small orthogroups
                 list_orthogroups_format.append(new_group)
                 writeOutputFile(new_group, j, False)
                 j += 1
-                
+
         return list_orthogroups_format
 
     """ Builds a 2D array for a summary
@@ -152,7 +152,7 @@ def makeOrthogroups(list_pairwises_allsp, minspec, nb_rbh, verbose, paralogs):
     def countings(listOrthogroups, nb_rbh):
 
         def compute_nbspec(nb_rbh):
-    
+
             def factorielle(x):
                 n = 1
                 s = 0
@@ -160,19 +160,19 @@ def makeOrthogroups(list_pairwises_allsp, minspec, nb_rbh, verbose, paralogs):
                     s += n
                     n += 1
                 return s
-            
-            x = 2    
+
+            x = 2
             nb_specs = 0
             while x*x - factorielle(x) < nb_rbh:
-                x += 1 
+                x += 1
             return x
         #listOrthogroups.sort().reverse()
         #nblines = len(listOrthogroups[0])
-        nblines = 0    
+        nblines = 0
         for group in listOrthogroups:
             if len(group) > nblines:
                 nblines = len(group)
-        matrix = np.array([[0]*compute_nbspec(nb_rbh)]*nblines)        
+        matrix = np.array([[0]*compute_nbspec(nb_rbh)]*nblines)
 
         for group in listOrthogroups:
             listSpecs = []
@@ -183,7 +183,7 @@ def makeOrthogroups(list_pairwises_allsp, minspec, nb_rbh, verbose, paralogs):
 
         return matrix
 
-    """ numpy 2D array in a nice dataframe 
+    """ numpy 2D array in a nice dataframe
         Returns a pandas 2D dataframe """
     def asFrame(matrix) :
         index = [0]*len(matrix)
@@ -218,7 +218,7 @@ def makeOrthogroups(list_pairwises_allsp, minspec, nb_rbh, verbose, paralogs):
                     list_orthogroups.append(orthogroup)
             else:
                 list_orthogroups.append(orthogroup)
-    
+
     # Options --------------------------------------------------------------------------------------------------
 
     """ nb : I could try to implement a more complex code which does in the same previous loop all the following lines, to avoid multiples parsing of
@@ -239,17 +239,17 @@ def makeOrthogroups(list_pairwises_allsp, minspec, nb_rbh, verbose, paralogs):
         for group in list_orthogroups:
             if len(group) >= minspec:
                 writeOutputFile(group, j, True)
-                j += 1    
+                j += 1
 
     # Paralogs filtering and summary ----------------------------------------------------------------------------
 
     print "Filtering paralogous sequences and writing final orthogroups files ..."
     print "    (Dropping Orthogroups with less than {} species)".format(minspec)
 
-    # writeOutputFile() is called in filterParalogs()    
-    list_orthogroups_format = filterParalogs(list_orthogroups, minspec)   
+    # writeOutputFile() is called in filterParalogs()
+    list_orthogroups_format = filterParalogs(list_orthogroups, minspec)
 
-    frame = countings(list_orthogroups_format, nb_rbh)    
+    frame = countings(list_orthogroups_format, nb_rbh)
     df = asFrame(frame)
     print "\n    Summary after paralogous filtering : \n"
     print df.loc[df.ne(0).any(1),df.ne(0).any()]
@@ -260,14 +260,14 @@ def makeOrthogroups(list_pairwises_allsp, minspec, nb_rbh, verbose, paralogs):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("files", help="Input files separated by commas. Each file contains all the reciprocical best hits between a pair of species")
-    parser.add_argument("minspec", help="Only keep Orthogroups with at least this number of species", type=int)    
+    parser.add_argument("minspec", help="Only keep Orthogroups with at least this number of species", type=int)
     parser.add_argument("-v", "--verbose", action="store_true", help="A supplemental summary table of orthogroups before paralogs filtering will be returned")
     parser.add_argument("-p", "--paralogs", action="store_true", help="Proceeds to write orthogroups also before paralogous filtering")
     args = parser.parse_args()
 
     print "*** pogs.py ***"
     print "\nBuilding of orthogroups based on pairs of genes obtained by pairwise comparisons between pairs of species."
-    print "Genes are gathered in orthogroups based on the principle of transitivity between genes pairs."    
+    print "Genes are gathered in orthogroups based on the principle of transitivity between genes pairs."
 
     os.system("mkdir outputs")
     if args.paralogs: os.system("mkdir outputs_withParalogs")

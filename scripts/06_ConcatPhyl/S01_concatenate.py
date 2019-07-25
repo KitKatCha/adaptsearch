@@ -1,95 +1,86 @@
 #!/usr/bin/python
 ## Author: Eric Fontanillas
-## Last modification: 17/06/2011
+## Last modification: 07/2019
 ## Subject: find and remove indels
 
-###############################
-##### DEF 0 : Dico fasta  #####
-###############################
-def dico(F2):
-    dicoco = {}
-    with open(F2, "r") as file:
-        for name, query in itertools.izip_longest(*[file]*2):
-            if not name:
-                break
-            if name[0] == ">":
-                fasta_name_query = name[:-1]
-                Sn = string.split(fasta_name_query, "||")
-                fasta_name_query = Sn[0]
-                fasta_seq_query = query[:-1]
-                dicoco[fasta_name_query]=fasta_seq_query
-    return dicoco
-###################################################################################
+import string, os, time, re, sys, itertools
 
+"""
+Parse fasta alignment file (with indels) and replace genes headers with matching
+species name
 
-####################
-###### DEF 11 ######
-####################
-## Concatenate sequences
-###########################
-def concatenate(L_IN, SPECIES_ID_LIST):
-    ## 4 ## Process files
-    ## 4.1 ## Create the bash and the fasta names entries (name of the species)
-    bash_concat = {}
+Args:
+    - file_in (str): fasta file
+    - species_id_list (list) : all the species identifier (basically the origin
+    name of the fasta file, without .extension)
 
-    for species_ID in SPECIES_ID_LIST:
-        bash_concat[species_ID] = ''
+Return:
+    - alignmetn as a dictionary (species: sequence)
+"""
+def dico(file_in, species_id_list):
+    dic = {}
 
-    ln_concat = 0
+    with open(file_in, "r") as f_in:
+
+        for name, query in itertools.izip_longest(*[f_in]*2):
+            # Match gene header with species ID (maybe better with itertools ?)
+            for s in species_id_list:
+                if re.match('.+'+s, name.rstrip()):
+                    dic[s] = query.rstrip()
+
+    return dic
+
+"""
+Parses all alignment files and concatenate all sequences to make a 'super-alignment'
+
+Args:
+    - list_files (list) all the files names (retrived previously from an input file)
+    - species_id_list (list) : all the species identifier (basically the origin
+    name of the fasta file, without .extension)
+"""
+def concatenate(list_files, species_id_list):
+
+    concatenated_alignments = {}
+
+    for species_ID in species_id_list:
+        concatenated_alignments[species_ID] = ''
+
+    len_concat = 0
     nb_locus = 0
-    pos=1
-    list_genes_position=[]
-    ## 4.2 ## Concatenate
-    for file in L_IN:
-        nb_locus=nb_locus+1
+    pos = 1
+    list_genes_position = []
 
-        ## a ## Open alignments        
-        dico_seq = dico(file)   ### DEF 0 ###        
-        ## b ## Get alignment length + genes positions for RAxML
-        key0 = dico_seq.keys()[0]
-        ln = len(dico_seq[key0])
-        ln_concat = ln_concat + ln
+    for file in list_files:
+        nb_locus += 1
 
+        # Open alignments and make headers match with files names
+        dico_seq = dico(file, species_id_list)
+
+        # Get alignment length (file and total)
+        ln = len(dico_seq.values()[0])
+        len_concat = len_concat + ln
+
+        # Get genes positions for RAxML
         pos_start = pos
-        pos_end = pos+ln-1
-        pos=pos_end+1
-        position="%d-%d" %(pos_start, pos_end)
-        RAxML_name = file[:-6]
-        sublist = [RAxML_name, position]
+        pos_end = pos + ln - 1
+        pos = pos_end + 1 # update pos for next file
+        position = "%d-%d" %(pos_start, pos_end)
+        sublist = [file, position]
         list_genes_position.append(sublist)
 
-        ## c ## Generate "empty" sequence with alignment length * "-"
-        empty_seq = "-" * ln
+        # Get missing species in the alignment
+        for sp in species_id_list:
+            if sp not in dico_seq.keys():
+                dico_seq[sp] = '-' * ln
 
-        ## d ## Concatenate
-        ## d.1 ## Detect missing species in this alignment
-        list_ID=[]
-        list_absent_ID=[]
-        bash_fastaName={}
-        for fasta_name in dico_seq:
-            ID = fasta_name[1:3]
-            list_ID.append(ID)
-            seq = dico_seq[fasta_name]
-            bash_fastaName[ID]=fasta_name
-        for sp_ID in SPECIES_ID_LIST:
-            if sp_ID not in list_ID:
-                list_absent_ID.append(sp_ID)
+        # Concatenate
+        for k,v in dico_seq.items():
+            concatenated_alignments[k] += v
 
-        for ID in SPECIES_ID_LIST:
-            if ID in list_absent_ID:
-                bash_concat[ID] = bash_concat[ID] + empty_seq
-            else:
-                fasta_name = bash_fastaName[ID]
-                seq = dico_seq[fasta_name]
-                bash_concat[ID] = bash_concat[ID] + seq
-
-    return(bash_concat, ln_concat, nb_locus, list_genes_position)
-####################################
+    return(concatenated_alignments, len_concat, nb_locus, list_genes_position)
 
 
-########################################
-##### DEF 12 : get codon position  #####
-########################################
+""" get codon position """
 def get_codon_position(seq_inORF):
 
     ln = len(seq_inORF)
@@ -112,17 +103,13 @@ def get_codon_position(seq_inORF):
        i = i+3
 
     return(seq_pos1, seq_pos2, seq_pos12, seq_pos3)
-###############################################################################
-
-
 
 #######################
 ##### RUN RUN RUN #####
 #######################
-import string, os, time, re, sys, itertools
 
 list_species = []
-SPECIES_ID_LIST = []
+species_id_list = []
 fasta = "^.*fasta$"
 i=3
 
@@ -133,23 +120,19 @@ format_run = sys.argv[2]
 ## add file to list_species
 list_species = str.split(infiles_filter_assemblies,",")
 
-## in SPECIES_ID_LIST, only the 2 first letters of name of species
+# In species_id_list, record the file name trimmed of the extension,
+# to match gene identifiers, ids common part being the oriinal file name
+# -> FileNames MUST NOT have a '.' other than the one defining the file extension
 for name in list_species :
-    name = name[:2]
-    SPECIES_ID_LIST.append(name)
+    name = name.split('.')[0]
+    species_id_list.append(name)
 
-## add alignment files to L_IN
+# add alignment files
 list_files = []
 with open(sys.argv[3], 'r') as f:
     for line in f.readlines():
-        list_files.append(line.strip('\n'))
+        list_files.append(line.rstrip())
 
-L_IN = []
-for file in list_files:
-    L_IN.append(file)
-
-#L_IN = str.split(input_alignments,",")
-print(L_IN)
 
 ### 1 ### Proteic
 if format_run == "proteic" :
@@ -159,18 +142,17 @@ if format_run == "proteic" :
     OUT3 = open("02_Concatenation_aa.nex", "w")
     OUT_PARTITION_gene_AA = open("06_partitions_gene_AA","w")
 
+    # Get bash with concatenation
+    bash_concatenation, ln, nb_locus, list_genes_position= concatenate(list_files, species_id_list)
 
-    ##  Get bash with concatenation
-    bash_concatenation, ln, nb_locus,list_genes_position= concatenate(L_IN, SPECIES_ID_LIST)    ### DEF 11 ##
-
-    ## Write gene AA partition file for RAxML
+    ##Write gene AA partition file for RAxML
     for sublist in list_genes_position:
         name = sublist[0]
         positions=sublist[1]
         OUT_PARTITION_gene_AA.write("DNA,%s=%s\n"%(name,positions))
     OUT_PARTITION_gene_AA.close()
 
-    ## Get "ntax" for NEXUS HEADER
+    # Get "ntax" for NEXUS HEADER
     nb_taxa = len(bash_concatenation.keys())
 
     print "******************** CONCATENATION ********************\n"
@@ -179,33 +161,32 @@ if format_run == "proteic" :
     print "\tNumber of loci concatenated = %d\n" %nb_locus
     print "\tTotal length of the concatenated sequences = %d" %ln
 
-
-    ## Print NEXUS HEADER:
+    # nexus header
     OUT3.write("#NEXUS\n\n")
     OUT3.write("Begin data;\n")
     OUT3.write("\tDimensions ntax=%d nchar=%d;\n" %(nb_taxa, ln))
     OUT3.write("\tFormat datatype=aa gap=-;\n")
     OUT3.write("\tMatrix\n")
 
-    ## Print PHYLIP HEADER:
+    # phylip header
     OUT2.write("   %d %d\n" %(nb_taxa, ln))
 
-    ## 3.5 ## Print outputs
+    # write outputs
     for seq_name in bash_concatenation.keys():
         seq = bash_concatenation[seq_name]
 
-        ## Filtering the sequence in case of remaining "?"
+        # Filtering the sequence in case of remaining "?"
         seq = string.replace(seq, "?", "-")
 
-        #print seq FASTA FORMAT
+        # fasta format
         OUT1.write(">%s\n" %seq_name)
         OUT1.write("%s\n" %seq)
 
-        #print seq PHYLIP FORMAT
+        # phylip format
         OUT2.write("%s\n" %seq_name)
         OUT2.write("%s\n" %seq)
 
-        #print seq NEXUS FORMAT
+        # nexus
         OUT3.write("%s" %seq_name)
         OUT3.write("      %s\n" %seq)
 
@@ -214,7 +195,6 @@ if format_run == "proteic" :
     OUT1.close()
     OUT2.close()
     OUT2.close()
-
 
 ### 2 ### Nucleic
 elif format_run == "nucleic" :
@@ -236,7 +216,11 @@ elif format_run == "nucleic" :
     OUT_PARTITION_gene_PLUS_codon_12_3 = open("05_partitions_gene_PLUS_codon12_3","w")
 
     ## Get bash with concatenation
-    bash_concatenation, ln, nb_locus, list_genes_position = concatenate(L_IN, SPECIES_ID_LIST)    ### DEF 11 ##
+    bash_concatenation, ln, nb_locus, list_genes_position = concatenate(list_files, species_id_list)
+
+    # for k,v in bash_concatenation.items():
+        # print k,v
+
     ln_12 = ln/3*2   ### length of the alignment when only the 2 first codon position
     ln_3 = ln/3      ### length of the alignment when only the third codon position
 
@@ -269,7 +253,6 @@ elif format_run == "nucleic" :
 
     OUT_PARTITION_gene_PLUS_codon_12_3.close()
 
-
     ## Get "ntax" for NEXUS HEADER
     nb_taxa = len(bash_concatenation.keys())
 
@@ -281,8 +264,7 @@ elif format_run == "nucleic" :
     print "\t\tTotal length of the concatenated sequences [Codon positions 1 & 2] = %d" %ln_12
     print "\t\tTotal length of the concatenated sequences [Codon position 3] = %d" %ln_3
 
-
-    ## Print NEXUS HEADER:
+    # nexus header
     OUT3.write("#NEXUS\n\n")
     OUT3.write("Begin data;\n")
     OUT3.write("\tDimensions ntax=%d nchar=%d;\n" %(nb_taxa, ln))
@@ -301,7 +283,7 @@ elif format_run == "nucleic" :
     OUT3_pos3.write("\tFormat datatype=dna gap=-;\n")
     OUT3_pos3.write("\tMatrix\n")
 
-    ## Print PHYLIP HEADER:
+    # phylip header
     OUT2.write("   %d %d\n" %(nb_taxa, ln))
     OUT2_pos12.write("   %d %d\n" %(nb_taxa, ln_12))
     OUT2_pos3.write("   %d %d\n" %(nb_taxa, ln_3))
@@ -310,13 +292,13 @@ elif format_run == "nucleic" :
     for seq_name in bash_concatenation.keys():
         seq = bash_concatenation[seq_name]
 
-        ## Filtering the sequence in case of remaining "?"
+        # Filtering the sequence in case of remaining "?"
         seq = string.replace(seq, "?", "-")
 
-        ## Get the differentes codons partitions
-        seq_pos1, seq_pos2, seq_pos12, seq_pos3 = get_codon_position(seq)    ### DEF 12 ###
+        # Get the differentes codons partitions
+        seq_pos1, seq_pos2, seq_pos12, seq_pos3 = get_codon_position(seq)
 
-        #print seq FASTA FORMAT
+        # fasta
         OUT1.write(">%s\n" %seq_name)
         OUT1.write("%s\n" %seq)
         OUT1_pos12.write(">%s\n" %seq_name)
@@ -324,7 +306,7 @@ elif format_run == "nucleic" :
         OUT1_pos3.write(">%s\n" %seq_name)
         OUT1_pos3.write("%s\n" %seq_pos3)
 
-        #print seq PHYLIP FORMAT
+        # phylip
         OUT2.write("%s\n" %seq_name)
         OUT2.write("%s\n" %seq)
         OUT2_pos12.write("%s\n" %seq_name)
@@ -332,14 +314,13 @@ elif format_run == "nucleic" :
         OUT2_pos3.write("%s\n" %seq_name)
         OUT2_pos3.write("%s\n" %seq_pos3)
 
-        #print seq NEXUS FORMAT
+        # nexus
         OUT3.write("%s" %seq_name)
         OUT3.write("      %s\n" %seq)
         OUT3_pos12.write("%s" %seq_name)
         OUT3_pos12.write("      %s\n" %seq_pos12)
         OUT3_pos3.write("%s" %seq_name)
         OUT3_pos3.write("      %s\n" %seq_pos3)
-
 
     OUT3.write("\t;\n")
     OUT3.write("End;\n")
