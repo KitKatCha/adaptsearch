@@ -50,12 +50,12 @@
             <param argument="-n" type="boolean" checked="true" truevalue="T" falsevalue="F" label="Retain original names in output files" help="option F is to output the 15 character name abbreviations (stripped of potentially problematic characters) that is used in the program" />
             <param argument="-s" type="integer" value="0" min="0" label="Number of sequences to be used in initial search for reference sequence" help="default (= 0) is to find the reference sequence by blasting all sequences against all sequences, only randomly subsampling when it thinks the blast output file might be too large" />
         </section>
-        
+
         <param name="output_format" type="select" label="Output format" help="phylip, nexus, or fasta." >
             <option value="fasta">fasta</option>
             <option value="phylip">phylip</option>
             <option value="nexus">nexus</option>
-        </param>            
+        </param>
     </inputs>
 
     <outputs>
@@ -72,69 +72,54 @@
 
     <tests>
         <test>
-            <param name="input" ftype="fasta" value="inputs/locus1_sp2.fasta" />
+            <param name="input" ftype="fasta" value="inputs/orthogroup_1_with_5_sequences.fasta" />
             <section name="advanced_option">
                 <param name="m" value="95" />
                 <param name="r" value="" />
                 <param name="x" value="" />
-                <param name="n" value="False" />
-                <param name="s" value="0" />
-            </section>
-            <param name="output_format" value="fasta" />            
-            <output name="fasta" value="outputs/locus1_sp2.fasta" />
-        </test>
-        <test>
-            <param name="input" ftype="fasta" value="inputs/locus1_sp3.fasta" />
-            <section name="advanced_option">
-                <param name="m" value="95" />
-                <param name="r" value="" />
-                <param name="x" value="" />
-                <param name="n" value="False" />
-                <param name="s" value="0" />
-            </section>
-            <param name="output_format" value="phylip" />
-            <output name="phy" value="outputs/locus1_sp3.phy" />            
-        </test>
-        <test>
-            <param name="input" ftype="fasta" value="inputs/locus3_sp2.fasta" />
-            <section name="advanced_option">
-                <param name="m" value="95" />
-                <param name="r" value="" />
-                <param name="x" value="" />
-                <param name="n" value="False" />
-                <param name="s" value="0" />
-            </section>
-            <param name="output_format" value="nexus" />            
-            <output name="nxs" value="outputs/locus3_sp2.nxs" />
-        </test>
-        <!--
-        <test>
-            <param name="input" ftype="fasta" value="inputs/locus8_sp2.fasta" />
-            <section name="advanced_option">
-                <param name="m" value="95" />
-                <param name="r" value="" />
-                <param name="x" value="" />
-                <param name="n" value="False" />
-                <param name="s" value="0" />
-            </section>
-            <param name="output_format" value="phylip" />
-            <output name="phy" value="outputs/locus8_sp2.phy" />            
-        </test>
-        -->
-        <test>
-            <param name="input" ftype="fasta" value="inputs/locus8_sp2.fasta" />
-            <section name="advanced_option">
-                <param name="m" value="95" />
-                <param name="r" value="" />
-                <param name="x" value="" />
-                <param name="n" value="False" />
+                <param name="n" value="True" />
                 <param name="s" value="0" />
             </section>
             <param name="output_format" value="fasta" />
-            <output name="phy" value="outputs/locus8_sp2.fasta" />            
+            <output name="fasta" value="outputs/orthogroup_1_with_5_sequences.fasta.out" />
+        </test>
+        <test>
+            <param name="input" ftype="fasta" value="inputs/orthogroup_2_with_5_sequences.fasta" />
+            <section name="advanced_option">
+                <param name="m" value="95" />
+                <param name="r" value="" />
+                <param name="x" value="" />
+                <param name="n" value="True" />
+                <param name="s" value="0" />
+            </section>
+            <param name="output_format" value="phylip" />
+            <output name="phy" value="outputs/orthogroup_2_with_5_sequences.fasta.phy" />
+        </test>
+        <test>
+            <param name="input" ftype="fasta" value="inputs/orthogroup_8_with_6_sequences.fasta" />
+            <section name="advanced_option">
+                <param name="m" value="95" />
+                <param name="r" value="" />
+                <param name="x" value="" />
+                <param name="n" value="True" />
+                <param name="s" value="0" />
+            </section>
+            <param name="output_format" value="nexus" />
+            <output name="nxs" value="outputs/orthogroup_8_with_6_sequences.fasta.nxs" />
+        </test>
+        <test>
+            <param name="input" ftype="fasta" value="inputs/orthogroup_9_with_6_sequences.fasta" />
+            <section name="advanced_option">
+                <param name="m" value="95" />
+                <param name="r" value="" />
+                <param name="x" value="" />
+                <param name="n" value="True" />
+                <param name="s" value="0" />
+            </section>
+            <param name="output_format" value="fasta" />
+            <output name="fasta" value="outputs/orthogroup_9_with_6_sequences.fasta.out" />
         </test>
 
-        <!--locus10_sp2.fasta    locus1_sp3.fasta  locus2_sp2.fasta  locus3_sp2.fasta  locus4_sp2.fasta  locus5_sp2.fasta  locus6_sp2.fasta  locus7_sp2.fasta  locus8_sp2.fasta  locus9_sp2.fasta-->
     </tests>
 
     <help>
@@ -172,7 +157,7 @@ The choice of several parameters for the blast is possible.
     text.
     Default is searching for best candidate.
     If entered, the sequence will be extracted, written to a separate file, and blasted against the original input file.
-  
+
  **-x : Name of sequences to be excluded from the analysis**
     text.
     names must be comma-separated.
@@ -194,8 +179,8 @@ The choice of several parameters for the blast is possible.
 
 **Outputs**
 
-The output format is 
- 
+The output format is
+
     - 'Blastalign_on_{input.name}_phylip' :
         the aligned sequences in Phylip format.
 

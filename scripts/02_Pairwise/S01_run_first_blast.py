@@ -3,6 +3,8 @@
 # Author : Victor Mataigne
 
 import itertools, argparse, os
+from Bio.Seq import Seq
+from Bio.Alphabet import IUPAC
 
 """
 Usage : ./S01_run_first_blast.py <input,files,comma,separated> <evalue> <[tblastx, diamond]>]
@@ -28,8 +30,6 @@ def main():
     if args.method == 'diamond':
         os.mkdir('translated_seqs')
         in_files_translated = []
-        from Bio.Seq import Seq
-        from Bio.Alphabet import IUPAC
 
         # From every sequence, make three sequences (translations in the three reading frames)
         print 'Translating every sequence in all reading frames ...'
@@ -95,7 +95,6 @@ def main():
 
                 # 2d blast with only best hits as db
                 print 'Running second blast with Diamond ... '
-                print sub_directory_name, pairwise[0]
                 os.system('python -W ignore S03_run_second_blast.py best_hits_db_blast1_%s %s %s %s %s' %(sub_directory_name, pairwise[0], sub_directory_name, args.evalue, args.method))
 
                 # Record only one best_hit per transcript (best of the 6 orfs)

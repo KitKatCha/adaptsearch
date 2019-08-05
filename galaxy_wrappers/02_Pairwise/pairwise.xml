@@ -10,9 +10,9 @@
 
     <requirements>
         <expand macro="python_required" />
-        <requirement type="package" version="1.65">biopython</requirement>
-        <requirement type="package" version="0.9.22">diamond</requirement>
-        <requirement type="package" version="2.2.22">blast-legacy</requirement>      
+        <requirement type="package" version="1.74">biopython</requirement>
+        <requirement type="package" version="0.9.24">diamond</requirement>
+        <requirement type="package" version="2.2.26">blast-legacy</requirement>
     </requirements>
 
     <command><![CDATA[
@@ -22,10 +22,10 @@
             #set $infiles = $infiles + $input.element_identifier + ","
         #end for
         #set $infiles = $infiles[:-1]
-        
+
         ln -s $__tool_directory__/scripts/S02_04_keep_one_hit_from_blast.py . &&
         ln -s $__tool_directory__/scripts/S03_run_second_blast.py . &&
-        ln -s $__tool_directory__/scripts/S05_find_rbh.py . &&        
+        ln -s $__tool_directory__/scripts/S05_find_rbh.py . &&
 
         python -W ignore $__tool_directory__/scripts/S01_run_first_blast.py $infiles ${e_value} $method
         > ${output};
@@ -48,99 +48,48 @@
     </outputs>
 
     <tests>
+
         <test>
-            <param name="inputs" ftype="fasta" value="inputs_tblastx/AcAcaud_trinity.fasta,inputs_tblastx/AmAmphi_trinity.fasta,inputs_tblastx/ApApomp_trinity.fasta,inputs_tblastx/PfPfiji_trinity.fasta" />
+            <param name="inputs" ftype="fasta" value="inputs/Acaud_Trinity.fasta,inputs/Amphi_Trinity.fasta,inputs/Asp1_MiSeq_trinity.fasta,inputs/Bj.fasta,inputs/Lanice_Trinity_51177.fasta,inputs/Lf.fasta"/>
             <param name="e-value" value="1e-5" />
             <param name="method" value="tblastx" />
             <output_collection name="output_fasta_dna" type="list">
-                <element name="RBH_AcAcaud_AmAmphi_dna">
-                    <assert_contents>
-                        <has_text text=">Ac5_1/1_1.000_160"/>
-                        <has_text text="GCACCGGGATGCGGATTTGCTGACGATATGGCAAAAGCATTGTCAGCGTGCGGAACCTGTTTATGTCACACCA"/>
-                        <has_text text=">Am1_1/1_1.000_160"/>
-                        <has_text text=">Ac7_1/1_1.000_160"/>
-                        <has_text text="GCACCTAGAATTACCCGAAGTTGCTTGGCAATAGCGACACCTAACGGTCGCCATGATATTTGCAGGAAGAAGG"/>
-                        <has_text text=">Am3_1/1_1.000_160"/>
-                        <has_text text=">Ac6_1/1_1.000_160"/>
-                        <has_text text="CAGCCTACCACTGAGAAGAGATACTTCAACATGTCTTACTGGGGTAGAAGTGGTGGTCGTACAGCGGGTGGTA"/>
-                        <has_text text=">Am2_1/1_1.000_160"/>
-                    </assert_contents>
-                </element>
-                <element name="RBH_AcAcaud_PfPfiji_dna">
-                    <assert_contents>
-                        <has_text text=">Ac8_1/1_1.000_160"/>
-                        <has_text text="ATCAAAGAAGAGCAACATCGAGCTACTGGCACTGGCAATGGAATCCTAATTATAGCAGAAACAAGCACTGGTTG"/>
-                        <has_text text=">Pf8_1/1_1.000_160"/>
-                        <has_text text=">Ac5_1/1_1.000_160"/>
-                        <has_text text="GCACCGGGATGCGGATTTGCTGACGATATGGCAAAAGCATTGTCAGCGTGCGGAACCTGTTTATGTCACACCAC"/>
-                        <has_text text=">Pf7_1/1_1.000_160"/>
-                    </assert_contents>
-                </element>
-                <element name="RBH_ApApomp_PfPfiji_dna">
-                    <assert_contents>
-                        <has_text text=">Ap2_1/1_1.000_160"/>
-                        <has_text text="ATACTCAGGCACACAGCATTTGTCGTACTAGGCGAGAGAGAGAGAGGAACGACTAATTGCAACCACGATTA"/>
-                        <has_text text=">Pf5_1/1_1.000_160"/>
-                        <has_text text=">Ap1_1/1_1.000_160"/>
-                        <has_text text="GGTCGCCTTATAAAAACCAATCCGAAACAGTTTTCCTTTGAAACGTGCCAAAAACCAAAAACATACTTCAA"/>
-                        <has_text text=">Pf4_1/1_1.000_160"/>
-                        <has_text text=">Ap4_1/1_1.000_135"/>
-                        <has_text text="CGGCCGCGGCGCGTCGTTCTCAGCCAAGCTGACTTCGACTTGAGCCGTCCATTCGCTTATTTACACGACGA"/>
-                        <has_text text=">Pf10_1/1_1.000_160"/>
-                        <has_text text=">Ap3_1/1_1.000_160"/>
-                        <has_text text="GCCATGCAGTACACTGGACTTCTGTTATTCTGTTTGTTTGCCTTGACGGCAGCCAAACCCGCGGAAGACCT"/>
-                        <has_text text=">Pf6_1/1_1.000_160"/>
-                    </assert_contents>
-                </element>
-                <element name="RBH_AmAmphi_PfPfiji_dna">
-                    <assert_contents>
-                        <has_text text=">Am8_1/1_1.000_160"/>
-                        <has_text text="GTATTAATAAAAGGACAAGACTATTATTTAATACCAAGAAATCTGGCCTTAATAAGCATGGTTGCTTATATCAT"/>
-                        <has_text text=">Pf9_1/1_1.000_160"/>
-                        <has_text text=">Am1_1/1_1.000_160"/>
-                        <has_text text="GCACCGGGATGCGGATTTGCTGACGATATGGCAAAAGCATTGTCAGCGTGCGGAACCTGTTTATGTCACACCA"/>
-                        <has_text text=">Pf7_1/1_1.000_160"/>
-                    </assert_contents>
-                </element>
+                <element name="RBH_Acaud_Trinity_Amphi_Trinity_dna.fasta" file="outputs_tblastx/RBH_Acaud_Trinity_Amphi_Trinity_dna.fasta" ftype="fasta"/>
+                <element name="RBH_Acaud_Trinity_Asp1_MiSeq_trinity_dna" file="outputs_tblastx/RBH_Acaud_Trinity_Asp1_MiSeq_trinity_dna.fasta" ftype="fasta"/>
+                <element name="RBH_Acaud_Trinity_Bj_dna" file="outputs_tblastx/RBH_Acaud_Trinity_Bj_dna.fasta" ftype="fasta"/>
+                <element name="RBH_Acaud_Trinity_Lanice_Trinity_51177_dna" file="outputs_tblastx/RBH_Acaud_Trinity_Lanice_Trinity_51177_dna.fasta" ftype="fasta"/>
+                <element name="RBH_Acaud_Trinity_Lf_dna" file="outputs_tblastx/RBH_Acaud_Trinity_Lf_dna.fasta" ftype="fasta"/>
+                <element name="RBH_Amphi_Trinity_Asp1_MiSeq_trinity_dna" file="outputs_tblastx/RBH_Amphi_Trinity_Asp1_MiSeq_trinity_dna.fasta" ftype="fasta"/>
+                <element name="RBH_Amphi_Trinity_Bj_dna" file="outputs_tblastx/RBH_Amphi_Trinity_Bj_dna.fasta" ftype="fasta"/>
+                <element name="RBH_Amphi_Trinity_Lanice_Trinity_51177_dna" file="outputs_tblastx/RBH_Amphi_Trinity_Lanice_Trinity_51177_dna.fasta" ftype="fasta"/>
+                <element name="RBH_Amphi_Trinity_Lf_dna" file="outputs_tblastx/RBH_Amphi_Trinity_Lf_dna.fasta" ftype="fasta"/>
+                <element name="RBH_Asp1_MiSeq_trinity_Bj_dna" file="outputs_tblastx/RBH_Asp1_MiSeq_trinity_Bj_dna.fasta" ftype="fasta"/>
+                <element name="RBH_Asp1_MiSeq_trinity_Lanice_Trinity_51177_dna" file="outputs_tblastx/RBH_Asp1_MiSeq_trinity_Lanice_Trinity_51177_dna.fasta"/>
+                <element name="RBH_Asp1_MiSeq_trinity_Lf_dna" file="outputs_tblastx/RBH_Asp1_MiSeq_trinity_Lf_dna.fasta" ftype="fasta"/>
+                <element name="RBH_Bj_Lanice_Trinity_51177_dna" file="outputs_tblastx/RBH_Bj_Lanice_Trinity_51177_dna.fasta" ftype="fasta"/>
+                <element name="RBH_Bj_Lf_dna" file="outputs_tblastx/RBH_Bj_Lf_dna.fasta" ftype="fasta"/>
+                <element name="RBH_Lanice_Trinity_51177_Lf_dna" file="outputs_tblastx/RBH_Lanice_Trinity_51177_Lf_dna.fasta" ftype="fasta"/>
             </output_collection>
         </test>
 
+
         <test>
-            <param name="inputs" ftype="fasta" value="inputs_diamond/AcAcaud_Trinity.fasta,inputs_diamond/AmAmphi_Trinity.fasta,inputs_diamond/ApApomp_Trinity.fasta,inputs_diamond/PfPfiji_Trinity.fasta" />
+            <param name="inputs" ftype="fasta" value="inputs/Acaud_Trinity.fasta,inputs/Amphi_Trinity.fasta,inputs/Asp1_MiSeq_trinity.fasta,inputs/Bj.fasta,inputs/Lanice_Trinity_51177.fasta,inputs/Lf.fasta"/>
             <param name="e-value" value="1e-5" />
             <param name="method" value="diamond" />
             <output_collection name="output_fasta_dna" type="list">
-                <element name="RBH_AcAcaud_AmAmphi_dna">
-                    <assert_contents>
-                        <has_text text=">Ac5_1/1_1.000_160"/>
-                        <has_text text="GCACCGGGATGCGGATTTGCTGACGATATGGCAAAAGCATTGTCAGCGTGCGGAACCTGTTTATGTCACACCA"/>
-                        <has_text text=">Am1_1/1_1.000_160"/>
-                        <has_text text=">Ac7_1/1_1.000_160"/>
-                        <has_text text="GCACCTAGAATTACCCGAAGTTGCTTGGCAATAGCGACACCTAACGGTCGCCATGATATTTGCAGGAAGAAGG"/>
-                        <has_text text=">Am3_1/1_1.000_160"/>
-                        <has_text text=">Ac6_1/1_1.000_160"/>
-                        <has_text text="CAGCCTACCACTGAGAAGAGATACTTCAACATGTCTTACTGGGGTAGAAGTGGTGGTCGTACAGCGGGTGGTA"/>
-                        <has_text text=">Am2_1/1_1.000_160"/>
-                    </assert_contents>
-                </element>
-                <element name="RBH_AcAcaud_ApApomp_dna">
-                    <assert_contents>
-                        <has_text text=">Ac23_1/1_1.000_366"/>
-                        <has_text text="ACTGAGGCTCGAACACAACAAAAAGGTGATGAGCAGTCAGCACTTAATAGAATATTACAGCAAGTAGCCAGTAA"/>
-                        <has_text text=">Ap46_1/1_1.000_217"/>
-                        <has_text text="CCACAACCAAGTGGCGGGTATAACAGCACCGAGGCTCGAACACAGCAAAAAGGTGATGAGCAGTCAGCTCTTAA"/>
-                    </assert_contents>
-                </element>
-                <element name="RBH_AcAcaud_PfPfiji_dna">
-                    <assert_contents>
-                        <has_text text=">Ac8_1/1_1.000_160"/>
-                        <has_text text="ATCAAAGAAGAGCAACATCGAGCTACTGGCACTGGCAATGGAATCCTAATTATAGCAGAAACAAGCACTGGTTG"/>
-                        <has_text text=">Pf8_1/1_1.000_160"/>
-                        <has_text text=">Ac5_1/1_1.000_160"/>
-                        <has_text text="GCACCGGGATGCGGATTTGCTGACGATATGGCAAAAGCATTGTCAGCGTGCGGAACCTGTTTATGTCACACCAC"/>
-                        <has_text text=">Pf7_1/1_1.000_160"/>
-                    </assert_contents>
-                </element>
+                <element name="RBH_Acaud_Trinity_Asp1_MiSeq_trinity_dna" file="outputs_diamond/RBH_Acaud_Trinity_Asp1_MiSeq_trinity_dna.fasta" ftype="fasta"/>
+                <element name="RBH_Acaud_Trinity_Bj_dna" file="outputs_diamond/RBH_Acaud_Trinity_Bj_dna.fasta" ftype="fasta"/>
+                <element name="RBH_Acaud_Trinity_Lanice_Trinity_51177_dna" file="outputs_diamond/RBH_Acaud_Trinity_Lanice_Trinity_51177_dna.fasta" ftype="fasta"/>
+                <element name="RBH_Acaud_Trinity_Lf_dna" file="outputs_diamond/RBH_Acaud_Trinity_Lf_dna.fasta" ftype="fasta"/>
+                <element name="RBH_Amphi_Trinity_Bj_dna" file="outputs_diamond/RBH_Amphi_Trinity_Bj_dna.fasta" ftype="fasta"/>
+                <element name="RBH_Asp1_MiSeq_trinity_Bj_dna" file="outputs_diamond/RBH_Asp1_MiSeq_trinity_Bj_dna.fasta" ftype="fasta"/>
+                <element name="RBH_Asp1_MiSeq_trinity_Lanice_Trinity_51177_dna" file="outputs_diamond/RBH_Asp1_MiSeq_trinity_Lanice_Trinity_51177_dna.fasta" ftype="fasta"/>
+                <element name="RBH_Asp1_MiSeq_trinity_Lf_dna" file="outputs_diamond/RBH_Asp1_MiSeq_trinity_Lf_dna.fasta" ftype="fasta"/>
+                <element name="RBH_Bj_Lanice_Trinity_51177_dna" file="outputs_diamond/RBH_Bj_Lanice_Trinity_51177_dna.fasta" ftype="fasta"/>
+                <element name="RBH_Bj_Lf_dna" file="outputs_diamond/RBH_Bj_Lf_dna.fasta" ftype="fasta"/>
+                <element name="RBH_Lanice_Trinity_51177_Lf_dna" file="outputs_diamond/RBH_Lanice_Trinity_51177_Lf_dna.fasta" ftype="fasta"/>
+                <!--
                 <element name="RBH_AmAmphi_PfPfiji_dna">
                     <assert_contents>
                         <has_text text=">Am8_1/1_1.000_160"/>
@@ -151,24 +100,7 @@
                         <has_text text=">Pf7_1/1_1.000_160"/>
                     </assert_contents>
                 </element>
-                <element name="RBH_ApApomp_PfPfiji_dna">
-                    <assert_contents>
-                        <has_text text=">Ap2_1/1_1.000_160"/>
-                        <has_text text="ATACTCAGGCACACAGCATTTGTCGTACTAGGCGAGAGAGAGAGAGGAACGACTAATTGCAACCACGATTA"/>
-                        <has_text text=">Pf5_1/1_1.000_160"/>
-                        <!--
-                        <has_text text=">Ap1_1/1_1.000_160"/>
-                        <has_text text="GGTCGCCTTATAAAAACCAATCCGAAACAGTTTTCCTTTGAAACGTGCCAAAAACCAAAAACATACTTCAA"/>
-                        <has_text text=">Pf4_1/1_1.000_160"/>
-                        <has_text text=">Ap4_1/1_1.000_160"/>
-                        <has_text text="CGGCCGCGGCGCGTCGTTCTCAGCCAAGCTGACTTCGACTTGAGCCGTCCATTCGCTTATTTACACGACGA"/>
-                        <has_text text=">Pf10_1/1_1.000_160"/>
-                        <has_text text=">Ap3_1/1_1.000_160"/>
-                        <has_text text="GCCATGCAGTACACTGGACTTCTGTTATTCTGTTTGTTTGCCTTGACGGCAGCCAAACCCGCGGAAGACCT"/>
-                        <has_text text=">Pf6_1/1_1.000_160"/>
-                        -->
-                    </assert_contents>
-                </element>
+                -->
             </output_collection>
         </test>
     </tests>
@@ -176,13 +108,13 @@
     <help>
 
  @HELP_AUTHORS@
- 
+
 <![CDATA[
 
 **Description**
 
 This tool searches for different homologous genes from pairwise comparisons between a set of fasta files (one file per species).
- 
+
 --------
 
 **Parameters**
@@ -197,7 +129,7 @@ This tool searches for different homologous genes from pairwise comparisons betw
 
     - 'Pairwise' : the general output. It gives the information about what the tool has done for each pairwise.
 
-    - 'Pairwise_DNA' : the output which contains nucleic sequences (of the pairwise) that are homologous. The sequences are in nucleic format. There are one file per couple of species, and homologous pairs are written by sets of 4 lines : 
+    - 'Pairwise_DNA' : the output which contains nucleic sequences (of the pairwise) that are homologous. The sequences are in nucleic format. There are one file per couple of species, and homologous pairs are written by sets of 4 lines :
 
 Exemple for two homologous pairs for the output file for species X/Y :
 

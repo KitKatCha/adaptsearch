@@ -38,17 +38,20 @@ def main():
 
     rbh = set(best_hit_dict_q.items()).intersection(set(reverse_best_hit_dict_db.items()))
 
-    s = args.besthits_file1.split('_')
-    suffix = s[4] + '_' + s[5]
-    out_name = 'RBH_{}_dna.fasta'.format(args.out_name_id)
-    output = open(out_name, 'w')
+    if len(rbh) > 0:
 
-    for pairwise_couple in rbh :
-        output.write('>'+pairwise_couple[0]+'\n')
-        output.write(best_h1[pairwise_couple[0]]+'\n')
-        output.write('>'+pairwise_couple[1]+'\n')
-        output.write(best_h2[pairwise_couple[1]]+'\n')
-    output.close()
+        s = args.besthits_file1.split('_')
+        suffix = s[4] + '_' + s[5]
+        out_name = 'RBH_{}_dna.fasta'.format(args.out_name_id)
+        output = open(out_name, 'w')
+
+        for pairwise_couple in rbh :
+            output.write('>'+pairwise_couple[0]+'\n')
+            output.write(best_h1[pairwise_couple[0]]+'\n')
+            output.write('>'+pairwise_couple[1]+'\n')
+            output.write(best_h2[pairwise_couple[1]]+'\n')
+
+        output.close()
 
 if __name__ == "__main__":
     main()

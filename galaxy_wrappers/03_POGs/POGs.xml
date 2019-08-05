@@ -23,8 +23,8 @@
         #end for
         #set $infiles_from_paiwise_dna = $infiles_from_paiwise_dna[:-1]
 
-		python '$__tool_directory__/scripts/pogs.py' '$infiles_from_paiwise_dna' '$minspec' 
-        
+		python '$__tool_directory__/scripts/pogs.py' '$infiles_from_paiwise_dna' '$minspec'
+
         #if $verbose=="T":
             -v
         #end if
@@ -39,7 +39,7 @@
 
  	<inputs>
         <param name="inputs_from_paiwise_dna" type="data" format="fasta" multiple="true" label="Input files from Pairwise DNA" />
-		<param name="minspec" type="integer" value="3" label="Drop orthogroups with less than n species" />	
+		<param name="minspec" type="integer" value="3" label="Drop orthogroups with less than n species" />
         <param name="verbose" type="boolean" checked="True" truevalue="T" falsevalue="F" label="Verbose" help="Display a summary table of orthogroups before paralogs filtering"/>
         <param name="paralogs" type="boolean" checked="False" truevalue="T" falsevalue="F" label="Paralogs" help="Return also orthogroups without paralogs filtering"/>
 	</inputs>
@@ -57,36 +57,38 @@
 
 	<tests>
 		<test>
-            <param name="inputs_from_paiwise_dna" ftype="fasta" value="output_pairwise/RBH_AmAmphi_AcAcaud.fasta,output_pairwise/RBH_ApApomp_AcAcaud.fasta,output_pairwise/RBH_ApApomp_AmAmphi.fasta,output_pairwise/RBH_TeTerlap_AcAcaud.fasta,output_pairwise/RBH_TeTerlap_AmAmphi.fasta,output_pairwise/RBH_TeTerlap_ApApomp.fasta"/>
-			<param name="minspec" value="3"/>
+            <param name="inputs_from_paiwise_dna" ftype="fasta" value="outputs_pairwise/RBH_Acaud_Trinity_Amphi_Trinity_dna.fasta,outputs_pairwise/RBH_Amphi_Trinity_Asp1_MiSeq_trinity_dna.fasta,outputs_pairwise/RBH_Asp1_MiSeq_trinity_Lanice_Trinity_51177_dna.fasta,outputs_pairwise/RBH_Acaud_Trinity_Asp1_MiSeq_trinity_dna.fasta,outputs_pairwise/RBH_Amphi_Trinity_Bj_dna.fasta,outputs_pairwise/RBH_Asp1_MiSeq_trinity_Lf_dna.fasta,outputs_pairwise/RBH_Acaud_Trinity_Bj_dna.fasta,outputs_pairwise/RBH_Amphi_Trinity_Lanice_Trinity_51177_dna.fasta,outputs_pairwise/RBH_Bj_Lanice_Trinity_51177_dna.fasta,outputs_pairwise/RBH_Acaud_Trinity_Lanice_Trinity_51177_dna.fasta,outputs_pairwise/RBH_Amphi_Trinity_Lf_dna.fasta,outputs_pairwise/RBH_Bj_Lf_dna.fasta,outputs_pairwise/RBH_Acaud_Trinity_Lf_dna.fasta,outputs_pairwise/RBH_Asp1_MiSeq_trinity_Bj_dna.fasta,outputs_pairwise/RBH_Lanice_Trinity_51177_Lf_dna.fasta"/>
+			<param name="minspec" value="4"/>
             <param name="verbose" value="True"/>
             <param name="paralogs" value="True"/>
-			<output name="log" value="pogs.output" />
+			<!--<output name="log" value="pogs.output" />-->
             <output_collection name="output" type="list">
-                <element name="orthogroup_1_with_4_sequences" value="outputs/orthogroup_1_with_4_sequences.fasta" />
-                <element name="orthogroup_2_with_4_sequences" value="outputs/orthogroup_2_with_4_sequences.fasta" />
-                <element name="orthogroup_3_with_3_sequences" value="outputs/orthogroup_3_with_3_sequences.fasta" />
-                <element name="orthogroup_4_with_4_sequences" value="outputs/orthogroup_4_with_4_sequences.fasta" />
-                <element name="orthogroup_5_with_3_sequences" value="outputs/orthogroup_5_with_3_sequences.fasta" />
-                <element name="orthogroup_6_with_4_sequences" value="outputs/orthogroup_6_with_4_sequences.fasta" />
-                <element name="orthogroup_7_with_3_sequences" value="outputs/orthogroup_7_with_3_sequences.fasta" />
-                <element name="orthogroup_8_with_3_sequences" value="outputs/orthogroup_8_with_3_sequences.fasta" />
-                <element name="orthogroup_9_with_3_sequences" value="outputs/orthogroup_9_with_3_sequences.fasta" />
-                <element name="orthogroup_10_with_3_sequences" value="outputs/orthogroup_10_with_3_sequences.fasta" />
+                <element name="orthogroup_1_with_6_sequences" value="outputs/orthogroup_1_with_6_sequences.fasta" ftype="fasta"/>
+                <element name="orthogroup_2_with_4_sequences" value="outputs/orthogroup_2_with_4_sequences.fasta" ftype="fasta"/>
+                <element name="orthogroup_3_with_6_sequences" value="outputs/orthogroup_3_with_6_sequences.fasta" ftype="fasta"/>
+                <element name="orthogroup_4_with_4_sequences" value="outputs/orthogroup_4_with_4_sequences.fasta" ftype="fasta"/>
+                <element name="orthogroup_5_with_4_sequences" value="outputs/orthogroup_5_with_4_sequences.fasta" ftype="fasta"/>
+                <element name="orthogroup_6_with_4_sequences" value="outputs/orthogroup_6_with_4_sequences.fasta" ftype="fasta"/>
+                <element name="orthogroup_7_with_4_sequences" value="outputs/orthogroup_7_with_4_sequences.fasta" ftype="fasta"/>
+                <element name="orthogroup_8_with_4_sequences" value="outputs/orthogroup_8_with_4_sequences.fasta" ftype="fasta"/>
+                <element name="orthogroup_9_with_4_sequences" value="outputs/orthogroup_9_with_4_sequences.fasta" ftype="fasta"/>
+                <element name="orthogroup_10_with_4_sequences" value="outputs/orthogroup_10_with_4_sequences.fasta" ftype="fasta"/>
             </output_collection>
             <output_collection name="outputPara" type="list">
-                <element name="orthogroup_1_with_13_sequences_withParalogs" value="outputs_withParalogs/orthogroup_1_with_13_sequences_withParalogs.fasta" />
-                <element name="orthogroup_2_with_7_sequences_withParalogs" value="outputs_withParalogs/orthogroup_2_with_7_sequences_withParalogs.fasta" />
-                <element name="orthogroup_3_with_3_sequences_withParalogs" value="outputs_withParalogs/orthogroup_3_with_3_sequences_withParalogs.fasta" />
-                <element name="orthogroup_4_with_7_sequences_withParalogs" value="outputs_withParalogs/orthogroup_4_with_7_sequences_withParalogs.fasta" />
-                <element name="orthogroup_5_with_3_sequences_withParalogs" value="outputs_withParalogs/orthogroup_5_with_3_sequences_withParalogs.fasta" />
+                <element name="orthogroup_1_with_12_sequences_withParalogs" value="outputs_withParalogs/orthogroup_1_with_12_sequences_withParalogs.fasta" />
+                <element name="orthogroup_2_with_5_sequences_withParalogs" value="outputs_withParalogs/orthogroup_2_with_5_sequences_withParalogs.fasta" />
+                <element name="orthogroup_3_with_9_sequences_withParalogs" value="outputs_withParalogs/orthogroup_3_with_9_sequences_withParalogs.fasta" />
+                <element name="orthogroup_4_with_5_sequences_withParalogs" value="outputs_withParalogs/orthogroup_4_with_5_sequences_withParalogs.fasta" />
+                <element name="orthogroup_5_with_4_sequences_withParalogs" value="outputs_withParalogs/orthogroup_5_with_4_sequences_withParalogs.fasta" />
                 <element name="orthogroup_6_with_4_sequences_withParalogs" value="outputs_withParalogs/orthogroup_6_with_4_sequences_withParalogs.fasta" />
-                <element name="orthogroup_7_with_3_sequences_withParalogs" value="outputs_withParalogs/orthogroup_7_with_3_sequences_withParalogs.fasta" />
-                <element name="orthogroup_8_with_5_sequences_withParalogs" value="outputs_withParalogs/orthogroup_8_with_5_sequences_withParalogs.fasta" />
-                <element name="orthogroup_9_with_3_sequences_withParalogs" value="outputs_withParalogs/orthogroup_9_with_3_sequences_withParalogs.fasta" />
+                <element name="orthogroup_7_with_5_sequences_withParalogs" value="outputs_withParalogs/orthogroup_7_with_5_sequences_withParalogs.fasta" />
+                <element name="orthogroup_8_with_4_sequences_withParalogs" value="outputs_withParalogs/orthogroup_8_with_4_sequences_withParalogs.fasta" />
+                <element name="orthogroup_9_with_6_sequences_withParalogs" value="outputs_withParalogs/orthogroup_9_with_6_sequences_withParalogs.fasta" />
                 <element name="orthogroup_10_with_4_sequences_withParalogs" value="outputs_withParalogs/orthogroup_10_with_4_sequences_withParalogs.fasta" />
+                <element name="orthogroup_11_with_4_sequences_withParalogs" value="outputs_withParalogs/orthogroup_11_with_4_sequences_withParalogs.fasta" />
             </output_collection>
 		</test>
+        <!--
         <test>
             <param name="inputs_from_paiwise_dna" ftype="fasta" value="output_pairwise/RBH_AmAmphi_AcAcaud.fasta,output_pairwise/RBH_ApApomp_AcAcaud.fasta,output_pairwise/RBH_ApApomp_AmAmphi.fasta,output_pairwise/RBH_TeTerlap_AcAcaud.fasta,output_pairwise/RBH_TeTerlap_AmAmphi.fasta,output_pairwise/RBH_TeTerlap_ApApomp.fasta"/>
             <param name="minspec" value="3"/>
@@ -94,23 +96,24 @@
             <param name="paralogs" value="False"/>
             <output name="log" value="2_pogs.output" />
             <output_collection name="output" type="list">
-                <element name="orthogroup_1_with_4_sequences" value="outputs/orthogroup_1_with_4_sequences.fasta" />
-                <element name="orthogroup_2_with_4_sequences" value="outputs/orthogroup_2_with_4_sequences.fasta" />
-                <element name="orthogroup_3_with_3_sequences" value="outputs/orthogroup_3_with_3_sequences.fasta" />
-                <element name="orthogroup_4_with_4_sequences" value="outputs/orthogroup_4_with_4_sequences.fasta" />
-                <element name="orthogroup_5_with_3_sequences" value="outputs/orthogroup_5_with_3_sequences.fasta" />
-                <element name="orthogroup_6_with_4_sequences" value="outputs/orthogroup_6_with_4_sequences.fasta" />
-                <element name="orthogroup_7_with_3_sequences" value="outputs/orthogroup_7_with_3_sequences.fasta" />
-                <element name="orthogroup_8_with_3_sequences" value="outputs/orthogroup_8_with_3_sequences.fasta" />
-                <element name="orthogroup_9_with_3_sequences" value="outputs/orthogroup_9_with_3_sequences.fasta" />
-                <element name="orthogroup_10_with_3_sequences" value="outputs/orthogroup_10_with_3_sequences.fasta" />
+                <element name="orthogroup_1_with_6_sequences" value="outputs/orthogroup_1_with_6_sequences.fasta" ftype="fasta"/>
+                <element name="orthogroup_2_with_4_sequences" value="outputs/orthogroup_2_with_4_sequences.fasta" ftype="fasta"/>
+                <element name="orthogroup_3_with_6_sequences" value="outputs/orthogroup_3_with_6_sequences.fasta" ftype="fasta"/>
+                <element name="orthogroup_4_with_4_sequences" value="outputs/orthogroup_4_with_4_sequences.fasta" ftype="fasta"/>
+                <element name="orthogroup_5_with_4_sequences" value="outputs/orthogroup_5_with_4_sequences.fasta" ftype="fasta"/>
+                <element name="orthogroup_6_with_4_sequences" value="outputs/orthogroup_6_with_4_sequences.fasta" ftype="fasta"/>
+                <element name="orthogroup_7_with_4_sequences" value="outputs/orthogroup_7_with_4_sequences.fasta" ftype="fasta"/>
+                <element name="orthogroup_8_with_4_sequences" value="outputs/orthogroup_8_with_4_sequences.fasta" ftype="fasta"/>
+                <element name="orthogroup_9_with_4_sequences" value="outputs/orthogroup_9_with_4_sequences.fasta" ftype="fasta"/>
+                <element name="orthogroup_10_with_4_sequences" value="outputs/orthogroup_10_with_4_sequences.fasta" ftype="fasta"/>
             </output_collection>
         </test>
-	</tests>	
+        -->
+	</tests>
 
 	<help>
 
-@HELP_AUTHORS@    
+@HELP_AUTHORS@
 
 <![CDATA[
 

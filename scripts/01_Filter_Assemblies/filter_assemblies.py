@@ -323,12 +323,12 @@ def main():
         print '\tFasta formatter ...'
         os.system('cat "{}" | fasta_formatter -w 0 -o "{}"'.format(name, prefix_names[0]))
 
-        # detect the assembly
+        # detect the assembler
         assembleur = os.popen('head {} -n 1'.format(prefix_names[0])).read()
 
         # formatting and filtering isoforms
         if re.search('[0-9]+_g[0-9]+_i[0-9]+', assembleur) != None:
-            print '\tDetected assembly : Trinity'
+            print '\tDetected assembler : Trinity'
             # Trinity old headers all have the form : 'c[0-9]+_g[0-9]+_i[0-9]+'
             # For the most recent version (07/2019), a second regex must be applied
             if re.search('[0-9]+_c[0-9]+_g[0-9]+_i[0-9]+', assembleur) != None :
@@ -337,11 +337,11 @@ def main():
                 dict_transcripts = format_headers_trinity(prefix_names[0], 'old')
             dict_transcripts = filter_redundancy_trinity(dict_transcripts)
         elif re.search('>Locus_[0-9]+_Transcript_[0-9]+/[0-9]+_Confidence_', assembleur) != None:
-            print '\tDetected assembly : Velvet Oases'
+            print '\tDetected assembler : Velvet Oases'
             dict_transcripts = format_headers_velvet(prefix_names[0])
             dict_transcripts = filter_redundancy_velvet(dict_transcripts)
         else :
-            raise ValueError('\tWrong assembleur (no Trinity or Velvet Oases)')
+            raise ValueError('\tWrong assembler (no Trinity or Velvet Oases)')
 
         # Pierre guillaume code for keeping the longuest ORF
         print '\tFinding the longest ORF ...'

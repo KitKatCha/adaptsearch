@@ -1,120 +1,117 @@
+Translating every sequence in all reading frames ...
+/home/mvictor/miniconda2/envs/env_adaptsearch/lib/python2.7/site-packages/Bio/Seq.py:2609: BiopythonWarning: Partial codon, len(sequence) not a multiple of three. Explicitly trim the sequence or add trailing N before translation. This may become an error in future.
+  BiopythonWarning)
+
+================
 Pair of species:
-('PfPfiji_Trinity.fasta', 'ApApomp_Trinity.fasta')
+('translated_seqs/Acaud_Trinity.fasta', 'translated_seqs/Amphi_Trinity.fasta')
+Running first blast with Diamond ...
+No hits found. Processing next species pair ...
+
+================
 Pair of species:
-('PfPfiji_Trinity.fasta', 'AmAmphi_Trinity.fasta')
+('translated_seqs/Acaud_Trinity.fasta', 'translated_seqs/Asp1_MiSeq_trinity.fasta')
+Running first blast with Diamond ...
+Keeping best hits in matches_blast1_Acaud_Trinity_Asp1_MiSeq_trinity
+Running second blast with Diamond ...
+Keeping best hits in matches_blast2_Acaud_Trinity_Asp1_MiSeq_trinity
+
+================
 Pair of species:
-('PfPfiji_Trinity.fasta', 'AcAcaud_Trinity.fasta')
+('translated_seqs/Acaud_Trinity.fasta', 'translated_seqs/Bj.fasta')
+Running first blast with Diamond ...
+Keeping best hits in matches_blast1_Acaud_Trinity_Bj
+Running second blast with Diamond ...
+Keeping best hits in matches_blast2_Acaud_Trinity_Bj
+
+================
 Pair of species:
-('ApApomp_Trinity.fasta', 'AmAmphi_Trinity.fasta')
+('translated_seqs/Acaud_Trinity.fasta', 'translated_seqs/Lanice_Trinity_51177.fasta')
+Running first blast with Diamond ...
+Keeping best hits in matches_blast1_Acaud_Trinity_Lanice_Trinity_51177
+Running second blast with Diamond ...
+Keeping best hits in matches_blast2_Acaud_Trinity_Lanice_Trinity_51177
+
+================
 Pair of species:
-('ApApomp_Trinity.fasta', 'AcAcaud_Trinity.fasta')
+('translated_seqs/Acaud_Trinity.fasta', 'translated_seqs/Lf.fasta')
+Running first blast with Diamond ...
+Keeping best hits in matches_blast1_Acaud_Trinity_Lf
+Running second blast with Diamond ...
+Keeping best hits in matches_blast2_Acaud_Trinity_Lf
+
+================
 Pair of species:
-('AmAmphi_Trinity.fasta', 'AcAcaud_Trinity.fasta')
--------------------- Pairwise PfPfiji_AmAmphi --------------------
+('translated_seqs/Amphi_Trinity.fasta', 'translated_seqs/Asp1_MiSeq_trinity.fasta')
+Running first blast with Diamond ...
+No hits found. Processing next species pair ...
 
-database : PfPfiji_Trinity.fasta
-query file : AmAmphi_Trinity.fasta
+================
+Pair of species:
+('translated_seqs/Amphi_Trinity.fasta', 'translated_seqs/Bj.fasta')
+Running first blast with Diamond ...
+Keeping best hits in matches_blast1_Amphi_Trinity_Bj
+Running second blast with Diamond ...
+Keeping best hits in matches_blast2_Amphi_Trinity_Bj
 
-***** RUN FIRST BLAST *****
+================
+Pair of species:
+('translated_seqs/Amphi_Trinity.fasta', 'translated_seqs/Lanice_Trinity_51177.fasta')
+Running first blast with Diamond ...
+No hits found. Processing next species pair ...
 
+================
+Pair of species:
+('translated_seqs/Amphi_Trinity.fasta', 'translated_seqs/Lf.fasta')
+Running first blast with Diamond ...
+Keeping best hits in matches_blast1_Amphi_Trinity_Lf
+Running second blast with Diamond ...
+Keeping best hits in matches_blast2_Amphi_Trinity_Lf
 
-database : AmAmphi_Trinity.fasta
-query file : only the sequences of PfPfiji_Trinity.fasta which matched during the last BLAST
+================
+Pair of species:
+('translated_seqs/Asp1_MiSeq_trinity.fasta', 'translated_seqs/Bj.fasta')
+Running first blast with Diamond ...
+Keeping best hits in matches_blast1_Asp1_MiSeq_trinity_Bj
+Running second blast with Diamond ...
+Keeping best hits in matches_blast2_Asp1_MiSeq_trinity_Bj
 
-***** RUN SECOND BLAST *****
+================
+Pair of species:
+('translated_seqs/Asp1_MiSeq_trinity.fasta', 'translated_seqs/Lanice_Trinity_51177.fasta')
+Running first blast with Diamond ...
+Keeping best hits in matches_blast1_Asp1_MiSeq_trinity_Lanice_Trinity_51177
+Running second blast with Diamond ...
+Keeping best hits in matches_blast2_Asp1_MiSeq_trinity_Lanice_Trinity_51177
 
+================
+Pair of species:
+('translated_seqs/Asp1_MiSeq_trinity.fasta', 'translated_seqs/Lf.fasta')
+Running first blast with Diamond ...
+Keeping best hits in matches_blast1_Asp1_MiSeq_trinity_Lf
+Running second blast with Diamond ...
+Keeping best hits in matches_blast2_Asp1_MiSeq_trinity_Lf
 
-Number of pairwises parsed = 2 
+================
+Pair of species:
+('translated_seqs/Bj.fasta', 'translated_seqs/Lanice_Trinity_51177.fasta')
+Running first blast with Diamond ...
+Keeping best hits in matches_blast1_Bj_Lanice_Trinity_51177
+Running second blast with Diamond ...
+Keeping best hits in matches_blast2_Bj_Lanice_Trinity_51177
 
+================
+Pair of species:
+('translated_seqs/Bj.fasta', 'translated_seqs/Lf.fasta')
+Running first blast with Diamond ...
+Keeping best hits in matches_blast1_Bj_Lf
+Running second blast with Diamond ...
+Keeping best hits in matches_blast2_Bj_Lf
 
-
--------------------- Pairwise AmAmphi_AcAcaud --------------------
-
-database : AmAmphi_Trinity.fasta
-query file : AcAcaud_Trinity.fasta
-
-***** RUN FIRST BLAST *****
-
-
-database : AcAcaud_Trinity.fasta
-query file : only the sequences of AmAmphi_Trinity.fasta which matched during the last BLAST
-
-***** RUN SECOND BLAST *****
-
-
-Number of pairwises parsed = 3 
-
-
-
--------------------- Pairwise ApApomp_AmAmphi --------------------
-
-database : ApApomp_Trinity.fasta
-query file : AmAmphi_Trinity.fasta
-
-***** RUN FIRST BLAST *****
-
-
-database : AmAmphi_Trinity.fasta
-query file : only the sequences of ApApomp_Trinity.fasta which matched during the last BLAST
-
-***** RUN SECOND BLAST *****
-
-
-Number of pairwises parsed = 0 
-
-
-
--------------------- Pairwise PfPfiji_ApApomp --------------------
-
-database : PfPfiji_Trinity.fasta
-query file : ApApomp_Trinity.fasta
-
-***** RUN FIRST BLAST *****
-
-
-database : ApApomp_Trinity.fasta
-query file : only the sequences of PfPfiji_Trinity.fasta which matched during the last BLAST
-
-***** RUN SECOND BLAST *****
-
-
-Number of pairwises parsed = 5 
-
-
-
--------------------- Pairwise PfPfiji_AcAcaud --------------------
-
-database : PfPfiji_Trinity.fasta
-query file : AcAcaud_Trinity.fasta
-
-***** RUN FIRST BLAST *****
-
-
-database : AcAcaud_Trinity.fasta
-query file : only the sequences of PfPfiji_Trinity.fasta which matched during the last BLAST
-
-***** RUN SECOND BLAST *****
-
-
-Number of pairwises parsed = 2 
-
-
-
--------------------- Pairwise ApApomp_AcAcaud --------------------
-
-database : ApApomp_Trinity.fasta
-query file : AcAcaud_Trinity.fasta
-
-***** RUN FIRST BLAST *****
-
-
-database : AcAcaud_Trinity.fasta
-query file : only the sequences of ApApomp_Trinity.fasta which matched during the last BLAST
-
-***** RUN SECOND BLAST *****
-
-
-Number of pairwises parsed = 1 
-
-
-
+================
+Pair of species:
+('translated_seqs/Lanice_Trinity_51177.fasta', 'translated_seqs/Lf.fasta')
+Running first blast with Diamond ...
+Keeping best hits in matches_blast1_Lanice_Trinity_51177_Lf
+Running second blast with Diamond ...
+Keeping best hits in matches_blast2_Lanice_Trinity_51177_Lf

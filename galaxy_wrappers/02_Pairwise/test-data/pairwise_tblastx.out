@@ -1,0 +1,120 @@
+
+================
+Pair of species:
+('Acaud_Trinity.fasta', 'Amphi_Trinity.fasta')
+Running first tblastx ...
+Keeping best hits in matches_blast1_Acaud_Trinity_Amphi_Trinity
+Running second blast with Diamond ...
+Keeping best hits in matches_blast2_Acaud_Trinity_Amphi_Trinity
+
+================
+Pair of species:
+('Acaud_Trinity.fasta', 'Asp1_MiSeq_trinity.fasta')
+Running first tblastx ...
+Keeping best hits in matches_blast1_Acaud_Trinity_Asp1_MiSeq_trinity
+Running second blast with Diamond ...
+Keeping best hits in matches_blast2_Acaud_Trinity_Asp1_MiSeq_trinity
+
+================
+Pair of species:
+('Acaud_Trinity.fasta', 'Bj.fasta')
+Running first tblastx ...
+Keeping best hits in matches_blast1_Acaud_Trinity_Bj
+Running second blast with Diamond ...
+Keeping best hits in matches_blast2_Acaud_Trinity_Bj
+
+================
+Pair of species:
+('Acaud_Trinity.fasta', 'Lanice_Trinity_51177.fasta')
+Running first tblastx ...
+Keeping best hits in matches_blast1_Acaud_Trinity_Lanice_Trinity_51177
+Running second blast with Diamond ...
+Keeping best hits in matches_blast2_Acaud_Trinity_Lanice_Trinity_51177
+
+================
+Pair of species:
+('Acaud_Trinity.fasta', 'Lf.fasta')
+Running first tblastx ...
+Keeping best hits in matches_blast1_Acaud_Trinity_Lf
+Running second blast with Diamond ...
+Keeping best hits in matches_blast2_Acaud_Trinity_Lf
+
+================
+Pair of species:
+('Amphi_Trinity.fasta', 'Asp1_MiSeq_trinity.fasta')
+Running first tblastx ...
+Keeping best hits in matches_blast1_Amphi_Trinity_Asp1_MiSeq_trinity
+Running second blast with Diamond ...
+Keeping best hits in matches_blast2_Amphi_Trinity_Asp1_MiSeq_trinity
+
+================
+Pair of species:
+('Amphi_Trinity.fasta', 'Bj.fasta')
+Running first tblastx ...
+Keeping best hits in matches_blast1_Amphi_Trinity_Bj
+Running second blast with Diamond ...
+Keeping best hits in matches_blast2_Amphi_Trinity_Bj
+
+================
+Pair of species:
+('Amphi_Trinity.fasta', 'Lanice_Trinity_51177.fasta')
+Running first tblastx ...
+Keeping best hits in matches_blast1_Amphi_Trinity_Lanice_Trinity_51177
+Running second blast with Diamond ...
+Keeping best hits in matches_blast2_Amphi_Trinity_Lanice_Trinity_51177
+
+================
+Pair of species:
+('Amphi_Trinity.fasta', 'Lf.fasta')
+Running first tblastx ...
+Keeping best hits in matches_blast1_Amphi_Trinity_Lf
+Running second blast with Diamond ...
+Keeping best hits in matches_blast2_Amphi_Trinity_Lf
+
+================
+Pair of species:
+('Asp1_MiSeq_trinity.fasta', 'Bj.fasta')
+Running first tblastx ...
+Keeping best hits in matches_blast1_Asp1_MiSeq_trinity_Bj
+Running second blast with Diamond ...
+Keeping best hits in matches_blast2_Asp1_MiSeq_trinity_Bj
+
+================
+Pair of species:
+('Asp1_MiSeq_trinity.fasta', 'Lanice_Trinity_51177.fasta')
+Running first tblastx ...
+Keeping best hits in matches_blast1_Asp1_MiSeq_trinity_Lanice_Trinity_51177
+Running second blast with Diamond ...
+Keeping best hits in matches_blast2_Asp1_MiSeq_trinity_Lanice_Trinity_51177
+
+================
+Pair of species:
+('Asp1_MiSeq_trinity.fasta', 'Lf.fasta')
+Running first tblastx ...
+Keeping best hits in matches_blast1_Asp1_MiSeq_trinity_Lf
+Running second blast with Diamond ...
+Keeping best hits in matches_blast2_Asp1_MiSeq_trinity_Lf
+
+================
+Pair of species:
+('Bj.fasta', 'Lanice_Trinity_51177.fasta')
+Running first tblastx ...
+Keeping best hits in matches_blast1_Bj_Lanice_Trinity_51177
+Running second blast with Diamond ...
+Keeping best hits in matches_blast2_Bj_Lanice_Trinity_51177
+
+================
+Pair of species:
+('Bj.fasta', 'Lf.fasta')
+Running first tblastx ...
+Keeping best hits in matches_blast1_Bj_Lf
+Running second blast with Diamond ...
+Keeping best hits in matches_blast2_Bj_Lf
+
+================
+Pair of species:
+('Lanice_Trinity_51177.fasta', 'Lf.fasta')
+Running first tblastx ...
+Keeping best hits in matches_blast1_Lanice_Trinity_51177_Lf
+Running second blast with Diamond ...
+Keeping best hits in matches_blast2_Lanice_Trinity_51177_Lf

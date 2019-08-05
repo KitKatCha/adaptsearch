@@ -12,12 +12,12 @@
 		<expand macro="python_required" />
 	</requirements>
 
-  	<command><![CDATA[        
+  	<command><![CDATA[
         #for $input in $inputs
             ln -s '$input' '$input.element_identifier';
             echo '$input.element_identifier' >> list_files;
         #end for
-        
+
         ln -s $__tool_directory__/scripts/dico.py . &&
 
         python $__tool_directory__/scripts/S01_find_orf_on_multiple_alignment.py
@@ -168,7 +168,7 @@
             </section>
             <param name="out_BESTORF" value="both" />
             <param name="out_CDS" value="both" />
-            <param name="out_CDS_filter" value="both" />			
+            <param name="out_CDS_filter" value="both" />
             <output_collection name="output_BESTORF_aa" type="list" count="4">
                 <element name="orthogroup_1_with_3_species" value="outputs_ORF_Search_04_Best_ORF_aa/test2/orthogroup_1_with_3_species.fasta" />
                 <element name="orthogroup_6_with_2_species" value="outputs_ORF_Search_04_Best_ORF_aa/test2/orthogroup_6_with_2_species.fasta" />
@@ -180,7 +180,7 @@
                 <element name="orthogroup_6_with_2_species" value="outputs_ORF_Search_04_Best_ORF_nuc/test2/orthogroup_6_with_2_species.fasta" />
                 <element name="orthogroup_7_with_3_species" value="outputs_ORF_Search_04_Best_ORF_nuc/test2/orthogroup_7_with_3_species.fasta" />
                 <element name="orthogroup_14_with_2_species" value="outputs_ORF_Search_04_Best_ORF_nuc/test2/orthogroup_14_with_2_species.fasta" />
-            </output_collection>            
+            </output_collection>
             <output_collection name="output_filter_aa" type="list" count="1">
                 <element name="orthogroup_14_with_2_species" value="outputs_ORF_Search_08_CDS_without_indel_aa/test2/orthogroup_14_with_2_species.fasta" />
             </output_collection>
@@ -213,11 +213,11 @@ Input files : (multiple) fasta files with nucleic aligned sequences.
     - methionine : choose to consider the methionine in the search of CDS.
         yes/no.
 
-    - 'Minimal number of species in each locus'        
+    - 'Minimal number of species in each locus'
         Default : 10 (integer).
 
     - 'min_length_seq' :
-        minimal length of the sequence (in amino acids).        
+        minimal length of the sequence (in amino acids).
         when the removal of the indel is done, the minimal length equals : previous length - 20.
         for example if you choose 50 for the minimal length, the actual length equals 30.
         Default : 50 (integer).

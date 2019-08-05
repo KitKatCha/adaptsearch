@@ -48,45 +48,35 @@
     </outputs>
 
 	<tests>
+        <!--
         <test>
-            <param name="inputs" ftype="fasta" value="trinity/Pfiji_trinity.fasta,trinity/Apomp_trinity.fasta,trinity/Amphi_trinity.fasta,trinity/Acaud_trinity.fasta,velvet/Pg_transcriptome_90109.fasta,velvet/Ap_transcriptome_35099.fasta,velvet/Ac_transcriptome_25591.fasta" />
+            <param name="inputs" ftype="fasta" value="Pfiji_trinity.fasta,Apomp_trinity.fasta,Amphi_trinity.fasta,Acaud_trinity.fasta,Pg_transcriptome_90109.fasta,Ap_transcriptome_35099.fasta,Ac_transcriptome_25591.fasta"/>
             <param name="percent_identity" value="100" />
             <param name="overlap_length" value="60" />
             <param name="length_seq_max" value="100" />
             <output name="log" value="trinity_and_velvet_up.output" />
             <output_collection name="output_fasta" type="list">
-                <element name="AcAc_transcriptome_25591" value="velvet_out/AcAc_transcriptome_25591.fasta" />
-                <element name="ApAp_transcriptome_35099" value="velvet_out/ApAp_transcriptome_35099.fasta" />
-                <element name="PgPg_transcriptome_90109" value="velvet_out/PgPg_transcriptome_90109.fasta" />
-                <element name="AcAcaud_trinity" value="trinity_out/AcAcaud_trinity.fasta" />
-                <element name="AmAmphi_trinity" value="trinity_out/AmAmphi_trinity.fasta" />
-                <element name="ApApomp_trinity" value="trinity_out/ApApomp_trinity.fasta" />
-                <element name="PfPfiji_trinity" value="trinity_out/PfPfiji_trinity.fasta" />
+                <element name="Ac_transcriptome_25591" value="velvet_out/Ac_transcriptome_25591.fasta" />
+                <element name="Ap_transcriptome_35099" value="velvet_out/Ap_transcriptome_35099.fasta" />
+                <element name="Pg_transcriptome_90109" value="velvet_out/Pg_transcriptome_90109.fasta" />
+                <element name="Acaud_trinity" value="trinity_out/Acaud_trinity.fasta" />
+                <element name="Amphi_trinity" value="trinity_out/Amphi_trinity.fasta" />
+                <element name="Apomp_trinity" value="trinity_out/Apomp_trinity.fasta" />
+                <element name="Pfiji_trinity" value="trinity_out/Pfiji_trinity.fasta" />
             </output_collection>
         </test>
+        -->
         <test>
-            <param name="inputs" ftype="fasta" value="trinity/Pfiji_trinity.fasta,trinity/Apomp_trinity.fasta,trinity/Amphi_trinity.fasta,trinity/Acaud_trinity.fasta" />
+            <param name="inputs" ftype="fasta" value="inputs/Ac_transcriptome.fasta,inputs/Amphi_trinity.fasta,inputs/Lanice.fasta,inputs/Pfiji_Trinitylast.fasta,inputs/Pg_transcriptome.fasta"/>
             <param name="percent_identity" value="100" />
             <param name="overlap_length" value="60" />
             <param name="length_seq_max" value="100" />
-            <output name="log" value="trinity_up.output" />
             <output_collection name="output_fasta" type="list">
-                <element name="AcAcaud_trinity" value="trinity_out/AcAcaud_trinity.fasta" />
-                <element name="AmAmphi_trinity" value="trinity_out/AmAmphi_trinity.fasta" />
-                <element name="ApApomp_trinity" value="trinity_out/ApApomp_trinity.fasta" />
-                <element name="PfPfiji_trinity" value="trinity_out/PfPfiji_trinity.fasta" />
-            </output_collection>
-        </test>
-        <test>
-            <param name="inputs" ftype="fasta" value="velvet/Pg_transcriptome_90109.fasta,velvet/Ap_transcriptome_35099.fasta,velvet/Ac_transcriptome_25591.fasta" />
-            <param name="percent_identity" value="100" />
-            <param name="overlap_length" value="60" />
-            <param name="length_seq_max" value="100" />
-            <output name="log" value="velvet_up.output" />
-            <output_collection name="output_fasta" type="list">
-                <element name="AcAc_transcriptome_25591" value="velvet_out/AcAc_transcriptome_25591.fasta" />
-                <element name="ApAp_transcriptome_35099" value="velvet_out/ApAp_transcriptome_35099.fasta" />
-                <element name="PgPg_transcriptome_90109" value="velvet_out/PgPg_transcriptome_90109.fasta" />
+                <element name="Amphi_trinity" value="outputs/Amphi_trinity.fasta" />
+                <element name="Ac_transcriptome" value="outputs/Ac_transcriptome.fasta" />
+                <element name="Lanice" value="outputs/Lanice.fasta" />
+                <element name="Pfiji_Trinitylast" value="outputs/Pfiji_Trinitylast.fasta" />
+                <element name="Pg_transcriptome" value="outputs/Pg_transcriptome.fasta" />
             </output_collection>
         </test>
 

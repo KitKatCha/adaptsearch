@@ -1,0 +1,12 @@
+#NEXUS
+[Aligned to seq Lf1508307001161 by BlastAlign. We have excluded sequences with more than 95% gaps]
+BEGIN DATA;
+dimensions ntax=4 nchar=561;
+format gap=- datatype=DNA;
+matrix
+Lf_1508_3_0.700_1161	gtggactacatgaccaagttggacgcggaccgcgcaatcaaaagtctgaatggacttcagctgcagaacaagacaatcaaggtagcattagcccggcatggccagaacatcaaaggtgctggtgctggtggcttcggcggaggcatgccacgtggtggccgaggtggacgcggcggccctgttggccctgttcgtaaccagcgtttcaacaaccgctttaacccgatgaactctggtgctggtggacctggagcaaacatggccaacaacagcttccagattaataacgaaggcagtggagacgcagagggcggctatgtgctcttcgtctacaatattggattggaggctgacgagcggtcactatggcagctattctcaccttttggcacgattcagaaagtgaatgtgattcgtgattaccagaagaaccagtgtaaaggatacggctttgtcaccatgaccaactacacagaagcagagcaagccattgctcaactcaacggatatcgctacctgacaaaaccactgcaggtctcttttaaatcagacaagcaaaag
+Bj_4456_1_1.000_522	------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ggccccgtaggcccggttcgtaaccaacgcttcaacaaccgctttaacccgatgaactcgggcggagggggaccaggggctaacatggccaacaac---ttccagatcagcaacgatggcagtggggatgcggagggcggctatgtgctcttcgtctacaacattggcttggaggctgatgagcgatcgctatggcaactgttttcgcctttcggtacgatccagaaggtgaatgtgattcgcgactaccagaagaaccagtgcaaaggctacggcttcgtcaccatgaccaactacgcagaggccgagcaagctattgctcaactcaacggataccgctacctgaccaagccgctgcaggtgtcgtttaagtcagacaagcaaaag
+Lanice_Trinity_51177_8289_g1_i1_507	----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------tatggcagctattctcaccgttcggaacggtccagaaagtcaacgtgat----------------------------------------------------------------------------------------------------------------------------------------------------
+Asp1_MiSeq_trinity_14123_g1_i2_1161	----------------------------------------------tgaatggactgcgactgcagaacaaaacaatcaaggt----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+;
+end;

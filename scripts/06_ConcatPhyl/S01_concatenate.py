@@ -34,7 +34,7 @@ def dico(file_in, species_id_list):
 Parses all alignment files and concatenate all sequences to make a 'super-alignment'
 
 Args:
-    - list_files (list) all the files names (retrived previously from an input file)
+    - list_files (list) all the alignment files names (retrived previously from an input file)
     - species_id_list (list) : all the species identifier (basically the origin
     name of the fasta file, without .extension)
 """
