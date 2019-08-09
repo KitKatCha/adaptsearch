@@ -137,10 +137,10 @@ with open(sys.argv[3], 'r') as f:
 ### 1 ### Proteic
 if format_run == "proteic" :
 
-    OUT1 = open("02_Concatenation_aa.fas", "w")
-    OUT2 = open("02_Concatenation_aa.phy", "w")
-    OUT3 = open("02_Concatenation_aa.nex", "w")
-    OUT_PARTITION_gene_AA = open("06_partitions_gene_AA","w")
+    OUT1 = open("concatenation_aa.fas", "w")
+    OUT2 = open("concatenation_aa.phy", "w")
+    OUT3 = open("concatenation_aa.nex", "w")
+    OUT_PARTITION_gene_AA = open("partitions_gene_AA","w")
 
     # Get bash with concatenation
     bash_concatenation, ln, nb_locus, list_genes_position= concatenate(list_files, species_id_list)
@@ -199,21 +199,21 @@ if format_run == "proteic" :
 ### 2 ### Nucleic
 elif format_run == "nucleic" :
 
-    OUT1 = open("03_Concatenation_nuc.fas", "w")
-    OUT2 = open("03_Concatenation_nuc.phy", "w")
-    OUT3 = open("03_Concatenation_nuc.nex", "w")
+    OUT1 = open("concatenation_nuc.fas", "w")
+    OUT2 = open("concatenation_nuc.phy", "w")
+    OUT3 = open("concatenation_nuc.nex", "w")
 
-    OUT1_pos12 = open("03_Concatenation_pos12_nuc.fas", "w")
-    OUT2_pos12 = open("03_Concatenation_pos12_nuc.phy", "w")
-    OUT3_pos12 = open("03_Concatenation_pos12_nuc.nex", "w")
+    OUT1_pos12 = open("concatenation_pos12_nuc.fas", "w")
+    OUT2_pos12 = open("concatenation_pos12_nuc.phy", "w")
+    OUT3_pos12 = open("concatenation_pos12_nuc.nex", "w")
 
-    OUT1_pos3 = open("03_Concatenation_pos3_nuc.fas", "w")
-    OUT2_pos3 = open("03_Concatenation_pos3_nuc.phy", "w")
-    OUT3_pos3 = open("03_Concatenation_pos3_nuc.nex", "w")
+    OUT1_pos3 = open("concatenation_pos3_nuc.fas", "w")
+    OUT2_pos3 = open("concatenation_pos3_nuc.phy", "w")
+    OUT3_pos3 = open("concatenation_pos3_nuc.nex", "w")
 
-    OUT_PARTITION_codon_12_3 = open("05_partitions_codon12_3","w")
-    OUT_PARTITION_gene_NUC = open("05_partitions_gene_NUC","w")
-    OUT_PARTITION_gene_PLUS_codon_12_3 = open("05_partitions_gene_PLUS_codon12_3","w")
+    OUT_PARTITION_codon_12_3 = open("partitions_codon12_3","w")
+    OUT_PARTITION_gene_NUC = open("partitions_gene_NUC","w")
+    OUT_PARTITION_gene_PLUS_codon_12_3 = open("partitions_gene_PLUS_codon12_3","w")
 
     ## Get bash with concatenation
     bash_concatenation, ln, nb_locus, list_genes_position = concatenate(list_files, species_id_list)

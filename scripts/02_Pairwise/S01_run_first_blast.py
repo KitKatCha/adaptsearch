@@ -108,10 +108,10 @@ def main():
             os.system('mv log_diamond.log blast_%s' %sub_directory_name)
             os.system('rm -f *.dmnd')
 
-            # Those files exist obly if hits were found during the first blast
+            # Those files exist only if hits were found during the first blast
             if os.path.getsize('matches_blast1_%s' %sub_directory_name) != 0:
                 os.system('mv *best_hits* ./blast_%s' %sub_directory_name)
-                os.system('mv RBH* outputs_RBH_dna')
+                #os.system('mv RBH* outputs_RBH_dna')
 
             os.system('mv matches_blast* ./blast_%s' %(sub_directory_name))
 
@@ -164,12 +164,14 @@ def main():
             os.system('rm -f *.nsi')
             os.system('rm -f *.nsq')
 
-            # Those files exist obly if hits were found during the first blast
+            # Those files exist only if hits were found during the first blast
             if os.path.getsize('matches_blast1_%s' %sub_directory_name) != 0:
                 os.system('mv *best_hits* ./blast_%s' %sub_directory_name)
-                os.system('mv RBH* outputs_RBH_dna')
+                # os.system('mv RBH* outputs_RBH_dna')
 
             os.system('mv matches_blast* ./blast_%s' %(sub_directory_name))
+
+    os.system('mv RBH* outputs_RBH_dna')
 
 if __name__ == "__main__":
     main()

@@ -1,4 +1,4 @@
-<tool name="Pairwise" id="pairwise" version="2.1.1">
+<tool name="Pairwise" id="pairwise" version="2.1.2">
 
     <description>
         Find homologous couples by blast with RBH
@@ -54,7 +54,7 @@
             <param name="e-value" value="1e-5" />
             <param name="method" value="tblastx" />
             <output_collection name="output_fasta_dna" type="list">
-                <element name="RBH_Acaud_Trinity_Amphi_Trinity_dna.fasta" file="outputs_tblastx/RBH_Acaud_Trinity_Amphi_Trinity_dna.fasta" ftype="fasta"/>
+                <element name="RBH_Acaud_Trinity_Amphi_Trinity_dna" file="outputs_tblastx/RBH_Acaud_Trinity_Amphi_Trinity_dna.fasta" ftype="fasta"/>
                 <element name="RBH_Acaud_Trinity_Asp1_MiSeq_trinity_dna" file="outputs_tblastx/RBH_Acaud_Trinity_Asp1_MiSeq_trinity_dna.fasta" ftype="fasta"/>
                 <element name="RBH_Acaud_Trinity_Bj_dna" file="outputs_tblastx/RBH_Acaud_Trinity_Bj_dna.fasta" ftype="fasta"/>
                 <element name="RBH_Acaud_Trinity_Lanice_Trinity_51177_dna" file="outputs_tblastx/RBH_Acaud_Trinity_Lanice_Trinity_51177_dna.fasta" ftype="fasta"/>
@@ -89,18 +89,6 @@
                 <element name="RBH_Bj_Lanice_Trinity_51177_dna" file="outputs_diamond/RBH_Bj_Lanice_Trinity_51177_dna.fasta" ftype="fasta"/>
                 <element name="RBH_Bj_Lf_dna" file="outputs_diamond/RBH_Bj_Lf_dna.fasta" ftype="fasta"/>
                 <element name="RBH_Lanice_Trinity_51177_Lf_dna" file="outputs_diamond/RBH_Lanice_Trinity_51177_Lf_dna.fasta" ftype="fasta"/>
-                <!--
-                <element name="RBH_AmAmphi_PfPfiji_dna">
-                    <assert_contents>
-                        <has_text text=">Am8_1/1_1.000_160"/>
-                        <has_text text="GTATTAATAAAAGGACAAGACTATTATTTAATACCAAGAAATCTGGCCTTAATAAGCATGGTTGCTTATATCAT"/>
-                        <has_text text=">Pf9_1/1_1.000_160"/>
-                        <has_text text=">Am1_1/1_1.000_160"/>
-                        <has_text text="GCACCGGGATGCGGATTTGCTGACGATATGGCAAAAGCATTGTCAGCGTGCGGAACCTGTTTATGTCACACCA"/>
-                        <has_text text=">Pf7_1/1_1.000_160"/>
-                    </assert_contents>
-                </element>
-                -->
             </output_collection>
         </test>
     </tests>

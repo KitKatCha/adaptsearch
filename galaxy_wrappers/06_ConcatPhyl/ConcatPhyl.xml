@@ -1,4 +1,4 @@
-<tool name="ConcatPhyl" id="concatphyl" version="2.0.2">
+<tool name="ConcatPhyl" id="concatphyl" version="2.0.1">
 
 	<description>
 		Concatenation and phylogeny
@@ -20,13 +20,13 @@
             #set $infiles_filter_assemblies = $infiles_filter_assemblies + $input_filter_assemblie.element_identifier + ","
         #end for
         #set $infiles_filter_assemblies = $infiles_filter_assemblies[:-1]
-        
+
         #for $input_alignment in $input_alignments
             ln -s '$input_alignment' '$input_alignment.element_identifier';
-            echo '$input_alignment.element_identifier' >> list_files;            
-        #end for        
+            echo '$input_alignment.element_identifier' >> list_files;
+        #end for
 
-        python $__tool_directory__/scripts/S01_concatenate.py 
+        python $__tool_directory__/scripts/S01_concatenate.py
 
         $infiles_filter_assemblies
 
@@ -37,22 +37,22 @@
         #end if
 
         list_files
-        
+
         > ${output};
 
         raxmlHPC -n galaxy_run
         #if $format.format_run == "nucleic" :
-            ##-q 05_partitions_gene_NUC
-            -s "03_Concatenation_nuc.phy"
+            ##-q partitions_gene_NUC
+            -s "concatenation_nuc.phy"
             -m $format.base_model
         #elif $format.format_run == "proteic" :
-            ##-q 06_partitions_gene_AA
-            -s 02_Concatenation_aa.phy
+            ##-q partitions_gene_AA
+            -s concatenation_aa.phy
             -m $format.base_model$format.aa_search_matrix
         #end if
 
         -p $random_seed
-        
+
         #if $number_of_runs !="" and $number_of_runs_bootstop =="":
             -N $number_of_runs
             -x $rapid_bootstrap_random_seed
@@ -78,7 +78,7 @@
 				<option value="proteic">Proteic format</option>
 			</param>
 
-			<when value="nucleic">				
+			<when value="nucleic">
 		    	<param name="base_model" type="select" label="Substitution Model">
 		        	<option value="GTRCAT">GTRCAT</option>
 		        	<option value="GTRCATI">GTRCATI</option>
@@ -87,7 +87,7 @@
 		   		</param>
 			</when>
 
-			<when value="proteic">			
+			<when value="proteic">
 		    	<param name="base_model" type="select" label="Substitution Model (-m)">
 					<option value="PROTCAT" selected="true">PROTCAT</option>
 					<option value="PROTCATI">PROTCATI</option>
@@ -164,37 +164,37 @@
 			<option value="phylip">Phylip format</option>
 			<option value="nexus">Nexus format</option>
 		</param>
-		
+
 		<param name="raxml1" type="boolean" checked="True" label="Do you want the output of RAxML : best tree ? " />
-		<param name="raxml3" type="boolean" label="Do you want the output of RAxML : bi-partition ? " />
-		<param name="raxml4" type="boolean" label="Do you want the output of RAxML : bootstrap ? " help="Only if the option 'rapid bootsptrap' is chosen. When you don't want to choose your options, this output is accessible"/>
+		<param name="raxml2" type="boolean" label="Do you want the output of RAxML : bi-partition ? " />
+		<param name="raxml3" type="boolean" label="Do you want the output of RAxML : bootstrap ? " help="Only if the option 'rapid bootsptrap' is chosen. When you don't want to choose your options, this output is accessible"/>
 
 	</inputs>
 
 	<outputs>
 		<data name="output" format="txt" label="Phylogeny"/>
 
-		<data name="out_fasta_aa" format="fasta" label="Phylogeny_concatenation_fasta_aa" from_work_dir="02_Concatenation_aa.fas">
+		<data name="out_fasta_aa" format="fasta" label="Phylogeny_concatenation_fasta_aa" from_work_dir="concatenation_aa.fas">
 			<filter>format['format_run'] == "proteic" and out == "fasta"</filter>
 		</data>
 
-		<data name="out_phylip_aa" format="phylip" label="Phylogeny_concatenation_phylip_aa" from_work_dir="02_Concatenation_aa.phy">
+		<data name="out_phylip_aa" format="phylip" label="Phylogeny_concatenation_phylip_aa" from_work_dir="concatenation_aa.phy">
 			<filter>format['format_run'] == "proteic" and out == "phylip"</filter>
 		</data>
 
-		<data name="out_nexus_aa" format="nexus" label="Phylogeny_concatenation_nexus_aa" from_work_dir="02_Concatenation_aa.nex">
+		<data name="out_nexus_aa" format="nexus" label="Phylogeny_concatenation_nexus_aa" from_work_dir="concatenation_aa.nex">
 			<filter>format['format_run'] == "proteic" and out == "nexus"</filter>
 		</data>
 
-		<data name="out_fasta_nuc" format="fasta" label="Phylogeny_concatenation_fasta_nuc" from_work_dir="03_Concatenation_nuc.fas">
+		<data name="out_fasta_nuc" format="fasta" label="Phylogeny_concatenation_fasta_nuc" from_work_dir="concatenation_nuc.fas">
 			<filter>format['format_run'] == "nucleic" and out == "fasta"</filter>
 		</data>
 
-		<data name="out_phylip_nuc" format="phylip" label="Phylogeny_concatenation_phylip_nuc" from_work_dir="03_Concatenation_nuc.phy">
+		<data name="out_phylip_nuc" format="phylip" label="Phylogeny_concatenation_phylip_nuc" from_work_dir="concatenation_nuc.phy">
 			<filter>format['format_run'] == "nucleic" and out == "phylip"</filter>
 		</data>
 
-		<data name="out_nexus_nuc" format="nexus" label="Phylogeny_concatenation_nexus_nuc" from_work_dir="03_Concatenation_nuc.nex">
+		<data name="out_nexus_nuc" format="nexus" label="Phylogeny_concatenation_nexus_nuc" from_work_dir="concatenation_nuc.nex">
 			<filter>format['format_run'] == "nucleic" and out == "nexus"</filter>
 		</data>
 
@@ -202,19 +202,19 @@
 			<filter>raxml1 == True</filter>
 		</data>
 
-		<data name="out_raxml3" format="nhx" label="Phylogeny_RAxML_BiPartition" from_work_dir="RAxML_bipartitions.galaxy_run">
-			<filter>raxml3 == True</filter>
+		<data name="out_raxml2" format="nhx" label="Phylogeny_RAxML_BiPartition" from_work_dir="RAxML_bipartitions.galaxy_run">
+			<filter>raxml2 == True</filter>
 		</data>
 
-		<data name="out_raxml4" format="txt" label="Phylogeny_RAxML_BootStrap" from_work_dir="RAxML_bootstrap.galaxy_run">
-			<filter>raxml4 == True</filter>
+		<data name="out_raxml3" format="txt" label="Phylogeny_RAxML_BootStrap" from_work_dir="RAxML_bootstrap.galaxy_run">
+			<filter>raxml3 == True</filter>
 		</data>
 	</outputs>
 
 	<tests>
 		<test>
-            <param name="input_filter_assemblies" ftype="fasta" value="input_filter_assemblies/AcAcaud_trinity.fasta,input_filter_assemblies/AmAmphi_trinity.fasta,input_filter_assemblies/ApApomp_trinity.fasta,input_filter_assemblies/PgPgras_trinity.fasta,input_filter_assemblies/PhPhess_trinity.fasta,input_filter_assemblies/ThThelep_trinity.fasta" />
-            <param name="input_alignments" ftype="fasta" value="input_from_CDS_Search/orthogroup_17_sp3_sp3.fasta,input_from_CDS_Search/orthogroup_147_sp3_sp3.fasta,input_from_CDS_Search/orthogroup_183_sp3_sp3.fasta,input_from_CDS_Search/orthogroup_334_sp3_sp3.fasta" />
+            <param name="input_filter_assemblies" ftype="fasta" value="input_filter_assemblies/Acaud_Trinity.fasta,input_filter_assemblies/Amphi_Trinity.fasta,input_filter_assemblies/Asp1_MiSeq_trinity.fasta,input_filter_assemblies/Bj.fasta,input_filter_assemblies/Lanice_Trinity_51177.fasta,input_filter_assemblies/Lf.fasta" />
+            <param name="input_alignments" ftype="fasta" value="input_from_CDS_Search/orthogroup_114_with_6_species.fasta,input_from_CDS_Search/orthogroup_213_with_5_species.fasta,input_from_CDS_Search/orthogroup_335_with_5_species.fasta,input_from_CDS_Search/orthogroup_581_with_5_species.fasta" />
             <conditional name="format">
 				<param name="format_run" value="nucleic" />
 				<param name="base_model" value="GTRGAMMA" />
@@ -223,24 +223,24 @@
 			<param name="number_of_runs" value="100" />
 			<param name="number_of_runs_bootstop" value="" />
 			<param name="search_algorithm" value="d" />
-			<!-- <param name="multiple_model" value="" /> -->
-			<param name="rapid_bootstrap_random_seed" value="123456789" />
-			<param name="out" value="nothing" />
+			<param name="rapid_bootstrap_random_seed" value="1234567890" />
+			<param name="out" value="fasta" />
 			<param name="raxml1" value="True" />
+			<param name="raxml2" value="True" />
 			<param name="raxml3" value="True" />
-			<param name="raxml4" value="True" />
-			<output name="out_raxml4">
+            <output name="out_fasta_nuc" value="out_concat/concatenation_nuc.fas"/>
+			<output name="out_raxml3">
 				<assert_contents>
-					<has_text text="((Pg,(Am,Th)),(Ph,Ap),Ac);"/>
-					<has_text text="((Th,(Pg,Am)),(Ph,Ap),Ac);"/>
-					<has_text text="((Ph,Ap),(Am,(Pg,Th)),Ac);"/>
+					<has_text text="(Bj,((Acaud_Trinity,(Asp1_MiSeq_trinity,Amphi_Trinity)),Lanice_Trinity_51177),Lf);"/>
+					<has_text text="(Bj,((Asp1_MiSeq_trinity,Amphi_Trinity),(Lanice_Trinity_51177,Acaud_Trinity)),Lf);"/>
+					<has_text text="(Bj,(Acaud_Trinity,((Asp1_MiSeq_trinity,Amphi_Trinity),Lanice_Trinity_51177)),Lf);"/>
 				</assert_contents>
 			</output>
-		</test>
+        </test>
 
         <test>
-            <param name="input_filter_assemblies" ftype="fasta" value="input_filter_assemblies/AcAcaud_trinity.fasta,input_filter_assemblies/AmAmphi_trinity.fasta,input_filter_assemblies/ApApomp_trinity.fasta,input_filter_assemblies/PgPgras_trinity.fasta,input_filter_assemblies/PhPhess_trinity.fasta,input_filter_assemblies/ThThelep_trinity.fasta" />
-            <param name="input_alignments" ftype="fasta" value="input_from_CDS_Search/orthogroup_17_sp3_sp3.fasta,input_from_CDS_Search/orthogroup_147_sp3_sp3.fasta,input_from_CDS_Search/orthogroup_183_sp3_sp3.fasta,input_from_CDS_Search/orthogroup_334_sp3_sp3.fasta" />
+            <param name="input_filter_assemblies" ftype="fasta" value="input_filter_assemblies/Acaud_Trinity.fasta,input_filter_assemblies/Amphi_Trinity.fasta,input_filter_assemblies/Asp1_MiSeq_trinity.fasta,input_filter_assemblies/Bj.fasta,input_filter_assemblies/Lanice_Trinity_51177.fasta,input_filter_assemblies/Lf.fasta" />
+            <param name="input_alignments" ftype="fasta" value="input_from_CDS_Search/orthogroup_114_with_6_species.fasta,input_from_CDS_Search/orthogroup_213_with_5_species.fasta,input_from_CDS_Search/orthogroup_335_with_5_species.fasta,input_from_CDS_Search/orthogroup_581_with_5_species.fasta" />
             <conditional name="format">
                 <param name="format_run" value="nucleic" />
                 <param name="base_model" value="GTRGAMMA" />
@@ -248,19 +248,20 @@
             <param name="random_seed" value="1234567890" />
             <param name="number_of_runs" value="100" />
             <param name="number_of_runs_bootstop" value="" />
-            <param name="search_algorithm" value="a" />            
+            <param name="search_algorithm" value="a" />
             <param name="rapid_bootstrap_random_seed" value="1234567890" />
-            <param name="out" value="nothing" />
+            <param name="out" value="nexus" />
             <param name="raxml1" value="True" />
+            <param name="raxml2" value="True" />
             <param name="raxml3" value="True" />
-            <param name="raxml4" value="True" />
-            <output name="out_raxml1" value="RAxML_bestTree.nwk"/>     
-            <output name="out_raxml3" value="RAxML_bipartitions.nwk"/>                
+            <output name="out_nexus_nuc" value="out_concat/concatenation_nuc.nex"/>
+            <output name="out_raxml1" value="out_raxml_test2/RAxML_bestTree.galaxy_run"/>
+            <output name="out_raxml2" value="out_raxml_test2/RAxML_bipartitions.galaxy_run"/>
         </test>
-        
+
         <test>
-            <param name="input_filter_assemblies" ftype="fasta" value="input_filter_assemblies/AcAcaud_trinity.fasta,input_filter_assemblies/AmAmphi_trinity.fasta,input_filter_assemblies/ApApomp_trinity.fasta,input_filter_assemblies/PgPgras_trinity.fasta,input_filter_assemblies/PhPhess_trinity.fasta,input_filter_assemblies/ThThelep_trinity.fasta" />
-            <param name="input_alignments" ftype="fasta" value="input_from_CDS_Search/orthogroup_17_sp3_sp3.fasta,input_from_CDS_Search/orthogroup_147_sp3_sp3.fasta,input_from_CDS_Search/orthogroup_183_sp3_sp3.fasta,input_from_CDS_Search/orthogroup_334_sp3_sp3.fasta" />
+            <param name="input_filter_assemblies" ftype="fasta" value="input_filter_assemblies/Acaud_Trinity.fasta,input_filter_assemblies/Amphi_Trinity.fasta,input_filter_assemblies/Asp1_MiSeq_trinity.fasta,input_filter_assemblies/Bj.fasta,input_filter_assemblies/Lanice_Trinity_51177.fasta,input_filter_assemblies/Lf.fasta" />
+            <param name="input_alignments" ftype="fasta" value="input_from_CDS_Search/orthogroup_114_with_6_species.fasta,input_from_CDS_Search/orthogroup_213_with_5_species.fasta,input_from_CDS_Search/orthogroup_335_with_5_species.fasta,input_from_CDS_Search/orthogroup_581_with_5_species.fasta" />
             <conditional name="format">
                 <param name="format_run" value="nucleic" />
                 <param name="base_model" value="GTRGAMMA" />
@@ -268,14 +269,15 @@
             <param name="random_seed" value="1234567890" />
             <param name="number_of_runs" value="100" />
             <param name="number_of_runs_bootstop" value="autoMR" />
-            <param name="search_algorithm" value="a" />            
+            <param name="search_algorithm" value="a" />
             <param name="rapid_bootstrap_random_seed" value="1234567890" />
-            <param name="out" value="nothing" />
+            <param name="out" value="phylip" />
             <param name="raxml1" value="True" />
+            <param name="raxml2" value="True" />
             <param name="raxml3" value="True" />
-            <param name="raxml4" value="True" />
-            <output name="out_raxml1" value="RAxML_bestTree_test3.nwk"/>     
-            <output name="out_raxml3" value="RAxML_bipartitions_test3.nwk"/>                
+            <output name="out_phylip_nuc" value="out_concat/concatenation_nuc.phy"/>
+            <output name="out_raxml1" value="out_raxml_test3/RAxML_bestTree.galaxy_run"/>
+            <output name="out_raxml2" value="out_raxml_test3/RAxML_bipartitions.galaxy_run"/>
         </test>
 	</tests>
 
@@ -310,8 +312,8 @@ full RAxML manual here_
         Default : DAYHOFF
 
     - random seed : Specifies a random number seed for the parsimony inferences. For all options/algorithms  in RAxML  that require some  sort of randomization,  this option must be specified. Make sure to pass different random number seeds to RAxML and not only 12345.
-     
-    - Number of runs (-N) : Specifies the number of alternative runs.         
+
+    - Number of runs (-N) : Specifies the number of alternative runs.
         By default it's an integer of value 100.
 
     - Use bootstopping criteria for number of runs :
@@ -325,7 +327,7 @@ full RAxML manual here_
 
     - Rapid bootstrapping random seed (-x) : Specify an integer number (random seed) and turn on rapid bootstrapping.
         In addition to the best tree search.
-        By default, this option is choosen.    
+        By default, this option is choosen.
 
 --------
 

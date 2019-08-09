@@ -1,4 +1,4 @@
-<tool name="BlastAlign" id="blastalign" version="2.1">
+<tool name="BlastAlign" id="blastalign" version="2.2">
 
     <description>
         Align the nucleic acid sequences using BLASTN
