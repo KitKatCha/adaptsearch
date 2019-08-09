@@ -48,24 +48,7 @@
     </outputs>
 
 	<tests>
-        <!--
-        <test>
-            <param name="inputs" ftype="fasta" value="Pfiji_trinity.fasta,Apomp_trinity.fasta,Amphi_trinity.fasta,Acaud_trinity.fasta,Pg_transcriptome_90109.fasta,Ap_transcriptome_35099.fasta,Ac_transcriptome_25591.fasta"/>
-            <param name="percent_identity" value="100" />
-            <param name="overlap_length" value="60" />
-            <param name="length_seq_max" value="100" />
-            <output name="log" value="trinity_and_velvet_up.output" />
-            <output_collection name="output_fasta" type="list">
-                <element name="Ac_transcriptome_25591" value="velvet_out/Ac_transcriptome_25591.fasta" />
-                <element name="Ap_transcriptome_35099" value="velvet_out/Ap_transcriptome_35099.fasta" />
-                <element name="Pg_transcriptome_90109" value="velvet_out/Pg_transcriptome_90109.fasta" />
-                <element name="Acaud_trinity" value="trinity_out/Acaud_trinity.fasta" />
-                <element name="Amphi_trinity" value="trinity_out/Amphi_trinity.fasta" />
-                <element name="Apomp_trinity" value="trinity_out/Apomp_trinity.fasta" />
-                <element name="Pfiji_trinity" value="trinity_out/Pfiji_trinity.fasta" />
-            </output_collection>
-        </test>
-        -->
+
         <test>
             <param name="inputs" ftype="fasta" value="inputs/Ac_transcriptome.fasta,inputs/Amphi_trinity.fasta,inputs/Lanice.fasta,inputs/Pfiji_Trinitylast.fasta,inputs/Pg_transcriptome.fasta"/>
             <param name="percent_identity" value="100" />
@@ -93,6 +76,10 @@
 This tool reformats Velvet Oases or Trinity assemblies for the AdaptSearch galaxy suite and selects only one variant per gene according to its length and quality check.
 
 ---------
+
+**Forbidden characters in input files names**
+
+**Do not** use '.' or ',' in the input file names (the only allowed '.' are for the '.fasta' files extension)
 
 **Input format**
 

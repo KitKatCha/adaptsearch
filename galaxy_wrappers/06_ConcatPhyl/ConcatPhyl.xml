@@ -174,7 +174,7 @@
 	<outputs>
 		<data name="output" format="txt" label="Phylogeny"/>
 
-		<data name="out_fasta_aa" format="fasta" label="Phylogeny_concatenation_fasta_aa" from_work_dir="concatenation_aa.fas">
+		<data name="out_fasta_aa" format="fasta" label="Phylogeny_concatenation_fasta_aa" from_work_dir="concatenation_aa.fasta">
 			<filter>format['format_run'] == "proteic" and out == "fasta"</filter>
 		</data>
 
@@ -182,11 +182,11 @@
 			<filter>format['format_run'] == "proteic" and out == "phylip"</filter>
 		</data>
 
-		<data name="out_nexus_aa" format="nexus" label="Phylogeny_concatenation_nexus_aa" from_work_dir="concatenation_aa.nex">
+		<data name="out_nexus_aa" format="nexus" label="Phylogeny_concatenation_nexus_aa" from_work_dir="concatenation_aa.nxs">
 			<filter>format['format_run'] == "proteic" and out == "nexus"</filter>
 		</data>
 
-		<data name="out_fasta_nuc" format="fasta" label="Phylogeny_concatenation_fasta_nuc" from_work_dir="concatenation_nuc.fas">
+		<data name="out_fasta_nuc" format="fasta" label="Phylogeny_concatenation_fasta_nuc" from_work_dir="concatenation_nuc.fasta">
 			<filter>format['format_run'] == "nucleic" and out == "fasta"</filter>
 		</data>
 
@@ -194,7 +194,7 @@
 			<filter>format['format_run'] == "nucleic" and out == "phylip"</filter>
 		</data>
 
-		<data name="out_nexus_nuc" format="nexus" label="Phylogeny_concatenation_nexus_nuc" from_work_dir="concatenation_nuc.nex">
+		<data name="out_nexus_nuc" format="nexus" label="Phylogeny_concatenation_nexus_nuc" from_work_dir="concatenation_nuc.nxs">
 			<filter>format['format_run'] == "nucleic" and out == "nexus"</filter>
 		</data>
 
@@ -228,14 +228,7 @@
 			<param name="raxml1" value="True" />
 			<param name="raxml2" value="True" />
 			<param name="raxml3" value="True" />
-            <output name="out_fasta_nuc" value="out_concat/concatenation_nuc.fas"/>
-			<output name="out_raxml3">
-				<assert_contents>
-					<has_text text="(Bj,((Acaud_Trinity,(Asp1_MiSeq_trinity,Amphi_Trinity)),Lanice_Trinity_51177),Lf);"/>
-					<has_text text="(Bj,((Asp1_MiSeq_trinity,Amphi_Trinity),(Lanice_Trinity_51177,Acaud_Trinity)),Lf);"/>
-					<has_text text="(Bj,(Acaud_Trinity,((Asp1_MiSeq_trinity,Amphi_Trinity),Lanice_Trinity_51177)),Lf);"/>
-				</assert_contents>
-			</output>
+            <output name="out_fasta_nuc" value="out_concat/concatenation_nuc.fasta"/>
         </test>
 
         <test>
@@ -250,11 +243,11 @@
             <param name="number_of_runs_bootstop" value="" />
             <param name="search_algorithm" value="a" />
             <param name="rapid_bootstrap_random_seed" value="1234567890" />
-            <param name="out" value="nexus" />
+            <param name="out" value="phylip" />
             <param name="raxml1" value="True" />
             <param name="raxml2" value="True" />
             <param name="raxml3" value="True" />
-            <output name="out_nexus_nuc" value="out_concat/concatenation_nuc.nex"/>
+            <output name="out_phylip_nuc" value="out_concat/concatenation_nuc.phy"/>
             <output name="out_raxml1" value="out_raxml_test2/RAxML_bestTree.galaxy_run"/>
             <output name="out_raxml2" value="out_raxml_test2/RAxML_bipartitions.galaxy_run"/>
         </test>
@@ -271,11 +264,11 @@
             <param name="number_of_runs_bootstop" value="autoMR" />
             <param name="search_algorithm" value="a" />
             <param name="rapid_bootstrap_random_seed" value="1234567890" />
-            <param name="out" value="phylip" />
+            <param name="out" value="nexus" />
             <param name="raxml1" value="True" />
             <param name="raxml2" value="True" />
             <param name="raxml3" value="True" />
-            <output name="out_phylip_nuc" value="out_concat/concatenation_nuc.phy"/>
+            <output name="out_nexus_nuc" value="out_concat/concatenation_nuc.nxs"/>
             <output name="out_raxml1" value="out_raxml_test3/RAxML_bestTree.galaxy_run"/>
             <output name="out_raxml2" value="out_raxml_test3/RAxML_bipartitions.galaxy_run"/>
         </test>

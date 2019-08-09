@@ -34,7 +34,7 @@ def dico(file_in, species_id_list):
 Parses all alignment files and concatenate all sequences to make a 'super-alignment'
 
 Args:
-    - list_files (list) all the alignment files names (retrived previously from an input file)
+    - list_files (list) all the files names (retrived previously from an input file)
     - species_id_list (list) : all the species identifier (basically the origin
     name of the fasta file, without .extension)
 """
@@ -137,9 +137,9 @@ with open(sys.argv[3], 'r') as f:
 ### 1 ### Proteic
 if format_run == "proteic" :
 
-    OUT1 = open("concatenation_aa.fas", "w")
+    OUT1 = open("concatenation_aa.fasta", "w")
     OUT2 = open("concatenation_aa.phy", "w")
-    OUT3 = open("concatenation_aa.nex", "w")
+    OUT3 = open("concatenation_aa.nxs", "w")
     OUT_PARTITION_gene_AA = open("partitions_gene_AA","w")
 
     # Get bash with concatenation
@@ -199,17 +199,17 @@ if format_run == "proteic" :
 ### 2 ### Nucleic
 elif format_run == "nucleic" :
 
-    OUT1 = open("concatenation_nuc.fas", "w")
+    OUT1 = open("concatenation_nuc.fasta", "w")
     OUT2 = open("concatenation_nuc.phy", "w")
-    OUT3 = open("concatenation_nuc.nex", "w")
+    OUT3 = open("concatenation_nuc.nxs", "w")
 
-    OUT1_pos12 = open("concatenation_pos12_nuc.fas", "w")
+    OUT1_pos12 = open("concatenation_pos12_nuc.fasta", "w")
     OUT2_pos12 = open("concatenation_pos12_nuc.phy", "w")
-    OUT3_pos12 = open("concatenation_pos12_nuc.nex", "w")
+    OUT3_pos12 = open("concatenation_pos12_nuc.nxs", "w")
 
-    OUT1_pos3 = open("concatenation_pos3_nuc.fas", "w")
+    OUT1_pos3 = open("concatenation_pos3_nuc.fasta", "w")
     OUT2_pos3 = open("concatenation_pos3_nuc.phy", "w")
-    OUT3_pos3 = open("concatenation_pos3_nuc.nex", "w")
+    OUT3_pos3 = open("concatenation_pos3_nuc.nxs", "w")
 
     OUT_PARTITION_codon_12_3 = open("partitions_codon12_3","w")
     OUT_PARTITION_gene_NUC = open("partitions_gene_NUC","w")
