@@ -34,7 +34,7 @@
     </command>
 
     <inputs>
-        <param name="inputs" type="data" format="fasta" multiple="true" label="Input files" />
+        <param name="inputs" type="data" format="fasta" multiple="true" label="Input files" help="See help section for forbidden characters"/>
         <param name="percent_identity" type="integer" value="100" label="Overlap percent identity cutoff" help="Cap3 parameter (-p N); minimum percent identity of an overlap. The specified value should be more than 65%." />
         <param name="overlap_length" type="integer" value="60" label="Overlap length cutoff" help="Cap3 parameter (-o N); minimum length of an overlap (in base pairs). The specified value should be more than 15 base pairs." />
         <param name="length_seq_max" type="integer" value="100" label="Minimum sequence length" help="Keep sequences which length is higher than the minimum sequence length  " />
@@ -45,6 +45,7 @@
             <discover_datasets pattern="__name_and_ext__" directory="outputs" />
         </collection>
         <data format="txt" name="log" label="Filter Assemblies Summary"/>
+        <data format="txt" name="species_list" label="Species list" from_work_dir="species_list.dat"/>
     </outputs>
 
 	<tests>
@@ -61,6 +62,7 @@
                 <element name="Pfiji_Trinitylast" value="outputs/Pfiji_Trinitylast.fasta" />
                 <element name="Pg_transcriptome" value="outputs/Pg_transcriptome.fasta" />
             </output_collection>
+            <output name="species_list" value="species_list.dat"/>
         </test>
 
     </tests>
@@ -79,7 +81,10 @@ This tool reformats Velvet Oases or Trinity assemblies for the AdaptSearch galax
 
 **Forbidden characters in input files names**
 
-**Do not** use '.' or ',' in the input file names (the only allowed '.' are for the '.fasta' files extension)
+    - Dots (except for '.fasta' files extensions)
+    - Commas
+    - Spaces
+    - Double underscores ('__')
 
 **Input format**
 

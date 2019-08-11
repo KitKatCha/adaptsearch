@@ -23,7 +23,7 @@
         #end for
         #set $infiles_from_paiwise_dna = $infiles_from_paiwise_dna[:-1]
 
-		python '$__tool_directory__/scripts/pogs.py' '$infiles_from_paiwise_dna' '$minspec'
+		python '$__tool_directory__/scripts/pogs.py' '$infiles_from_paiwise_dna' '$species_list' '$minspec'
 
         #if $verbose=="T":
             -v
@@ -39,6 +39,7 @@
 
  	<inputs>
         <param name="inputs_from_paiwise_dna" type="data" format="fasta" multiple="true" label="Input files from Pairwise DNA" />
+        <param name="species_list" type="data" format="txt" label="Species list" help="Output text file with the species names (output from Filter Assemblies)"/>
 		<param name="minspec" type="integer" value="3" label="Drop orthogroups with less than n species" />
         <param name="verbose" type="boolean" checked="True" truevalue="T" falsevalue="F" label="Verbose" help="Display a summary table of orthogroups before paralogs filtering"/>
         <param name="paralogs" type="boolean" checked="False" truevalue="T" falsevalue="F" label="Paralogs" help="Return also orthogroups without paralogs filtering"/>
@@ -58,10 +59,10 @@
 	<tests>
 		<test>
             <param name="inputs_from_paiwise_dna" ftype="fasta" value="outputs_pairwise/RBH_Acaud_Trinity_Amphi_Trinity_dna.fasta,outputs_pairwise/RBH_Amphi_Trinity_Asp1_MiSeq_trinity_dna.fasta,outputs_pairwise/RBH_Asp1_MiSeq_trinity_Lanice_Trinity_51177_dna.fasta,outputs_pairwise/RBH_Acaud_Trinity_Asp1_MiSeq_trinity_dna.fasta,outputs_pairwise/RBH_Amphi_Trinity_Bj_dna.fasta,outputs_pairwise/RBH_Asp1_MiSeq_trinity_Lf_dna.fasta,outputs_pairwise/RBH_Acaud_Trinity_Bj_dna.fasta,outputs_pairwise/RBH_Amphi_Trinity_Lanice_Trinity_51177_dna.fasta,outputs_pairwise/RBH_Bj_Lanice_Trinity_51177_dna.fasta,outputs_pairwise/RBH_Acaud_Trinity_Lanice_Trinity_51177_dna.fasta,outputs_pairwise/RBH_Amphi_Trinity_Lf_dna.fasta,outputs_pairwise/RBH_Bj_Lf_dna.fasta,outputs_pairwise/RBH_Acaud_Trinity_Lf_dna.fasta,outputs_pairwise/RBH_Asp1_MiSeq_trinity_Bj_dna.fasta,outputs_pairwise/RBH_Lanice_Trinity_51177_Lf_dna.fasta"/>
-			<param name="minspec" value="4"/>
+			<param name="species_list" value="species_list.dat"/>
+            <param name="minspec" value="4"/>
             <param name="verbose" value="True"/>
             <param name="paralogs" value="True"/>
-			<!--<output name="log" value="pogs.output" />-->
             <output_collection name="output" type="list">
                 <element name="orthogroup_1_with_6_sequences" value="outputs/orthogroup_1_with_6_sequences.fasta" ftype="fasta"/>
                 <element name="orthogroup_2_with_4_sequences" value="outputs/orthogroup_2_with_4_sequences.fasta" ftype="fasta"/>
