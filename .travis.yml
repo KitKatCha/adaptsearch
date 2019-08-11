@@ -13,10 +13,10 @@ before_install:
 script:
  - travis_wait 20
  - planemo test --no_cache_galaxy --conda_dependency_resolution ${TRAVIS_BUILD_DIR}/galaxy_wrappers/01_Filter_Assemblies > /dev/null 2>&1
- - planemo test --no_cache_galaxy --conda_dependency_resolution ${TRAVIS_BUILD_DIR}/galaxy_wrappers/02_Pairwise > /dev/null 2>&1
- - planemo test --no_cache_galaxy --conda_dependency_resolution ${TRAVIS_BUILD_DIR}/galaxy_wrappers/03_POGs  
- - planemo test --no_cache_galaxy --conda_dependency_resolution ${TRAVIS_BUILD_DIR}/galaxy_wrappers/03b_Orthogroups_Tool > /dev/null 2>&1
+ - planemo test --no_cache_galaxy --conda_dependency_resolution ${TRAVIS_BUILD_DIR}/galaxy_wrappers/02_Pairwise
+ - planemo test --no_cache_galaxy --conda_dependency_resolution ${TRAVIS_BUILD_DIR}/galaxy_wrappers/03_POGs > /dev/null 2>&1
+ - planemo test --no_cache_galaxy --conda_dependency_resolution ${TRAVIS_BUILD_DIR}/galaxy_wrappers/03b_Orthogroups_Tool
  - planemo test --no_cache_galaxy --conda_dependency_resolution ${TRAVIS_BUILD_DIR}/galaxy_wrappers/04_BlastAlign > /dev/null 2>&1
  - planemo test --no_cache_galaxy --conda_dependency_resolution ${TRAVIS_BUILD_DIR}/galaxy_wrappers/05_CDS_search
- - planemo test --no_cache_galaxy --conda_dependency_resolution ${TRAVIS_BUILD_DIR}/galaxy_wrappers/06_ConcatPhyl
+ - planemo test --no_cache_galaxy --conda_dependency_resolution ${TRAVIS_BUILD_DIR}/galaxy_wrappers/06_ConcatPhyl /dev/null 2>&1
  - planemo test --no_cache_galaxy --conda_dependency_resolution ${TRAVIS_BUILD_DIR}/galaxy_wrappers/07_MutCount
