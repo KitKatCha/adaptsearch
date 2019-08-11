@@ -9,13 +9,14 @@
     </macros>
 
     <requirements>
+        <expand macro="python_required" />
         <requirement type="package" version="2.7">python</requirement>
         <requirement type="package" version="1.12.0">numpy</requirement>
         <requirement type="package" version="0.20.0">pandas</requirement>
     </requirements>
-    
+
     <command>
-    <![CDATA[        
+    <![CDATA[
         #set $infiles = ""
         #for $input in $inputs_fasta
             ln -s '$input' '$input.element_identifier';
@@ -23,9 +24,7 @@
         #end for
         #set $infiles = $infiles[:-1]
 
-        $__tool_directory__/scripts/format_transdecoder_headers.sh '$orthogroups' tmp_orthogroups.txt
-        &&
-        python $__tool_directory__/scripts/filter_orthofinder.py tmp_orthogroups.txt '$infiles' $nbseq               
+        python $__tool_directory__/scripts/filter_orthofinder.py '$orthogroups' '$infiles' '$species_list' $nbseq
         #if $verbosity=="T":
             -v
         #end if
@@ -34,19 +33,20 @@
         #end if
 
         > '$output';
-    ]]> 
+    ]]>
     </command>
 
     <inputs>
         <param name="orthogroups" type="data" format="txt" label="Select a file of Orthogroups" help="The output from OrthoFinder, 'Orthogroups.txt'."/>
         <param name="inputs_fasta" type="data" format="fasta" multiple="true" label="Outputs from Filter Assemblies" help="Contains the nucleic sequences to retrieve."/>
+        <param name="species_list" type="data" format="txt" label="Species list" help="Output text file with the species names (output from Filter Assemblies)"/>
         <param name="nbseq" type="integer" value="3" label="Minimal number of sequences per orthogroup" help="Drop orthogroups with less than x sequences :" />
         <param name="verbosity" type="boolean" checked="True" truevalue="T" falsevalue="F" label="verbosity" help="Turn on this paramater to display an additional summary table (computed before the pralogous filtering)" />
         <param name="paralogs" type="boolean" checked="False" truevalue="T" falsevalue="F" label="paralogs" help="Turn on this parameter to obtain an additional output (orthogroups files before paralogous filtering)" />
     </inputs>
 
     <outputs>
-        <data format="txt" name="output" label="orthogroups_tool.output" />        
+        <data format="txt" name="output" label="orthogroups_tool.output" />
         <collection name="orthogroups_fasta" type="list" label="Orthogroups_fasta_files" >
             <discover_datasets pattern="__name_and_ext__" directory="filtered_orthogroups" />
         </collection>
@@ -59,11 +59,11 @@
     <tests>
         <test>
             <param name="orthogroups" value="Orthogroups.txt"/>
-            <param name="inputs_fasta" value="output_filterassemblies/AcAcaud_trinity.fasta,output_filterassemblies/AmAmphi_trinity.fasta,output_filterassemblies/ApApomp_trinity.fasta,output_filterassemblies/AsAsp1_trinity.fasta"/>
+            <param name="inputs_fasta" value="output_filterassemblies/Ac.fasta,output_filterassemblies/Am.fasta,output_filterassemblies/Ap.fasta,output_filterassemblies/As.fasta"/>
+            <param name="species_list" value="species_list.dat"/>
             <param name="nbseq" value="2"/>
             <param name="verbosity" value="True"/>
             <param name="paralogs" value="True"/>
-            <output name="output" value="orthogroups_tool.output" lines_diff="2"/>
             <output_collection name="orthogroups_fasta" type="list">
                 <element name="orthogroup_1_3_sequences" value="filtered_orthogroups/orthogroup_1_3_sequences.fasta" />
                 <element name="orthogroup_2_4_sequences" value="filtered_orthogroups/orthogroup_2_4_sequences.fasta" />
@@ -83,6 +83,7 @@
                 <element name="orthogroup_7_2_sequences_withParalogs" value="orthogroups_withParalogs/orthogroup_7_2_sequences_withParalogs.fasta" />
             </output_collection>
         </test>
+        <!--
         <test>
             <param name="orthogroups" value="Orthogroups.txt"/>
             <param name="inputs_fasta" value="output_filterassemblies/AcAcaud_trinity.fasta,output_filterassemblies/AmAmphi_trinity.fasta,output_filterassemblies/ApApomp_trinity.fasta,output_filterassemblies/AsAsp1_trinity.fasta"/>
@@ -100,6 +101,7 @@
                 <element name="orthogroup_7_2_sequences" value="filtered_orthogroups/orthogroup_7_2_sequences.fasta" />
             </output_collection>
         </test>
+        -->
     </tests>
 
     <help>
@@ -124,7 +126,7 @@ This tool is configured to work within the AdaptSearch toolsuite, which implies 
 
 **Step 2 : reading an re-writing orthoGroups from OrthoFinder**
 
-OrthoFinder (Emms, D.M. and Kelly, S., 2015) is a fast, accurate and comprehensive analysis tool for comparative genomics. It finds orthologues and orthogroups infers gene trees for all orthogroups and infers a rooted species tree for the species being analysed. OrthoFinder also provides comprehensive statistics for comparative genomic analyses. 
+OrthoFinder (Emms, D.M. and Kelly, S., 2015) is a fast, accurate and comprehensive analysis tool for comparative genomics. It finds orthologues and orthogroups infers gene trees for all orthogroups and infers a rooted species tree for the species being analysed. OrthoFinder also provides comprehensive statistics for comparative genomic analyses.
 
 Our tool focus on the orthogroups.txt file created before gene trees.The script proceeds to split each orthogroup in its own fasta file and, with the use of the output of Filter_Assemblies, to re-associate each ID with its sequence.
 
