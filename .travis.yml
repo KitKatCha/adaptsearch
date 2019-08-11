@@ -18,5 +18,5 @@ script:
  - planemo test --no_cache_galaxy --conda_dependency_resolution ${TRAVIS_BUILD_DIR}/galaxy_wrappers/03b_Orthogroups_Tool
  - planemo test --no_cache_galaxy --conda_dependency_resolution ${TRAVIS_BUILD_DIR}/galaxy_wrappers/04_BlastAlign > /dev/null 2>&1
  - planemo test --no_cache_galaxy --conda_dependency_resolution ${TRAVIS_BUILD_DIR}/galaxy_wrappers/05_CDS_search
- - planemo test --no_cache_galaxy --conda_dependency_resolution ${TRAVIS_BUILD_DIR}/galaxy_wrappers/06_ConcatPhyl /dev/null 2>&1
+ - planemo test --no_cache_galaxy --conda_dependency_resolution ${TRAVIS_BUILD_DIR}/galaxy_wrappers/06_ConcatPhyl > /dev/null 2>&1
  - planemo test --no_cache_galaxy --conda_dependency_resolution ${TRAVIS_BUILD_DIR}/galaxy_wrappers/07_MutCount
