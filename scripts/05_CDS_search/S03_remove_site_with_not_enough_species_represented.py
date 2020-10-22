@@ -176,7 +176,7 @@ for file in L_IN1 :
         OUTnuc=open("%s/%s" %(path_OUT2, new_name), "w")
         for fasta_name in filtered_bash_nuc.keys():
             seq_nuc = filtered_bash_nuc[fasta_name]
-            OUTnuc.write("%s\n" %fasta_name)
+            OUTnuc.write("%s\n" %fasta_name[0:3])
             OUTnuc.write("%s\n" %seq_nuc)
         OUTnuc.close()
     else:
